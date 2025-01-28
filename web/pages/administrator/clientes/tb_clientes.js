@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Llamar a eel para obtener las sucursales
                     eel.get_branches()(function (sucursales) {
                         let selectSucursal = document.getElementById('id_sucursal');
+                        selectSucursal.innerHTML = ''; 
                         sucursales.forEach(sucursal => {
                             let option = document.createElement('option');
                             option.value = sucursal.id_sucursal;
