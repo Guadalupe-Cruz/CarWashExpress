@@ -56,9 +56,18 @@
         </main>
     </div>
 
-    <!-- Alerta de éxito -->
+    <!-- Alerta de accion -->
     <div id="alerta" class="alert" style="display: none;">
         <p id="mensaje-alerta"></p>
+    </div>
+
+    <!-- Alerta de eliminacion -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <p>¿Estás seguro de que quieres eliminar este cliente?</p>
+            <button id="confirmDelete">Aceptar</button>
+            <button id="cancelDelete">Cancelar</button>
+        </div>
     </div>
 
     <script src="./tb_clientes.js"></script>

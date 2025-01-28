@@ -84,3 +84,16 @@ def update_client(id_cliente, nuevo_id_cliente, nombre, apellido_pt, apellido_mt
     cursor.close()
     connection.close()
 
+# Funcion para eliminar un cliente
+def delete_client(id_usuario):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    
+    #cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (id_usuario,))
+    
+    # Llamar al Stored Procedure en vez de hacer un DELETE directo
+    cursor.callproc("SP_Eliminar_Cliente_Cascada", [id_usuario])
+    
+    connection.commit()  # Confirmar los cambios en la base de datos
+    cursor.close()
+    connection.close()

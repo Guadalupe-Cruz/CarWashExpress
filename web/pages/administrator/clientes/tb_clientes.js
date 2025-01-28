@@ -118,7 +118,25 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 let clientId = button.getAttribute('data-id');
-                // Lógica para eliminar el cliente (puedes agregar la función de eliminación aquí)
+
+                // Mostrar el modal
+                let modal = document.getElementById("deleteModal");
+                modal.style.display = "flex";
+
+                // Cuando el usuario confirma eliminar
+                document.getElementById("confirmDelete").onclick = function () {
+                    eel.delete_client(clientId)(function () {
+                        modal.style.display = "none";  // Cerrar el modal
+                        loadClients(currentPage); // Refrescar la tabla
+                        showAlert("Cliente eliminado exitosamente!");
+                    });
+                };
+
+                // Cuando el usuario cancela
+                document.getElementById("cancelDelete").onclick = function () {
+                    modal.style.display = "none"; // Cerrar el modal
+                };
+                
             });
         });
     }

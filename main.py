@@ -15,6 +15,7 @@ eel.expose(clientes.get_clients)
 eel.expose(clientes.get_client_by_id)
 eel.expose(clientes.add_client)
 eel.expose(clientes.update_client)
+eel.expose(clientes.delete_client)
 
 # Funciones sucursales
 eel.expose(sucursales.get_branches)
