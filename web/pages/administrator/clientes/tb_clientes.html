@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+    <link rel="stylesheet" href="./tb_clientes.css">
+</head>
+<body>
+
+    <!-- Aquí se incluye el sidebar como un componente -->
+    <div id="sidebar"></div>  <!-- Este div se llenará con el sidebar mediante JavaScript -->
+
+    <div class="client_records">
+        <header>
+            <h3>Registros de clientes</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Usuario</span>
+            </div>
+        </header>
+        <main>
+            <div class="table_container">
+
+                <div class="container">
+                    <div class="top-bar">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search Invoice">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <a href="#" class="btn_newClient">Nuevo registro</a>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Apellido Paterno</th>
+                                <th>Apellido Materno</th>
+                                <th>Sucursal</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+                
+                <!-- Agrega un contenedor para los formularios dinámicos -->
+                <div id="form-container"></div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Alerta de éxito -->
+    <div id="alerta" class="alert" style="display: none;">
+        <p id="mensaje-alerta"></p>
+    </div>
+
+    <script src="./tb_clientes.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script>
+        // Aquí cargas el sidebar desde el archivo HTML
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+    </script>
+</body>
+</html>

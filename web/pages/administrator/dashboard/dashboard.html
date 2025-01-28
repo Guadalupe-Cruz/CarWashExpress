@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Aquí se incluye el sidebar como un componente -->
+    <div id="sidebar"></div>  <!-- Este div se llenará con el sidebar mediante JavaScript -->
+
+    <div class="dashboard">
+        <header>
+            <h3>Dashboard</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Usuario</span>
+            </div>
+        </header>
+        <main>
+            <div class="statistics">
+
+                <div class="card">
+
+                    <div class="icon">
+                        <img src="../../../image/heart.png" alt="Icono del corazon" class="img-hert">
+                    </div>
+
+                    <div class="info">
+                        <p>$10,000</p>
+                        <span>Ingresos de hoy</span>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="icon">
+                        <img src="../../../image/shopping_cart.png" alt="" class="img-hert">
+                    </div>
+
+                    <div class="info">
+                        <p>127</p>
+                        <span>Ventas de hoy</span>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="charts">
+                <div class="sales">
+                    <h3>Ventas de hoy</h3>
+                    <div class="donut_chart">
+                        <div class="donut">
+                            <canvas id="sales_chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="membership">
+                        <div class="with_membership">
+                            Con membresia
+                            <div class="count">
+                                <div class="circle_green"></div>
+                                <p id="valor1"></p>
+                            </div>
+                        </div>
+                        <div class="no_membership">
+                            Sin membresia
+                            <div class="count">
+                                <div class="circle_gray"></div>
+                                <p id="valor2"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graphic_container">
+                    <h3>Grafico de ventas e ingresos por dia</h3>
+                    <div class="mix_graphic">
+                        <canvas id="graficoMixto"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="./dashboard.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script>
+        // Aquí cargas el sidebar desde el archivo HTML
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+    </script>
+</body>
+
+</html>
