@@ -180,33 +180,74 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Agregar evento al botón "Registrar"
                     document.getElementById('registrar').addEventListener('click', function (e) {
                         e.preventDefault();
-
+                    
                         // Obtener los valores de los inputs
-                        let id_cliente = document.getElementById('id_cliente').value;
-                        let nombre = document.getElementById('nombre').value;
-                        let apellido_pt = document.getElementById('apellido_pt').value;
-                        let apellido_mt = document.getElementById('apellido_mt').value;
-                        let correo = document.getElementById('correo').value;
-                        let telefono = document.getElementById('telefono').value;
+                        let id_cliente = document.getElementById('id_cliente').value.trim();
+                        let nombre = document.getElementById('nombre').value.trim();
+                        let apellido_pt = document.getElementById('apellido_pt').value.trim();
+                        let apellido_mt = document.getElementById('apellido_mt').value.trim();
+                        let correo = document.getElementById('correo').value.trim();
+                        let telefono = document.getElementById('telefono').value.trim();
                         let id_sucursal = document.getElementById('id_sucursal').value;
+                    
+                        // Validaciones
+                        let idRegex = /^[0-9]+$/; // Solo números
+                        let nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; // Solo letras y espacios
+                        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; // Formato de correo válido
+                        let phoneRegex = /^[0-9]{10}$/; // Solo 10 números exactos
+                    
+                        if (!idRegex.test(id_cliente)) {
+                            showAlert("El ID debe contener solo números.");
+                            return;
+                        }
+                    
+                        if (!nameRegex.test(nombre)) {
+                            showAlert("El nombre solo debe contener letras.");
+                            return;
+                        }
+                    
+                        if (!nameRegex.test(apellido_pt)) {
+                            showAlert("El apellido paterno solo debe contener letras.");
+                            return;
+                        }
+                    
+                        if (!nameRegex.test(apellido_mt)) {
+                            showAlert("El apellido materno solo debe contener letras.");
+                            return;
+                        }
+                    
+                        if (!emailRegex.test(correo)) {
+                            showAlert("El correo electrónico no es válido.");
+                            return;
+                        }
+                    
+                        if (!phoneRegex.test(telefono)) {
+                            showAlert("El teléfono debe contener exactamente 10 dígitos numéricos.");
+                            return;
+                        }
+                    
+                        // Llamar a eel para agregar un nuevo cliente si pasa todas las validaciones
+                        eel.add_client(id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal)(function (response) {
+                            if (response.status === "error") {
+                                showAlert(response.message); // Mostrar alerta si el correo ya está registrado
+                                return;
+                            }
 
-                        // Llamar a eel para agregar un nuevo cliente
-                        eel.add_client(id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal)(function () {
+                            if (response.status === "errorID") {
+                                showAlert(response.message); // Mostrar alerta si el id de membresia ya está registrado
+                                return;
+                            }
 
-                            // Reasignar los eventos de los botones después de actualizar la tabla
                             assignTableEvents();
 
-                            // Cerrar ventanas
                             formContainer.innerHTML = ''; 
 
-                            // Refrescar la tabla de clientes después de actualizar
-                            loadClients(currentPage);  // Recargar los datos de la tabla
+                            loadClients(currentPage);  
 
-                            // Mostrar la alerta de éxito
                             showAlert("Cliente agregado exitosamente!");
-
                         });
                     });
+                    
                 }
 
                 // Cargar las sucursales para "actualizar" y "ver"

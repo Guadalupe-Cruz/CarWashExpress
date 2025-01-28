@@ -51,13 +51,30 @@ def get_client_by_id(client_id):
 
 
 def add_client(id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal):
-    """Agrega un nuevo cliente."""
+    """Agrega un nuevo cliente si el correo no está registrado."""
     connection = get_db_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(dictionary=True)
     
+    cursor.execute("SELECT id_cliente FROM clientes WHERE correo = %s", (correo,)) # Verificar si el correo ya existe
+    existing_client = cursor.fetchone()
+    
+    cursor.execute("SELECT id_cliente FROM clientes WHERE id_cliente = %s", (id_cliente,)) # Verificar si el id_cliente ya existe
+    existing_idclient = cursor.fetchone()
+    
+    if existing_client:
+        cursor.close()
+        connection.close()
+        return {"status": "error", "message": "El correo ya está registrado."}
+    
+    if existing_idclient:
+        cursor.close()
+        connection.close()
+        return {"status": "errorID", "message": "El id de membresia ya está registrado."}
+    
+    # Insertar el nuevo cliente si el correo no está registrado
     query = """
-        INSERT INTO clientes (id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO clientes (id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
     
     cursor.execute(query, (id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal))
@@ -65,6 +82,9 @@ def add_client(id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, i
     
     cursor.close()
     connection.close()
+    
+    return {"status": "success", "message": "Cliente agregado correctamente."}
+
 
 
 def update_client(id_cliente, nuevo_id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal):
