@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     eel.restore_client(clientId)(function () {
                         modal.style.display = "none";  // Cerrar el modal
                         loadClients(currentPage); // Refrescar la tabla
-                        showAlert("Cliente eliminado exitosamente!");
+                        showAlert("Cliente recuperado exitosamente!");
                     });
                 };
 

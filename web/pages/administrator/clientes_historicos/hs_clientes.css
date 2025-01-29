@@ -228,7 +228,7 @@ th {
     color: #333;
 }
 
-.actions .edit-btn, .view-btn, .delete-btn {
+.actions .edit-btn, .view-btn, .restore-btn {
     background: transparent;
     padding: 10px 20px;
     font-size: 14px;
