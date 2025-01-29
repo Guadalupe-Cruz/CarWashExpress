@@ -142,7 +142,7 @@ header h3 {
     padding: 20px;
     border-radius: 15px;
     box-shadow: var(--box-shadow);
-    width: 75%;
+    width: 100%;
     max-width: none;
 }
 
@@ -234,122 +234,6 @@ th {
     font-size: 14px;
     cursor: pointer;
     border: none;
-    color: white;
-    border-radius: 5px;
-}
-
-/* -------------------------------------------- form -------------------------------------------- */
-
-.form-container {
-    width: 25%;
-}
-
-.form {
-    width: 100%;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: var(--box-shadow);
-    background: var(--second-background-color);
-}
-
-.form h2 {
-    color: var(--title-color);
-    margin-bottom: 20px;
-}
-
-.input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border: 2px solid #6a5acd;
-    border-radius: 8px;
-    padding: 10px;
-    width: 100%;
-    background: white;
-    transition: all 0.3s;
-    margin-bottom: 15px;
-}
-
-.input-container:focus-within {
-    border-color: #483d8b;
-}
-
-.input-container input, .input-container select {
-    border: none;
-    outline: none;
-    flex: 1;
-    font-size: 16px;
-    padding-left: 8px;
-    background: transparent;
-}
-
-.input-container img {
-    color: var(--background-color-and-lines);
-    width: 15px;
-    height: 15px;
-}
-
-.input-container label {
-    position: absolute;
-    top: 50%;
-    left: 40px;
-    transform: translateY(-50%);
-    color: var(--background-color-and-lines);
-    font-size: 14px;
-    transition: all 0.3s;
-}
-
-/* Mueve la etiqueta hacia arriba cuando el input está en foco o tiene contenido */
-.input-container input:focus + label,
-.input-container input:not(:placeholder-shown) + label,
-.input-container select:focus + label,
-.input-container select:not(:placeholder-shown) + label {
-    top: -1px;  /* Ajustar el valor para que el label quede sobre el borde */
-    font-size: 12px;
-    font-weight: bold;
-    background-color: white;
-}
-
-.select-container select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-right: 20px;
-}
-
-.select-container::after {
-    content: '\25BC';
-    position: absolute;
-    right: 10px;
-    color: var(--background-color-and-lines);
-    pointer-events: none;
-}
-
-/* Pruebas */
-
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px; /* Espacio entre los botones */
-    margin-top: 20px;
-}
-
-.button-container .btn_cancelar {
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    background: transparent;
-    color: #3B82F6;
-    border-color: var(--border-color-btn);
-    border-radius: 5px;
-}
-
-.button-container .btn_accion {
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    border: none;
-    background-color: var(--background-color-btn);
     color: white;
     border-radius: 5px;
 }
