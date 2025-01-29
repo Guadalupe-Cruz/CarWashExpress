@@ -233,11 +233,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 return;
                             }
 
-                            if (response.status === "errorID") {
-                                showAlert(response.message); // Mostrar alerta si el id de membresia ya está registrado
-                                return;
-                            }
-
                             assignTableEvents();
 
                             formContainer.innerHTML = ''; 
@@ -287,6 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 document.getElementById('apellido_pt').value = client.apellido_pt || '';
                                 document.getElementById('apellido_mt').value = client.apellido_mt || '';
                                 document.getElementById('correo').value = client.correo || '';
+                                document.getElementById('correo').disabled = form.includes('viewClient.html') || form.includes('updateClient.html'); // Deshabilitar si es solo ver
                                 document.getElementById('telefono').value = client.telefono || '';
                                 document.getElementById('id_sucursal').value = client.id_sucursal || '';
                             } else {
@@ -308,11 +304,57 @@ document.addEventListener("DOMContentLoaded", function () {
                         let apellido_pt = document.getElementById('apellido_pt').value;
                         let apellido_mt = document.getElementById('apellido_mt').value;
                         let correo = document.getElementById('correo').value;
+                        let nuevo_correo = document.getElementById('nuevo_correo').value;
                         let telefono = document.getElementById('telefono').value;
                         let id_sucursal = document.getElementById('id_sucursal').value;
 
+                        // Validaciones
+                        let idRegex = /^[0-9]+$/; // Solo números
+                        let nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; // Solo letras y espacios
+                        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; // Formato de correo válido
+                        let phoneRegex = /^[0-9]{10}$/; // Solo 10 números exactos
+
+                        if (nuevo_id_cliente) {
+                            if (!idRegex.test(nuevo_id_cliente)) {
+                                showAlert("El ID debe contener solo números.");
+                                return;
+                            }
+                        }
+                    
+                        if (!nameRegex.test(nombre)) {
+                            showAlert("El nombre solo debe contener letras.");
+                            return;
+                        }
+                    
+                        if (!nameRegex.test(apellido_pt)) {
+                            showAlert("El apellido paterno solo debe contener letras.");
+                            return;
+                        }
+                    
+                        if (!nameRegex.test(apellido_mt)) {
+                            showAlert("El apellido materno solo debe contener letras.");
+                            return;
+                        }
+
+                        if (nuevo_correo) {
+                            if (!emailRegex.test(nuevo_correo)) {
+                                showAlert("El correo electrónico no es válido.");
+                                return;
+                            }
+                        }
+                    
+                        if (!phoneRegex.test(telefono)) {
+                            showAlert("El teléfono debe contener exactamente 10 dígitos numéricos.");
+                            return;
+                        }
+
                         // Llamar a eel para actualizar el cliente
-                        eel.update_client(id_cliente, nuevo_id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal)(function () {
+                        eel.update_client(id_cliente, nuevo_id_cliente, nombre, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, id_sucursal)(function (response) {
+
+                            if (response.status === "error") {
+                                showAlert(response.message); // Mostrar alerta si el correo ya está registrado
+                                return;
+                            }
 
                             // Reasignar los eventos de los botones después de actualizar la tabla
                             assignTableEvents();
