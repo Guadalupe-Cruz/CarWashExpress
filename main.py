@@ -8,20 +8,37 @@ app = Flask(__name__)
 # Inicializar Eel
 eel.init("web")
 
-# -------- Exponer todas las funciones necesarias --------
+# =======================================
+# EXPONER TODAS LA FUNCIONES NECESARIAS
+# =======================================
 
-# Funciones clientes
+# ---------------------------------------
+# FUNCIONES PARA CLIENTES
+# ---------------------------------------
 eel.expose(clientes.get_clients)
 eel.expose(clientes.get_client_by_id)
 eel.expose(clientes.add_client)
 eel.expose(clientes.update_client)
 eel.expose(clientes.delete_client)
 
-# Funciones sucursales
+# ---------------------------------------
+# FUNCIONES PARA HISTORICOS DE CLIENTES
+# ---------------------------------------
+eel.expose(clientes.restore_client)
+eel.expose(clientes.get_client_hts)
+eel.expose(clientes.get_client_by_id_hts)
+
+# ---------------------------------------
+# FUNCIONES PARA SUCURSALES
+# ---------------------------------------
 eel.expose(sucursales.get_branches)
 
-# Funciones Login
+# ---------------------------------------
+# FUNCIONES PARA LOGIN
+# ---------------------------------------
 eel.expose(login.verify_login)
 
-# Ejecutar la aplicación
+# =======================================
+# EJECUTAR APLICACION
+# =======================================
 eel.start("login.html", size=(800, 600))

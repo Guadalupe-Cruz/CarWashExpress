@@ -161,3 +161,51 @@ def existing_idClient(cursor, nuevo_id_cliente):
     if existing_id_client:
         return True  # El id_cliente ya existe
     return False  # El id_cliente no existe
+
+
+# ========================================
+# FUNCIONES PARA CLIENTES_HISTORICOS
+# ========================================
+
+def restore_client(id_cliente):
+    """Recupera un cliente utilizando un Stored Procedure para mantener integridad referencial."""
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    
+    cursor.callproc("SP_Restaurar_Cliente_Cascada", [id_cliente])
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+    
+def get_client_hts(page=1, limit=6):
+    """Obtiene los historicos de los clientes con paginación."""
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    
+    offset = (page - 1) * limit
+    cursor.execute("SELECT * FROM VW_Clientes_Eliminados LIMIT %s OFFSET %s", (limit, offset))
+    clientes_eliminados = cursor.fetchall()
+    
+    cursor.execute("SELECT COUNT(*) AS total FROM VW_Clientes_Eliminados")
+    total_clients = cursor.fetchone()["total"]
+    
+    cursor.close()
+    connection.close()
+    
+    total_pages = (total_clients + limit - 1) // limit  # Cálculo de páginas
+    
+    return {"clientes": clientes_eliminados, "total_pages": total_pages}
+
+def get_client_by_id_hts(client_id):
+    """Obtiene un cliente por su ID."""
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    
+    cursor.execute("SELECT * FROM clientes_eliminados WHERE id_cliente = %s", (client_id,))
+    cliente = cursor.fetchone()
+    
+    cursor.close()
+    connection.close()
+    
+    return cliente
