@@ -110,8 +110,29 @@ header {
     box-shadow: var(--box-shadow); /* Sombra sutil para darle profundidad */
 }
 
-header h3 {
-    color: var(--second-title-color); /* Color para el subtítulo del header */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    padding: 8px 12px;
+    border-radius: 20px;
+}
+
+.search-box input {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 5px;
+}
+
+.search-box i {
+    color: #888;
 }
 
 .user-info {
@@ -146,43 +167,9 @@ header h3 {
     max-width: none;
 }
 
-h2 {
-    margin: 0 0 15px;
-}
-
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-    background: #f1f1f1;
-    padding: 8px 12px;
-    border-radius: 20px;
-}
-
-.search-box input {
-    border: none;
-    background: none;
-    outline: none;
-    padding: 5px;
-}
-
-.search-box i {
-    color: #888;
-}
-
-.btn_newClient {
-    background: #3B82F6;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 14px;
+h3 {
+    color: var(--second-title-color); /* Color para el subtítulo del header */
+    margin: 0 0 25px;
 }
 
 table {
@@ -228,7 +215,7 @@ th {
     color: #333;
 }
 
-.actions .edit-btn, .view-btn, .restore-btn {
+.actions .restore-btn {
     background: transparent;
     padding: 10px 20px;
     font-size: 14px;
