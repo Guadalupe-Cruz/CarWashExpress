@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="./usuarios.css">
+</head>
+<body>
+
+    <!-- Aquí se incluye el sidebar como un componente mediante JavaScript -->
+    <div id="sidebar"></div>
+
+    <div class="client_records">
+        <header>
+            <div class="top-bar">
+                <div class="search-box">
+                    <input type="text" placeholder="Search Invoice">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Usuario</span>
+            </div>
+        </header>
+        <main>
+            <div class="table_container">
+
+                <div class="container">
+                    <h3>Historicos de usuarios</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Apellido Paterno</th>
+                                <th>Apellido Materno</th>
+                                <th>Correo</th>
+                                <th>Telefono</th>
+                                <th>Direccion</th>
+                                <th>Puesto</th>
+                                <th>Tipo de usuario</th>
+                                <th>Fecha de eliminacion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="./usuarios.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script>
+        // Aquí cargas el sidebar desde el archivo HTML
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+    </script>
+    
+</body>
+</html>
