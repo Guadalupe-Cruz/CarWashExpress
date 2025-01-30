@@ -1,6 +1,6 @@
 import eel
 from flask import Flask
-from backend import clientes, login, sucursales, historial_lavados, pagos, usuarios # Importación de módulos del backend
+from backend import clientes, login, sucursales, historial_lavados, pagos, usuarios, insumos # Importación de módulos del backend
 
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
@@ -45,6 +45,15 @@ eel.expose(pagos.get_payments_historical)
 # ---------------------------------------
 eel.expose(usuarios.get_users)
 eel.expose(usuarios.get_users_historical)
+
+# ---------------------------------------
+# FUNCIONES PARA INSUMOS
+# ---------------------------------------
+eel.expose(insumos.get_insumos)
+eel.expose(insumos.add_insumo)
+eel.expose(insumos.update_insumo)
+eel.expose(insumos.delete_insumos)
+eel.expose(insumos.get_insumo_by_id)
 
 # ---------------------------------------
 # FUNCIONES PARA SUCURSALES
