@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial de lavados</title>
-    <link rel="stylesheet" href="./tb_historial_lavados.css">
+    <title>Historico de pagos</title>
+    <link rel="stylesheet" href="./pagos.css">
 </head>
 <body>
 
@@ -28,15 +28,17 @@
             <div class="table_container">
 
                 <div class="container">
-                    <h3>Registros de historial de lavados</h3>
+                    <h3>Historico de pagos</h3>
                     <table>
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Tiempo de inicio</th>
-                                <th>Tiempo de fin</th>
+                                <th>Monto pagado</th>
+                                <th>Metodo de pago</th>
+                                <th>Fecha de pago</th>
                                 <th>Cliente</th>
                                 <th>Tipo de lavado</th>
+                                <th>Fecha de eliminacion</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,7 +52,7 @@
         </main>
     </div>
 
-    <script src="./tb_historial_lavados.js"></script>
+    <script src="./pagos.js"></script>
     <script type="text/javascript" src="/eel.js"></script>
     <script>
         // Aquí cargas el sidebar desde el archivo HTML
