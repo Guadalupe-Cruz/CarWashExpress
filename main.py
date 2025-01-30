@@ -1,6 +1,6 @@
 import eel
 from flask import Flask
-from backend import clientes, login, sucursales # Importación de módulos del backend
+from backend import clientes, login, sucursales, historial_lavados # Importación de módulos del backend
 
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
@@ -27,6 +27,12 @@ eel.expose(clientes.delete_client)
 eel.expose(clientes.restore_client)
 eel.expose(clientes.get_client_hts)
 eel.expose(clientes.get_client_by_id_hts)
+
+# ---------------------------------------
+# FUNCIONES PARA HISTORIAL DE LAVADOS
+# ---------------------------------------
+eel.expose(historial_lavados.get_wash_history)
+eel.expose(historial_lavados.get_wash_history_historical)
 
 # ---------------------------------------
 # FUNCIONES PARA SUCURSALES
