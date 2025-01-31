@@ -92,7 +92,7 @@ nav h3 {
 
 /* -------------------------------------------- Cliente records -------------------------------------------- */
 
-.client_records {
+.container_panel {
     margin-left: 250px; /* El client_records empieza después de la barra lateral */
     padding: 20px; /* Espaciado interno */
     width: calc(100% - 250px); /* Hace que el client_records ocupe el resto del espacio disponible */
@@ -146,8 +146,9 @@ header h3 {
     max-width: none;
 }
 
-h2 {
+.container h3 {
     margin: 0 0 15px;
+    color: var(--second-title-color);
 }
 
 .top-bar {
