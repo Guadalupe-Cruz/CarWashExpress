@@ -90,6 +90,17 @@ nav h3 {
     text-align: center; /* Centra el texto */
 }
 
+.logout img {
+    width: 20px;
+    height: 20px;
+}
+
+h3 a {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
 /* -------------------------------------------- Cliente records -------------------------------------------- */
 
 .client_records {
@@ -110,29 +121,8 @@ header {
     box-shadow: var(--box-shadow); /* Sombra sutil para darle profundidad */
 }
 
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-    background: #f1f1f1;
-    padding: 8px 12px;
-    border-radius: 20px;
-}
-
-.search-box input {
-    border: none;
-    background: none;
-    outline: none;
-    padding: 5px;
-}
-
-.search-box i {
-    color: #888;
+header h3 {
+    color: var(--second-title-color); /* Color para el subtítulo del header */
 }
 
 .user-info {
@@ -167,9 +157,35 @@ header {
     max-width: none;
 }
 
-h3 {
-    color: var(--second-title-color); /* Color para el subtítulo del header */
-    margin: 0 0 25px;
+.container h3 {
+    margin: 0 0 15px;
+    color: var(--second-title-color);
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    padding: 8px 12px;
+    border-radius: 20px;
+}
+
+.search-box input {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 5px;
+}
+
+.search-box i {
+    color: #888;
 }
 
 table {
