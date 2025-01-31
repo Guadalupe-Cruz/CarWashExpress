@@ -104,6 +104,44 @@ def delete_insumos(insumoId):
     
     cursor.close()
     connection.close()
+    
+
+def restore_insumos(insumoId):
+    """Recupera un insumo."""
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    
+    query = "DELETE FROM insumos_eliminados WHERE id_insumo = %s"
+    
+    cursor.execute(query, (insumoId,))
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+    
+
+def get_insumos_historical(page=1, limit=6):
+    """Obtiene los historicos de los insumos con paginación."""
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    
+    offset = (page - 1) * limit
+    cursor.execute("SELECT * FROM insumos_eliminados LIMIT %s OFFSET %s", (limit, offset))
+    insumos = cursor.fetchall()
+    
+    # Formatear las fechas 'tiempo_inicio' y 'tiempo_fin' antes de enviarlas
+    for insumo in insumos:
+        insumo['fecha_suministro'] = format_datetime(insumo['fecha_suministro'])
+    
+    cursor.execute("SELECT COUNT(*) AS total FROM insumos_eliminados")
+    total_insumos = cursor.fetchone()["total"]
+    
+    cursor.close()
+    connection.close()
+    
+    total_pages = (total_insumos + limit - 1) // limit  # Cálculo de páginas
+    
+    return {"insumos": insumos, "total_pages": total_pages}
 
 
 # =================================
