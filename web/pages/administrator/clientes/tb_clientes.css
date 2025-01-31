@@ -90,6 +90,17 @@ nav h3 {
     text-align: center; /* Centra el texto */
 }
 
+.logout img {
+    width: 20px;
+    height: 20px;
+}
+
+h3 a {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
 /* -------------------------------------------- Cliente records -------------------------------------------- */
 
 .container_panel {
