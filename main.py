@@ -1,6 +1,6 @@
 import eel
 from flask import Flask
-from backend import clientes, login, sucursales, historial_lavados, pagos, usuarios, insumos # Importación de módulos del backend
+from backend import clientes, login, sucursales, historial_lavados, pagos, usuarios, insumos, dashboard # Importación de módulos del backend
 
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
@@ -66,6 +66,12 @@ eel.expose(sucursales.get_branches)
 # FUNCIONES PARA LOGIN
 # ---------------------------------------
 eel.expose(login.verify_login)
+
+# ---------------------------------------
+# FUNCIONES PARA DASHBOARD
+# ---------------------------------------
+eel.expose(dashboard.obtener_datos_dashboard)
+eel.expose(dashboard.obtener_todos_los_datos)
 
 # =======================================
 # EJECUTAR APLICACION

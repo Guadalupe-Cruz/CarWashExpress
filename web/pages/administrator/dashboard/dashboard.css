@@ -1,73 +1,72 @@
+/* ---------------------------- Variables de color y estilos generales ---------------------------- */
 :root {
-    --background-color: #F1F6F9;   /* Color de fondo principal */
-    --second-background-color: #ffffff; /* Color de fondo para otros elementos como tarjetas */
-    --title-color: #333333; /* Color para los títulos principales */
-    --second-title-color: #666; /* Color para los subtítulos */
-    --border-radius: 15px; /* Rango general de bordes redondeados */
+    --background-color: #F1F6F9; /* Color de fondo principal */
+    --second-background-color: #ffffff; /* Color de fondo secundario (tarjetas, sidebar, etc.) */
+    --title-color: #333333; /* Color principal de los títulos */
+    --second-title-color: #666; /* Color de subtítulos y texto secundario */
+    --border-radius: 15px; /* Bordes redondeados generales */
     --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra general */
 }
 
-/* border: 1px solid black; */
-
+/* ---------------------------- Reseteo y configuración general ---------------------------- */
 * {
-    margin: 0; /* Elimina el margen por defecto de todos los elementos */
-    padding: 0; /* Elimina el padding por defecto de todos los elementos */
-    box-sizing: border-box; /* Hace que el padding y el border no afecten el tamaño total del elemento */
-    font-family: Arial, sans-serif; /* Define la fuente predeterminada de la página */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    display: flex; /* Usa Flexbox para el layout */
-    background-color: var(--background-color); /* Establece el color de fondo usando la variable */
+    display: flex;
+    background-color: var(--background-color);
 }
 
-/* -------------------------------------------- Sidebar -------------------------------------------- */
-
+/* ---------------------------- Sidebar ---------------------------- */
 .sidebar {
-    width: 250px; /* Establece el ancho de la barra lateral */
-    height: 100vh; /* La barra lateral ocupa toda la altura de la ventana */
-    background-color: var(--second-background-color); /* Color de fondo para la barra lateral */
-    border-top-right-radius: 15px;   /* Esquina superior derecha redondeada */
-    border-bottom-right-radius: 15px;  /* Esquina inferior derecha redondeada */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil para darle profundidad */
-    padding: 20px; /* Espaciado interno */
-    position: fixed; /* La barra lateral se mantiene fija en la pantalla */
-    left: 0; /* Alinea la barra a la izquierda */
-    top: 0; /* Alinea la barra en la parte superior */
+    width: 250px;
+    height: 100vh;
+    background-color: var(--second-background-color);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
 }
 
 .sidebar iframe {
-    width: 100%; /* Ocupa todo el ancho disponible */
-    height: 100%; /* Ocupa toda la altura de la barra lateral */
-    border: none; /* Elimina el borde del iframe */
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 .sidebar h2 {
-    text-align: center; /* Centra el título dentro de la barra lateral */
-    margin-bottom: 20px; /* Espaciado inferior */
-    color: var(--title-color); /* Color para los títulos */
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--title-color);
 }
 
 nav h3 {
-    margin: 10px 0; /* Espaciado superior e inferior para los subtítulos */
-    font-size: 14px; /* Tamaño de fuente para los subtítulos */
-    color: var(--second-title-color); /* Color para los subtítulos */
+    margin: 10px 0;
+    font-size: 14px;
+    color: var(--second-title-color);
 }
 
 .sidebar ul {
-    list-style: none; /* Elimina los puntos de lista */
+    list-style: none;
 }
 
 .sidebar ul li {
-    padding: 10px 0 10px 20px; /* Espaciado interno para cada elemento de la lista */
+    padding: 10px 0 10px 20px;
 }
 
 .sidebar ul li a {
-    text-decoration: none; /* Elimina el subrayado de los enlaces */
-    color: #333; /* Color de los enlaces */
-    display: flex; /* Usamos flexbox para alinear los enlaces y los íconos */
-    align-items: center; /* Centra los íconos y el texto verticalmente */
-    gap: 10px; /* Espaciado entre el texto y el ícono */
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .sidebar ul li a:hover {
@@ -81,71 +80,74 @@ nav h3 {
 }
 
 .logout {
-    color: red; /* Color rojo para el enlace de logout */
-    text-decoration: none; /* Elimina el subrayado */
-    text-align: center; /* Centra el texto */
+    color: red;
+    text-decoration: none;
+    text-align: center;
 }
 
-/* -------------------------------------------- Dashboard -------------------------------------------- */
+.logout img {
+    width: 20px;
+    height: 20px;
+}
 
+/* ---------------------------- Dashboard ---------------------------- */
 .dashboard {
-    margin-left: 250px; /* El dashboard empieza después de la barra lateral */
-    padding: 20px; /* Espaciado interno */
-    width: calc(100% - 250px); /* Hace que el dashboard ocupe el resto del espacio disponible */
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
 }
 
-/* -------------------------------------------- Header -------------------------------------------- */
-
+/* ---------------------------- Header ---------------------------- */
 header {
-    display: flex; /* Usa flexbox para el layout del header */
-    justify-content: space-between; /* Separa el contenido a la izquierda y derecha */
-    background: #fff; /* Fondo blanco para el header */
-    padding: 10px; /* Espaciado interno */
-    border-radius: 8px; /* Bordes redondeados */
-    align-items: center; /* Centra los elementos dentro del header */
-    box-shadow: var(--box-shadow); /* Sombra sutil para darle profundidad */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--second-background-color);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
 }
 
 header h3 {
-    color: var(--second-title-color); /* Color para el subtítulo del header */
+    color: var(--second-title-color);
 }
 
 .user-info {
-    display: flex; /* Usa flexbox para alinear los elementos de la info del usuario */
-    align-items: center; /* Centra los elementos verticalmente */
-    gap: 10px; /* Espaciado entre los elementos */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .user-avatar {
-    width: 30px; /* Tamaño del avatar */
-    height: 30px; /* Tamaño del avatar */
-    background: purple; /* Fondo morado para el avatar */
-    border-radius: 50%; /* Hace que el avatar sea redondo */
+    width: 30px;
+    height: 30px;
+    background: purple;
+    border-radius: 50%;
 }
 
-/* -------------------------------------------- Statistics -------------------------------------------- */
-
+/* ---------------------------- Estadísticas ---------------------------- */
 .statistics {
-    display: flex; /* Usa flexbox para mostrar las tarjetas de estadísticas */
-    gap: 20px; /* Espaciado entre las tarjetas */
-    margin-top: 20px; /* Espaciado superior */
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
 }
 
 .card {
-    width: 200px; /* Ancho de cada tarjeta */
-    display: flex; /* Usa flexbox dentro de las tarjetas */
-    justify-content: space-between; /* Separa el ícono y el texto */
-    align-items: center; /* Centra los elementos verticalmente */
-    height: 80px; /* Altura de la tarjeta */
-    padding: 10px; /* Espaciado interno */
-    background-color: var(--second-background-color); /* Fondo blanco */
-    box-shadow: var(--box-shadow); /* Sombra sutil para darle profundidad */
-    border-radius: var(--border-radius); /* Bordes redondeados */
+    width: 210px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 10px;
+    background-color: var(--second-background-color);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
 }
 
 .card img {
-    width: 40px; /* Tamaño de los íconos dentro de las tarjetas */
-    height: 40px; /* Tamaño de los íconos dentro de las tarjetas */
+    width: 40px;
+    height: 40px;
     transition: transform 0.3s ease;
 }
 
@@ -154,108 +156,106 @@ header h3 {
 }
 
 .icon {
-    display: flex; /* Usa flexbox dentro del contenedor de íconos */
-    justify-content: center; /* Centra el ícono horizontalmente */
-    align-items: center; /* Centra el ícono verticalmente */
-    height: 100%; /* Ajusta la altura al 100% */
-    width: 30%; /* Ajusta el ancho del ícono */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 100%;
 }
 
 .info {
-    text-align: right; /* Alinea el texto de la información a la derecha */
+    text-align: right;
 }
 
 .info span {
-    font-size: 14px; /* Tamaño del texto */
-    color: #666; /* Color gris para los valores */
+    font-size: 14px;
+    color: var(--second-title-color);
 }
 
-/* -------------------------------------------- Charts -------------------------------------------- */
-
+/* ---------------------------- Gráficos ---------------------------- */
 .charts {
-    display: flex; /* Usa flexbox para mostrar las gráficas */
-    gap: 20px; /* Espaciado entre las gráficas */
-    margin-top: 20px; /* Espaciado superior */
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
 }
 
-/* ------------------ Sales ------------------ */
-
+/* Ventas */
 .sales {
-    width: 30%; /* Ancho de la sección de ventas */
-    padding: 10px; /* Espaciado interno */
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    box-shadow: var(--box-shadow); /* Sombra sutil */
-    background-color: var(--second-background-color); /* Fondo blanco */
+    width: 30%;
+    padding: 20px;
+    height: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    background-color: var(--second-background-color);
 }
 
 .sales h3 {
-    color: var(--second-title-color); /* Color del subtítulo de la sección de ventas */
+    color: var(--second-title-color);
 }
 
 .donut_chart {
-    display: flex; /* Usa flexbox para centrar el gráfico de dona */
-    justify-content: center; /* Centra el gráfico horizontalmente */
-    align-items: center; /* Centra el gráfico verticalmente */
-    width: 100%; /* Hace que ocupe todo el ancho disponible */
-    margin-top: 30px; /* Espaciado superior */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
 }
 
 .donut {
-    width: 200px; /* Tamaño del gráfico de dona */
-    height: 200px; /* Tamaño del gráfico de dona */
+    width: 200px;
+    height: 200px;
 }
 
 .membership {
-    margin-top: 30px; /* Espaciado superior */
-    display: flex; /* Usa flexbox para alinear los elementos */
-    justify-content: space-between; /* Separa los elementos horizontalmente */
-    align-items: center; /* Centra los elementos verticalmente */
-    width: 100%; /* Ocupa todo el ancho disponible */
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .with_membership, .no_membership {
-    display: flex; /* Usa flexbox dentro de los contenedores de membresía */
-    flex-direction: column; /* Alinea los elementos en columna */
-    align-items: center; /* Centra los elementos horizontalmente */
-    justify-content: center; /* Centra los elementos verticalmente */
-    text-align: center; /* Alinea el texto al centro */
-    height: 100%; /* Ocupa toda la altura disponible */
-    width: 50%; /* Toma el 50% del espacio disponible */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
 }
 
 .count {
-    display: flex; /* Usa flexbox para alinear los contadores */
-    justify-content: space-between; /* Separa los elementos de los contadores */
-    align-items: center; /* Centra los elementos verticalmente */
-    gap: 5px; /* Espaciado entre los elementos */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
 }
 
 .circle_green {
-    width: 10px; /* Tamaño del círculo verde */
-    height: 10px; /* Tamaño del círculo verde */
-    background: green; /* Fondo verde */
-    border-radius: 50%; /* Hace que sea un círculo */
+    width: 10px;
+    height: 10px;
+    background: green;
+    border-radius: 50%;
 }
 
 .circle_gray {
-    width: 10px; /* Tamaño del círculo gris */
-    height: 10px; /* Tamaño del círculo gris */
-    background: gray; /* Fondo gris */
-    border-radius: 50%; /* Hace que sea un círculo */
+    width: 10px;
+    height: 10px;
+    background: gray;
+    border-radius: 50%;
 }
 
-/* ------------------ Graphic ------------------ */
-
+/* Gráfico de ventas e ingresos */
 .graphic_container {
-    width: 70%; /* Ancho de la gráfica */
-    padding: 10px; /* Espaciado interno */
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    box-shadow: var(--box-shadow); /* Sombra sutil */
-    background-color: var(--second-background-color); /* Fondo blanco */
+    width: 70%;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    background-color: var(--second-background-color);
 }
 
 .graphic_container h3 {
-    color: var(--second-title-color); /* Color del subtítulo de la gráfica */
+    color: var(--second-title-color);
 }
 
 .mix_graphic {
@@ -269,4 +269,3 @@ header h3 {
     width: 100% !important;
     height: 100% !important;
 }
-
