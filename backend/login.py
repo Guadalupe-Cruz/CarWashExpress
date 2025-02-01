@@ -9,7 +9,7 @@ def get_db_connection():
         host='localhost',          # Cambia esto por tu host
         user='root',               # Cambia esto por tu usuario
         password='',                # Cambia esto por tu contraseña
-        database='db_autolavado'    # Cambia esto por tu base de datos
+        database='db_carwashexpress'    # Cambia esto por tu base de datos
     )
 
 # ==============================
@@ -29,6 +29,6 @@ def verify_login(correo, contrasena):
     connection.close()
     
     if usuario:
-        return {"mensaje": "Login exitoso", "id": usuario['id_usuario'], "name": usuario['nombre']}
+        return {"mensaje": "Login exitoso", "id": usuario['id_usuario'], "name": usuario['nombre_usuario']}
     else:
         return {"mensaje": "Credenciales incorrectas"}

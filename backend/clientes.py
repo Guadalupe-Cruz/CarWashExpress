@@ -9,7 +9,7 @@ def get_db_connection():
         host='localhost',          # Cambia esto por tu host
         user='root',               # Cambia esto por tu usuario
         password='',                # Cambia esto por tu contraseña
-        database='db_autolavado'    # Cambia esto por tu base de datos
+        database='db_carwashexpress'    # Cambia esto por tu base de datos
     )
 
 # ==============================
@@ -22,10 +22,10 @@ def get_clients(page=1, limit=6):
     cursor = connection.cursor(dictionary=True)
     
     offset = (page - 1) * limit
-    cursor.execute("SELECT * FROM vista_clientes LIMIT %s OFFSET %s", (limit, offset))
+    cursor.execute("SELECT * FROM VW_Clientes LIMIT %s OFFSET %s", (limit, offset))
     clientes = cursor.fetchall()
     
-    cursor.execute("SELECT COUNT(*) AS total FROM vista_clientes")
+    cursor.execute("SELECT COUNT(*) AS total FROM VW_Clientes")
     total_clients = cursor.fetchone()["total"]
     
     cursor.close()
@@ -50,7 +50,7 @@ def get_client_by_id(client_id):
     return cliente
 
 
-def add_client(id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal):
+def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal):
     """Agrega un nuevo cliente si el correo no está registrado."""
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
@@ -73,11 +73,11 @@ def add_client(id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, i
     
     # Insertar el nuevo cliente si el correo no está registrado
     query = """
-        INSERT INTO clientes (id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal) 
+        INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal) 
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
     
-    cursor.execute(query, (id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal))
+    cursor.execute(query, (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal))
     connection.commit()
     
     cursor.close()
@@ -87,7 +87,7 @@ def add_client(id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, i
 
 
 
-def update_client(id_cliente, nuevo_id_cliente, nombre, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, id_sucursal):
+def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, id_sucursal):
     """Actualiza la información de un cliente."""
     try:
         connection = get_db_connection()
@@ -102,16 +102,16 @@ def update_client(id_cliente, nuevo_id_cliente, nombre, apellido_pt, apellido_mt
 
             # Crear el query de actualización
             query = """
-                UPDATE clientes SET nombre = %s, apellido_pt = %s, apellido_mt = %s, 
+                UPDATE clientes SET nombre_cliente = %s, apellido_pt = %s, apellido_mt = %s, 
                 correo = %s, telefono = %s, id_sucursal = %s WHERE id_cliente = %s
             """
             # Preparar los parámetros
-            params = (nombre, apellido_pt, apellido_mt, correo if not nuevo_correo else nuevo_correo, telefono, id_sucursal, id_cliente)
+            params = (nombre_cliente, apellido_pt, apellido_mt, correo if not nuevo_correo else nuevo_correo, telefono, id_sucursal, id_cliente)
             
             # Si se proporciona un nuevo id_cliente, actualizarlo
             if nuevo_id_cliente:
                 query = query.replace("id_cliente = %s", "id_cliente = %s, id_cliente = %s")
-                params = (nuevo_id_cliente, nombre, apellido_pt, apellido_mt, nuevo_correo or correo, telefono, id_sucursal, id_cliente)
+                params = (nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, nuevo_correo or correo, telefono, id_sucursal, id_cliente)
                 
             # Ejecutar la consulta
             cursor.execute(query, params)

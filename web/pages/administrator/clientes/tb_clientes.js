@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
             data.clientes.forEach(cliente => {
                 let row = `<tr>
                     <td>${cliente.id_cliente}</td>
-                    <td>${cliente.nombre}</td>
+                    <td>${cliente.nombre_cliente}</td>
                     <td>${cliente.apellido_pt}</td>
                     <td>${cliente.apellido_mt}</td>
                     <td><span class="status delivered">${cliente.nombre_sucursal}</span></td>
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         sucursales.forEach(sucursal => {
                             let option = document.createElement('option');
                             option.value = sucursal.id_sucursal;
-                            option.textContent = sucursal.nombre;
+                            option.textContent = sucursal.nombre_sucursal;
                             selectSucursal.appendChild(option);
                         });
                     });
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                         // Obtener los valores de los inputs
                         let id_cliente = document.getElementById('id_cliente').value.trim();
-                        let nombre = document.getElementById('nombre').value.trim();
+                        let nombre_cliente = document.getElementById('nombre_cliente').value.trim();
                         let apellido_pt = document.getElementById('apellido_pt').value.trim();
                         let apellido_mt = document.getElementById('apellido_mt').value.trim();
                         let correo = document.getElementById('correo').value.trim();
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             return;
                         }
                     
-                        if (!nameRegex.test(nombre)) {
+                        if (!nameRegex.test(nombre_cliente)) {
                             showAlert("El nombre solo debe contener letras.");
                             return;
                         }
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     
                         // Llamar a eel para agregar un nuevo cliente si pasa todas las validaciones
-                        eel.add_client(id_cliente, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal)(function (response) {
+                        eel.add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal)(function (response) {
                             if (response.status === "error") {
                                 showAlert(response.message); // Mostrar alerta si el correo ya está registrado
                                 return;
@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         sucursales.forEach(sucursal => {
                             let option = document.createElement('option');
                             option.value = sucursal.id_sucursal;
-                            option.textContent = sucursal.nombre;
+                            option.textContent = sucursal.nombre_sucursal;
 
                             // Marcar la opción seleccionada si el id_sucursal del cliente coincide
                             if (form.includes('updateClient.html') || form.includes('viewClient.html')) {
@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             if (client) {
                                 document.getElementById('id_cliente').value = client.id_cliente || '';  // Mostrar el id_cliente
                                 document.getElementById('id_cliente').disabled = form.includes('viewClient.html') || form.includes('updateClient.html'); // Deshabilitar si es solo ver
-                                document.getElementById('nombre').value = client.nombre || '';
+                                document.getElementById('nombre_cliente').value = client.nombre_cliente || '';
                                 document.getElementById('apellido_pt').value = client.apellido_pt || '';
                                 document.getElementById('apellido_mt').value = client.apellido_mt || '';
                                 document.getElementById('correo').value = client.correo || '';
@@ -300,7 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Obtener los valores de los inputs
                         let id_cliente = document.getElementById('id_cliente').value;
                         let nuevo_id_cliente = document.getElementById('nuevo_id_cliente').value;  // Nuevo ID cliente (puede estar vacío)
-                        let nombre = document.getElementById('nombre').value;
+                        let nombre_cliente = document.getElementById('nombre_cliente').value;
                         let apellido_pt = document.getElementById('apellido_pt').value;
                         let apellido_mt = document.getElementById('apellido_mt').value;
                         let correo = document.getElementById('correo').value;
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         }
                     
-                        if (!nameRegex.test(nombre)) {
+                        if (!nameRegex.test(nombre_cliente)) {
                             showAlert("El nombre solo debe contener letras.");
                             return;
                         }
@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
 
                         // Llamar a eel para actualizar el cliente
-                        eel.update_client(id_cliente, nuevo_id_cliente, nombre, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, id_sucursal)(function (response) {
+                        eel.update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, id_sucursal)(function (response) {
 
                             if (response.status === "error") {
                                 showAlert(response.message); // Mostrar alerta si el correo ya está registrado
