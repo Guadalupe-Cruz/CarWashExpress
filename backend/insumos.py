@@ -10,7 +10,7 @@ def get_db_connection():
         host='localhost',          # Cambia esto por tu host
         user='root',               # Cambia esto por tu usuario
         password='',                # Cambia esto por tu contraseña
-        database='db_autolavado'    # Cambia esto por tu base de datos
+        database='db_carwashexpress'    # Cambia esto por tu base de datos
     )
 
 # =================================
@@ -40,17 +40,17 @@ def get_insumos(page=1, limit=6):
     
     return {"insumos": insumos, "total_pages": total_pages}
 
-def add_insumo(nombre, inventario, fecha_suministro, cantidad_minima):
+def add_insumo(nombre_insumo, inventario, fecha_suministro, cantidad_minima):
     """Agrega un nuevo insumo"""
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
     
     query = """
-        INSERT INTO insumos (nombre, inventario, fecha_suministro, cantidad_minima)
+        INSERT INTO insumos (nombre_insumo, inventario, fecha_suministro, cantidad_minima)
         VALUES (%s, %s, %s, %s)
     """
     
-    cursor.execute(query, (nombre, inventario, fecha_suministro, cantidad_minima))
+    cursor.execute(query, (nombre_insumo, inventario, fecha_suministro, cantidad_minima))
     connection.commit()
     
     cursor.close()
@@ -73,18 +73,18 @@ def get_insumo_by_id(insumoId):
     
     return insumo
 
-def update_insumo(insumoId, nombre, inventario, fecha_suministro, cantidad_minima):
+def update_insumo(insumoId, nombre_insumo, inventario, fecha_suministro, cantidad_minima):
     """Actualiza un insumo existente en la base de datos"""
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
     
     query = """
         UPDATE insumos
-        SET nombre = %s, inventario = %s, fecha_suministro = %s, cantidad_minima = %s
+        SET nombre_insumo = %s, inventario = %s, fecha_suministro = %s, cantidad_minima = %s
         WHERE id_insumo = %s
     """
     
-    cursor.execute(query, (nombre, inventario, fecha_suministro, cantidad_minima, insumoId))
+    cursor.execute(query, (nombre_insumo, inventario, fecha_suministro, cantidad_minima, insumoId))
     connection.commit()
     
     cursor.close()
@@ -111,7 +111,7 @@ def restore_insumos(insumoId):
     connection = get_db_connection()
     cursor = connection.cursor()
     
-    query = "DELETE FROM insumos_eliminados WHERE id_insumo = %s"
+    query = "DELETE FROM insumos_historicos WHERE id_insumo = %s"
     
     cursor.execute(query, (insumoId,))
     connection.commit()
@@ -126,14 +126,14 @@ def get_insumos_historical(page=1, limit=6):
     cursor = connection.cursor(dictionary=True)
     
     offset = (page - 1) * limit
-    cursor.execute("SELECT * FROM insumos_eliminados LIMIT %s OFFSET %s", (limit, offset))
+    cursor.execute("SELECT * FROM insumos_historicos LIMIT %s OFFSET %s", (limit, offset))
     insumos = cursor.fetchall()
     
     # Formatear las fechas 'tiempo_inicio' y 'tiempo_fin' antes de enviarlas
     for insumo in insumos:
         insumo['fecha_suministro'] = format_datetime(insumo['fecha_suministro'])
     
-    cursor.execute("SELECT COUNT(*) AS total FROM insumos_eliminados")
+    cursor.execute("SELECT COUNT(*) AS total FROM insumos_historicos")
     total_insumos = cursor.fetchone()["total"]
     
     cursor.close()

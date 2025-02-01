@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             data.insumos.forEach(insumo => {
                 let row = `<tr>
                     <td>${insumo.id_insumo}</td>
-                    <td>${insumo.nombre}</td>
+                    <td>${insumo.nombre_insumo}</td>
                     <td>${insumo.inventario}</td>
                     <td>${insumo.fecha_suministro}</td>
                     <td>${insumo.cantidad_minima}</td>

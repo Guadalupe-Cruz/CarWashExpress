@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             data.insumos.forEach(insumo => {
                 let row = `<tr>
                     <td>${insumo.id_insumo}</td>
-                    <td>${insumo.nombre}</td>
+                    <td>${insumo.nombre_insumo}</td>
                     <td>${insumo.inventario}</td>
                     <td>${insumo.fecha_suministro}</td>
                     <td>${insumo.cantidad_minima}</td>
@@ -128,14 +128,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById('registrar').addEventListener('click', function (e) {
                         e.preventDefault();
 
-                        let nombre = document.getElementById('nombre').value.trim();
+                        let nombre_insumo = document.getElementById('nombre_insumo').value.trim();
                         let inventario = document.getElementById('inventario').value.trim();
                         let fecha_suministro = document.getElementById('fecha_suministro').value.trim();
                         let cantidad_minima = document.getElementById('cantidad_minima').value.trim();
 
                         // Expresión regular para validar nombre (solo letras y números)
                         let regexNombre = /^[a-zA-Z0-9\s]+$/;
-                        if (!regexNombre.test(nombre)) {
+                        if (!regexNombre.test(nombre_insumo)) {
                             showAlert("El nombre solo puede contener letras y números.");
                             return;
                         }
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
 
                         // Llamar a eel para agregar un nuevo cliente si pasa todas las validaciones
-                        eel.add_insumo(nombre, inventario, fecha_suministro, cantidad_minima)(function (response) {
+                        eel.add_insumo(nombre_insumo, inventario, fecha_suministro, cantidad_minima)(function (response) {
                             if (response.status === "error") {
                                 showAlert(response.message); // Mostrar alerta si el correo ya está registrado
                                 return;
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.idInsumo = insumoId; // Guardar el ID globalmente
                         eel.get_insumo_by_id(insumoId)(function (insumo) {
                             if (insumo) {
-                                document.getElementById('nombre').value = insumo.nombre || '';
+                                document.getElementById('nombre_insumo').value = insumo.nombre_insumo || '';
                                 document.getElementById('inventario').value = insumo.inventario || '';
                                 if (insumo.fecha_suministro) {
                                     let fecha = new Date(insumo.fecha_suministro);
@@ -202,14 +202,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById('actualizar').addEventListener('click', function (e) {
                         e.preventDefault();
 
-                        let nombre = document.getElementById('nombre').value;
+                        let nombre_insumo = document.getElementById('nombre_insumo').value;
                         let inventario = document.getElementById('inventario').value;
                         let fecha_suministro = document.getElementById('fecha_suministro').value;
                         let cantidad_minima = document.getElementById('cantidad_minima').value;
 
                         // Expresión regular para validar nombre (solo letras y números)
                         let regexNombre = /^[a-zA-Z0-9\s]+$/;
-                        if (!regexNombre.test(nombre)) {
+                        if (!regexNombre.test(nombre_insumo)) {
                             showAlert("El nombre solo puede contener letras y números.");
                             return;
                         }
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
 
                         // Enviar datos actualizados a Python
-                        eel.update_insumo(window.idInsumo, nombre, inventario, fecha_suministro, cantidad_minima)(function (response) {
+                        eel.update_insumo(window.idInsumo, nombre_insumo, inventario, fecha_suministro, cantidad_minima)(function (response) {
                             if (response.status === "error") {
                                 showAlert(response.message);
                                 return;
