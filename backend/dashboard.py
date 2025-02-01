@@ -10,7 +10,7 @@ def get_db_connection():
         host='localhost',
         user='root',
         password='',
-        database='db_autolavado'
+        database='db_carwashexpress'
     )
 
 # ==========================================
