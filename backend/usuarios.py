@@ -9,7 +9,7 @@ def get_db_connection():
         host='localhost',          # Cambia esto por tu host
         user='root',               # Cambia esto por tu usuario
         password='',                # Cambia esto por tu contraseña
-        database='db_autolavado'    # Cambia esto por tu base de datos
+        database='db_carwashexpress'    # Cambia esto por tu base de datos
     )
 
 # ==============================
@@ -42,14 +42,14 @@ def get_users_historical(page=1, limit=7):
     cursor = connection.cursor(dictionary=True)
     
     offset = (page - 1) * limit
-    cursor.execute("SELECT * FROM usuarios_eliminados LIMIT %s OFFSET %s", (limit, offset))
+    cursor.execute("SELECT * FROM usuarios_historicos LIMIT %s OFFSET %s", (limit, offset))
     usuarios = cursor.fetchall()
     
     # Formatear las fechas 'tiempo_inicio' y 'tiempo_fin' antes de enviarlas
     for usuario in usuarios:
         usuario['fecha_borrado'] = format_datetime(usuario['fecha_borrado'])
     
-    cursor.execute("SELECT COUNT(*) AS total FROM usuarios_eliminados")
+    cursor.execute("SELECT COUNT(*) AS total FROM usuarios_historicos")
     total_usuarios = cursor.fetchone()["total"]
     
     cursor.close()
