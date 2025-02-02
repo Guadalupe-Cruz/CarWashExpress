@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historicos de clientes</title>
+    <link rel="stylesheet" href="./hs_clientes.css">
+</head>
+<body>
+
+    <!-- Aquí se incluye el sidebar como un componente mediante JavaScript -->
+    <div id="sidebar"></div>
+
+    <div class="client_records">
+        <header>
+            <h3>Panel del administrador</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Usuario</span>
+            </div>
+        </header>
+        <main>
+            <div class="table_container">
+
+                <div class="container">
+                    <h3>Histórico de clientes</h3>
+                    <div class="top-bar">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search Invoice">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Apellido Paterno</th>
+                                <th>Apellido Materno</th>
+                                <th>Correo</th>
+                                <th>Telefono</th>
+                                <th>Sucursal</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Alerta de accion -->
+    <div id="alerta" class="alert" style="display: none;">
+        <p id="mensaje-alerta"></p>
+    </div>
+
+    <!-- Alerta de restauracion -->
+    <div id="restoreModal" class="modal">
+        <div class="modal-content">
+            <p>¿Estás seguro de que quieres restaurar este cliente?</p>
+            <button id="confirmDelete">Aceptar</button>
+            <button id="cancelDelete">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="hs_clientes.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script>
+        // Aquí cargas el sidebar desde el archivo HTML
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+    </script>
+    
+</body>
+</html>

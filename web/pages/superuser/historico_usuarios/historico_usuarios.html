@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminados</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/font-awesome@5.15.4/css/all.css"></script>
+</head>
+
+<body>
+    <div id="sidebar"></div>
+
+    <div class="dashboard">
+        <header>
+            <h3>Dashboard</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Usuario</span>
+            </div>
+        </header>
+        <main>
+            <div class="charts">
+                <div class="graphic">
+                    <div class="container">
+                        <h3>Empleados Eliminados</h3>
+                        <table id="eliminados-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Email</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Contenido dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./historico_usuarios.js"></script>
+    <script>
+        fetch('../sidebar/sidebar_user.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+    </script>
+</body>
+</html>
