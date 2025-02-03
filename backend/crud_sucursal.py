@@ -77,17 +77,34 @@ def get_historico_sucursales():
     connection.close()
     return historico
 
-# Función para recuperar una sucursal del histórico
+# Función para recuperar una sucursal del histórico junto con sus clientes
 def recuperar_sucursal(id_sucursal, nombre_sucursal, direccion):
     connection = get_db_connection()
     cursor = connection.cursor()
     
-    # Insertamos la sucursal de nuevo en la tabla 'sucursal'
-    cursor.execute('INSERT INTO sucursales (id_sucursal, nombre_sucursal, direccion) VALUES (%s, %s, %s)', 
-                   (id_sucursal, nombre_sucursal, direccion))
-    
-    # Elimina la sucursal de la tabla 'historico_sucursal'
-    cursor.execute('DELETE FROM sucursales_historicos WHERE id_sucursal = %s', (id_sucursal,))
-    
-    connection.commit()
-    connection.close()
+    try:
+        # Insertamos la sucursal de nuevo en la tabla 'sucursal'
+        cursor.execute('INSERT INTO sucursales (id_sucursal, nombre_sucursal, direccion) VALUES (%s, %s, %s)', 
+                       (id_sucursal, nombre_sucursal, direccion))
+        
+        # Recuperamos los clientes asociados a la sucursal desde el histórico
+        cursor.execute('SELECT id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal FROM clientes_historicos WHERE id_sucursal = %s', (id_sucursal,))
+        clientes = cursor.fetchall()
+        
+        # Insertamos los clientes de nuevo en la tabla 'clientes'
+        for cliente in clientes:
+            cursor.execute('INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal) VALUES (%s, %s, %s, %s, %s, %s, %s)', 
+                           (cliente[0], cliente[1], cliente[2], cliente[3], cliente[4], cliente[5], id_sucursal))
+        
+        # Eliminamos los clientes del histórico
+        cursor.execute('DELETE FROM clientes_historicos WHERE id_sucursal = %s', (id_sucursal,))
+        
+        # Eliminamos la sucursal de la tabla 'historico_sucursal'
+        cursor.execute('DELETE FROM sucursales_historicos WHERE id_sucursal = %s', (id_sucursal,))
+        
+        connection.commit()
+    except Exception as e:
+        print(f"Error al recuperar la sucursal y sus clientes: {e}")
+        connection.rollback()
+    finally:
+        connection.close()
