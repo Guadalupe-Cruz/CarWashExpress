@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Sucursales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="historico_sucursal.js"></script>
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <div id="sidebar"></div>
+    <div class="client_records">
+        <header>
+            <h3>Historico de Sucursales</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Sucursales</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="table_container">
+                <div class="container">
+                    <div class="top-bar">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Buscar sucursal...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+
+                    <div class="content-wrapper">
+                        <div class="table-section">
+                            <br>
+                            <h2>Histórico de Sucursales Eliminadas</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Dirección</th>
+                                        <th>Fecha de eliminación</th>
+                                        <th style="text-align: center;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaHistorico"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        fetch('../../administrador/sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+
+        // Función para buscar sucursales en la tabla
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#tablaHistorico tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

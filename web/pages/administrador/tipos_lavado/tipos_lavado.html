@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Lavado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="tipos_lavado.js"></script>
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <div id="sidebar"></div>
+    <div class="client_records">
+        <header>
+            <h3>Gestión de Tipos de Lavado</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Tipos de Lavado</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="table_container">
+                <div class="container">
+                    <div class="top-bar">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Buscar Sucursal...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <button class="icon-button add-button button-large" id="showFormButton">
+                            <i class="fi fi-rr-add"> Agregar</i>
+                        </button>
+                    </div>
+
+                    <div class="content-wrapper">
+                        <div class="table-section">
+                            <br>
+                            <h2>Lista de tipos de lavado</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Duración (minutos)</th>
+                                        <th>Costo ($)</th>
+                                        <th style="text-align: center;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaTiposLavado"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de edición -->
+                <div id="editFormContainer" class="form-container" style="display: none;">
+                    <h2 class="form-title">Actualizar Tipo de lavado</h2><br>
+                    <input type="hidden" id="edit_id"> <!-- Campo oculto para ID -->
+                    <h5>Nombre del tipo de lavado:</h5><br>
+                    <input type="text" id="edit_nombre" class="styled-input" placeholder="">
+                    <br><br>
+                    <h5>Duración (minutos):</h5><br>
+                    <input type="number" id="edit_duracion" class="styled-input" placeholder="">
+                    <br><br>
+                    <h5>Costo ($):</h5><br>
+                    <input type="number" id="edit_costo" class="styled-input" placeholder="">
+
+                    <div class="button-container">
+                        <button onclick="actualizarTipo()" class="icon-button add-button">
+                            <i class="fi fi-rr-check"></i>
+                        </button>
+                        <button type="button" id="cancelEditButton" class="icon-button trash-button">
+                            <i class="fi fi-rr-cross"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formulario de agregar -->
+                <div id="formContainer" class="form-container" style="display: none;">
+                    <h2 class="form-title">Agregar Tipo de lavado</h2><br>
+                    <h5>Nombre del tipo de lavado:</h5><br>
+                    <input type="text" id="nombre" class="styled-input" placeholder="" required>
+                    <br><br>
+                    <h5>Duración (minutos):</h5><br>
+                    <input type="number" id="duracion" class="styled-input" placeholder="" required>
+                    <br><br>
+                    <h5>Costo ($):</h5><br>
+                    <input type="number" id="costo" class="styled-input" placeholder="" required>
+
+                    <div class="button-container">
+                        <button onclick="agregarTipo()" class="icon-button add-button">
+                            <i class="fi fi-rr-check"></i>
+                        </button>
+                        <button type="button" id="cancelButton" class="icon-button trash-button">
+                            <i class="fi fi-rr-cross"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Cargar el sidebar
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            })
+            .catch(error => console.error("Error al cargar el sidebar:", error));
+
+        // Función de búsqueda en la tabla
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#tablaTiposLavado tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Mostrar y ocultar el formulario de agregar
+        document.getElementById('showFormButton').addEventListener('click', function () {
+            document.getElementById('formContainer').style.display = 'block';
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            document.getElementById('formContainer').style.display = 'none';
+        });
+
+        // Ocultar el formulario de edición al cancelar
+        document.getElementById('cancelEditButton').addEventListener('click', function () {
+            document.getElementById('editFormContainer').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
