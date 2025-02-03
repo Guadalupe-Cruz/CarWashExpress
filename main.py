@@ -14,6 +14,11 @@ from backend.crud_insumos import (
     delete_insumo, get_historico_insumos, recuperar_insumo
 )
 
+from backend.crud_clientes import (
+    get_clientes, add_cliente, update_cliente,
+    delete_cliente, get_historico_clientes, recuperar_cliente
+)
+
 eel.init("web")
 
 # Funciones para sucursales
@@ -91,5 +96,30 @@ def obtener_historico_insumo():
 def recuperar_insumo_exposed(id_insumo, nombre, inventario, fecha, cantidad):
     recuperar_insumo(id_insumo, nombre, inventario, fecha, cantidad)
 
+# Funciones para clientes
+@eel.expose
+def obtener_clientes():
+    return get_clientes()
 
-eel.start("pages/administrador/sucursal/sucursal.html", size=(1024, 768))
+@eel.expose
+def agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
+    add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+
+@eel.expose
+def actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
+    update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+
+@eel.expose
+def eliminar_cliente(id_cliente):
+    delete_cliente(id_cliente)
+
+@eel.expose
+def obtener_historico_cliente():
+    return get_historico_clientes()
+
+@eel.expose
+def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
+    recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+
+
+eel.start("pages/superusuario/sucursal/sucursal.html", size=(1024, 768))

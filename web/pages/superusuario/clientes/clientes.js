@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     obtenerClientes();
+    obtenerSucursales();
 
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {
@@ -7,10 +8,27 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+function obtenerSucursales() {
+    eel.obtener_sucursales()(function(sucursales) {
+        const select = document.getElementById('id_sucursal');
+        const editSelect = document.getElementById('edit_id_sucursal');
+        select.innerHTML = ''; // Limpiar el select antes de agregar opciones
+        editSelect.innerHTML = ''; // Limpiar el select de edición también
+
+        sucursales.forEach(sucursal => {
+            const option = document.createElement('option');
+            option.value = sucursal.id_sucursal;
+            option.textContent = sucursal.nombre_sucursal;
+            select.appendChild(option.cloneNode(true)); // Clonar la opción para el select de edición
+            editSelect.appendChild(option);
+        });
+    });
+}
+
 function obtenerClientes() {
     eel.obtener_clientes()(function (clientes) {
         let tabla = document.getElementById("tablaClientes");
-        tabla.innerHTML = "";
+        tabla.innerHTML = ""; // Limpiar la tabla antes de agregar nuevos clientes
         clientes.forEach(cliente => {
             let fila = `
                 <tr>
@@ -20,7 +38,7 @@ function obtenerClientes() {
                     <td>${cliente.apellido_mt}</td>
                     <td>${cliente.correo}</td>
                     <td>${cliente.telefono}</td>
-                    <td>${cliente.nombre_sucursal}</td> <!-- Mostrar nombre de la sucursal -->
+                    <td>${cliente.nombre_sucursal}</td>
                     <td class="table-buttons">
                         <button class="icon-button edit-button" onclick="prepararEdicion(${cliente.id_cliente}, '${cliente.nombre_cliente}', '${cliente.apellido_pt}', '${cliente.apellido_mt}', '${cliente.correo}', '${cliente.telefono}', ${cliente.id_sucursal})">
                             <i class="fi fi-rr-edit"></i>
@@ -37,52 +55,47 @@ function obtenerClientes() {
 }
 
 function agregarCliente() {
+    let id_cliente = document.getElementById("id_cliente").value;
     let nombre = document.getElementById("nombre").value;
-    let apellido_pt = document.getElementById("apellido_pt").value;
-    let apellido_mt = document.getElementById("apellido_mt").value;
+    let apellido1 = document.getElementById("apellido1").value;
+    let apellido2 = document.getElementById("apellido2").value;
     let correo = document.getElementById("correo").value;
     let telefono = document.getElementById("telefono").value;
-    let id_sucursal = document.getElementById("sucursal").value;
-
-    eel.agregar_cliente(nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal)(function () {
+    let id_sucursal = document.getElementById("id_sucursal").value;
+    
+    eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)(function () {
         obtenerClientes();
-        document.getElementById("formContainer").style.display = "none"; // Ocultar formulario después de agregar
     });
 }
 
-function prepararEdicion(id, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal) {
-    document.getElementById("edit_id").value = id;
+function prepararEdicion(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal) {
+    document.getElementById("edit_id_cliente").value = id_cliente;
     document.getElementById("edit_nombre").value = nombre;
-    document.getElementById("edit_apellido_pt").value = apellido_pt;
-    document.getElementById("edit_apellido_mt").value = apellido_mt;
+    document.getElementById("edit_apellido1").value = apellido1;
+    document.getElementById("edit_apellido2").value = apellido2;
     document.getElementById("edit_correo").value = correo;
     document.getElementById("edit_telefono").value = telefono;
 
-    // Seleccionar la sucursal correcta en el desplegable
-    let selectSucursal = document.getElementById("edit_sucursal");
-    for (let i = 0; i < selectSucursal.options.length; i++) {
-        if (selectSucursal.options[i].value == id_sucursal) {
-            selectSucursal.selectedIndex = i;
-            break;
-        }
-    }
+    // Seleccionar la sucursal correcta en el menú desplegable de edición
+    const editSelect = document.getElementById('edit_id_sucursal');
+    editSelect.value = id_sucursal;
 
     // Mostrar el formulario de edición
     document.getElementById("editFormContainer").style.display = "block";
 }
 
 function actualizarCliente() {
-    let id = document.getElementById("edit_id").value;
+    let id_cliente = document.getElementById("edit_id_cliente").value;
     let nombre = document.getElementById("edit_nombre").value;
-    let apellido_pt = document.getElementById("edit_apellido_pt").value;
-    let apellido_mt = document.getElementById("edit_apellido_mt").value;
+    let apellido1 = document.getElementById("edit_apellido1").value;
+    let apellido2 = document.getElementById("edit_apellido2").value;
     let correo = document.getElementById("edit_correo").value;
     let telefono = document.getElementById("edit_telefono").value;
-    let id_sucursal = document.getElementById("edit_sucursal").value;
+    let id_sucursal = document.getElementById("edit_id_sucursal").value;
 
-    eel.actualizar_cliente(id, nombre, apellido_pt, apellido_mt, correo, telefono, id_sucursal)(function () {
+    eel.actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)(function () {
         obtenerClientes();
-        document.getElementById("editFormContainer").style.display = "none"; // Ocultar formulario después de actualizar
+        document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
     });
 }
 
@@ -91,25 +104,3 @@ function eliminarCliente(id_cliente) {
         obtenerClientes();
     });
 }
-
-// Función para cargar las sucursales en un select
-async function cargarSucursales() {
-    try {
-        let sucursales = await eel.get_sucursales()();
-        let select = document.getElementById("id_sucursal");
-
-        select.innerHTML = '<option value="">Seleccione una sucursal</option>'; // Opción por defecto
-
-        sucursales.forEach(sucursal => {
-            let option = document.createElement("option");
-            option.value = sucursal.id_sucursal;
-            option.textContent = sucursal.nombre_sucursal;
-            select.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Error al cargar sucursales:", error);
-    }
-}
-
-// Llamar a la función al cargar la página
-document.addEventListener("DOMContentLoaded", cargarSucursales);

@@ -4,25 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insumos</title>
+    <title>Sucursales</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="text/javascript" src="/eel.js"></script>
-    <script src="insumos.js"></script>
-    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="sucursal.js"></script>
+    <link rel="stylesheet" href="../../superusuario/css/styles.css">
 </head>
 
 <body>
     <div id="sidebar"></div>
     <div class="client_records">
         <header>
-            <h3>Gestión de Insumos</h3>
+            <h3>Gestión de Sucursales</h3>
             <div class="user-info">
                 <div class="user-avatar"></div>
-                <span>Insumos</span>
+                <span>Sucursales</span>
             </div>
         </header>
 
@@ -31,7 +31,7 @@
                 <div class="container">
                     <div class="top-bar">
                         <div class="search-box">
-                            <input type="text" id="searchInput" placeholder="Buscar Insumo...">
+                            <input type="text" id="searchInput" placeholder="Buscar Sucursal...">
                             <i class="fas fa-search"></i>
                         </div>
                         <button class="icon-button add-button button-large" id="showFormButton">
@@ -42,19 +42,17 @@
                     <div class="content-wrapper">
                         <div class="table-section">
                             <br>
-                            <h2>Lista de insumos</h2>
+                            <h2>Lista de Sucursales</h2>
                             <table>
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Inventario</th>
-                                        <th>Fecha de suministro</th>
-                                        <th>Cantidad minima</th>
+                                        <th>Dirección</th>
                                         <th style="text-align: center;">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tablaInsumos"></tbody>
+                                <tbody id="tablaSucursales"></tbody>
                             </table>
                         </div>
                     </div>
@@ -62,22 +60,16 @@
 
                 <!-- Formulario de edición -->
                 <div id="editFormContainer" class="form-container" style="display: none;">
-                    <h2 class="form-title">Actualizar Insumo</h2><br>
+                    <h2 class="form-title">Actualizar Sucursal</h2><br>
                     <input type="hidden" id="edit_id"> <!-- Campo oculto para ID -->
-                    <h5>Nombre del insumo:</h5><br>
+                    <h5>Nombre de la sucursal:</h5><br>
                     <input type="text" id="edit_nombre" class="styled-input" placeholder="">
                     <br><br>
-                    <h5>Inventario:</h5><br>
-                    <input type="number" id="edit_inventario" class="styled-input" placeholder="">
-                    <br><br>
-                    <h5>Fecha de suministro:</h5><br>
-                    <input type="datetime-local" id="edit_fecha" class="styled-input" placeholder="">
-                    <br><br>
-                    <h5>Cantidad:</h5><br>
-                    <input type="number" id="edit_cantidad" class="styled-input" placeholder="">
+                    <h5>Dirección:</h5><br>
+                    <input type="text" id="edit_direccion" class="styled-input" placeholder="">
 
                     <div class="button-container">
-                        <button onclick="actualizarInsumo()" class="icon-button add-button">
+                        <button onclick="actualizarSucursal()" class="icon-button add-button">
                             <i class="fi fi-rr-check"></i>
                         </button>
                         <button type="button" id="cancelEditButton" class="icon-button trash-button">
@@ -86,23 +78,17 @@
                     </div>
                 </div>
 
-                <!-- Formulario de agregar -->
+                <!-- Formulario de agregar sucursal -->
                 <div id="formContainer" class="form-container" style="display: none;">
-                    <h2 class="form-title">Agregar Insumo</h2><br>
-                    <h5>Nombre del insumo:</h5><br>
+                    <h2 class="form-title">Agregar Sucursal</h2><br>
+                    <h5>Nombre de la sucursal:</h5><br>
                     <input type="text" id="nombre" class="styled-input" placeholder="" required>
                     <br><br>
-                    <h5>Inventario:</h5><br>
-                    <input type="number" id="inventario" class="styled-input" placeholder="" required>
-                    <br><br>
-                    <h5>Fecha de suministro:</h5><br>
-                    <input type="datetime-local" id="fecha" class="styled-input" placeholder="">
-                    <br><br>
-                    <h5>Cantidad:</h5><br>
-                    <input type="number" id="cantidad" class="styled-input" placeholder="" required>
+                    <h5>Dirección:</h5><br>
+                    <input type="text" id="direccion" class="styled-input" placeholder="" required>
 
                     <div class="button-container">
-                        <button onclick="agregarInsumo()" class="icon-button add-button">
+                        <button onclick="agregarSucursal()" class="icon-button add-button">
                             <i class="fi fi-rr-check"></i>
                         </button>
                         <button type="button" id="cancelButton" class="icon-button trash-button">
@@ -126,7 +112,7 @@
         // Función de búsqueda en la tabla
         document.getElementById('searchInput').addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#tablaInsumos tr');
+            const rows = document.querySelectorAll('#tablaSucursales tr');
 
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();

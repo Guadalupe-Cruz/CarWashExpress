@@ -38,7 +38,7 @@ def delete_insumo(id_insumo):
         cursor.execute('INSERT INTO insumos_historicos  (id_insumo, nombre_insumo, inventario, fecha_suministro, cantidad_minima, fecha_borrado) VALUES (%s, %s, %s, %s, %s, NOW())', 
                        (insumo[0], insumo[1], insumo[2], insumo[3], insumo[4]))
         
-        # Elimina el tipo de lavado de la tabla 'insumos'
+        # Elimina el insumo de la tabla 'insumos'
         cursor.execute('DELETE FROM insumos WHERE id_insumo = %s', (id_insumo,))
 
     connection.commit()

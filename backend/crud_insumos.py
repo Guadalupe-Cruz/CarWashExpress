@@ -21,7 +21,7 @@ def add_insumo(nombre, inventario, fecha, cantidad):
 def update_insumo(id_insumo, nombre, inventario, fecha, cantidad):
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("UPDATE insumos SET nombre_insumo=%s, inventario=%s, fecha_suministro=%s cantidad_minima=%s WHERE id_insumo=%s",
+    cursor.execute("UPDATE insumos SET nombre_insumo=%s, inventario=%s, fecha_suministro=%s, cantidad_minima=%s WHERE id_insumo=%s",
                    (nombre, inventario, fecha, cantidad, id_insumo))
     connection.commit()
     connection.close()
@@ -46,7 +46,7 @@ def delete_insumo(id_insumo):
     connection.commit()
     connection.close()
 
-# Función para obtener los tipos de lavado del histórico
+# Función para obtener los insumos del histórico
 def get_historico_insumos():
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)

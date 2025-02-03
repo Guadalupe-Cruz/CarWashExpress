@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Clientes</title>
+    <title>Clientes</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="text/javascript" src="/eel.js"></script>
     <script src="clientes.js"></script>
-    <link rel="stylesheet" href="../../../css/styles.css">
+    <link rel="stylesheet" href="../../superusuario/css/styles.css">
 </head>
 <body>
     <div id="sidebar"></div>
@@ -40,7 +40,7 @@
                     <div class="content-wrapper">
                         <div class="table-section">
                             <br>
-                            <h2>Lista de Clientes</h2>
+                            <h2>Lista de clientes</h2>
                             <table>
                                 <thead>
                                     <tr>
@@ -63,30 +63,32 @@
                 <!-- Formulario de edición -->
                 <div id="editFormContainer" class="form-container" style="display: none;">
                     <h2 class="form-title">Actualizar Cliente</h2><br>
-                    <input type="hidden" id="edit_id">
+                    <h5>ID de cliente:</h5><br>
+                    <input type="number" id="edit_id_cliente" class="styled-input" placeholder="ID" readonly>
+                    <br><br>
                     <h5>Nombre:</h5><br>
-                    <input type="text" id="edit_nombre" class="styled-input" placeholder="">
+                    <input type="text" id="edit_nombre" class="styled-input" placeholder="Nombre">
                     <br><br>
                     <h5>Apellido Paterno:</h5><br>
-                    <input type="text" id="edit_apellido_pt" class="styled-input" placeholder="">
+                    <input type="text" id="edit_apellido1" class="styled-input" placeholder="Apellido Paterno">
                     <br><br>
                     <h5>Apellido Materno:</h5><br>
-                    <input type="text" id="edit_apellido_mt" class="styled-input" placeholder="">
+                    <input type="text" id="edit_apellido2" class="styled-input" placeholder="Apellido Materno">
                     <br><br>
                     <h5>Correo:</h5><br>
-                    <input type="email" id="edit_correo" class="styled-input" placeholder="">
+                    <input type="email" id="edit_correo" class="styled-input" placeholder="Correo">
                     <br><br>
                     <h5>Teléfono:</h5><br>
-                    <input type="text" id="edit_telefono" class="styled-input" placeholder="">
+                    <input type="text" id="edit_telefono" class="styled-input" placeholder="Teléfono">
                     <br><br>
                     <h5>Sucursal:</h5><br>
                     <select id="edit_id_sucursal" class="styled-input"></select>
-                    <br><br>
 
                     <div class="button-container">
                         <button onclick="actualizarCliente()" class="icon-button add-button">
                             <i class="fi fi-rr-check"></i>
                         </button>
+
                         <button type="button" id="cancelEditButton" class="icon-button trash-button">
                             <i class="fi fi-rr-cross"></i>
                         </button>
@@ -96,27 +98,26 @@
                 <!-- Formulario de agregar -->
                 <div id="formContainer" class="form-container" style="display: none;">
                     <h2 class="form-title">Agregar Cliente</h2><br>
-                    <h5>ID Cliente:</h5><br>
-                    <input type="text" id="id_cliente" class="styled-input" placeholder="" required>
+                    <h5>ID del cliente:</h5><br>
+                    <input type="number" id="id_cliente" class="styled-input" placeholder="ID" required>
                     <br><br>
                     <h5>Nombre:</h5><br>
-                    <input type="text" id="nombre" class="styled-input" placeholder="" required>
+                    <input type="text" id="nombre" class="styled-input" placeholder="Nombre" required>
                     <br><br>
                     <h5>Apellido Paterno:</h5><br>
-                    <input type="text" id="apellido_pt" class="styled-input" placeholder="" required>
+                    <input type="text" id="apellido1" class="styled-input" placeholder="Apellido Paterno" required>
                     <br><br>
                     <h5>Apellido Materno:</h5><br>
-                    <input type="text" id="apellido_mt" class="styled-input" placeholder="" required>
+                    <input type="text" id="apellido2" class="styled-input" placeholder="Apellido Materno" required>
                     <br><br>
                     <h5>Correo:</h5><br>
-                    <input type="email" id="correo" class="styled-input" placeholder="" required>
+                    <input type="email" id="correo" class="styled-input" placeholder="Correo">
                     <br><br>
                     <h5>Teléfono:</h5><br>
-                    <input type="text" id="telefono" class="styled-input" placeholder="" required>
+                    <input type="text" id="telefono" class="styled-input" placeholder="Teléfono" required>
                     <br><br>
                     <h5>Sucursal:</h5><br>
                     <select id="id_sucursal" class="styled-input"></select>
-                    <br><br>
 
                     <div class="button-container">
                         <button onclick="agregarCliente()" class="icon-button add-button">

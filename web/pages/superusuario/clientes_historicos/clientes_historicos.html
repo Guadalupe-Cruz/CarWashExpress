@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Sucursales</title>
+    <title>Histórico de Clientes</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="text/javascript" src="/eel.js"></script>
-    <script src="historico_sucursal.js"></script>
+    <script src="clientes_historicos.js"></script>
     <link rel="stylesheet" href="../../superusuario/css/styles.css">
 </head>
 
@@ -18,10 +18,10 @@
     <div id="sidebar"></div>
     <div class="client_records">
         <header>
-            <h3>Historico de Sucursales</h3>
+            <h3>Historico de Clientes</h3>
             <div class="user-info">
                 <div class="user-avatar"></div>
-                <span>Sucursales</span>
+                <span>Clientes</span>
             </div>
         </header>
 
@@ -30,7 +30,7 @@
                 <div class="container">
                     <div class="top-bar">
                         <div class="search-box">
-                            <input type="text" id="searchInput" placeholder="Buscar sucursal...">
+                            <input type="text" id="searchInput" placeholder="Buscar cliente...">
                             <i class="fas fa-search"></i>
                         </div>
                     </div>
@@ -38,18 +38,22 @@
                     <div class="content-wrapper">
                         <div class="table-section">
                             <br>
-                            <h2>Histórico de Sucursales Eliminadas</h2>
+                            <h2>Histórico de Clientes</h2>
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th class="small">#</th>
                                         <th>Nombre</th>
-                                        <th>Dirección</th>
+                                        <th>Apellido Paterno</th>
+                                        <th>Apellido Materno</th>
+                                        <th>Correo</th>
+                                        <th>Telefono</th>
+                                        <th>Sucursal</th>
                                         <th>Fecha de eliminación</th>
                                         <th style="text-align: center;">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tablaHistorico"></tbody>
+                                <tbody id="tablaHistoricoClientes"></tbody>
                             </table>
                         </div>
                     </div>
@@ -64,10 +68,10 @@
                 document.getElementById('sidebar').innerHTML = data;
             });
 
-        // Función para buscar sucursales en la tabla
+        // Función para buscar clientes en la tabla
         document.getElementById('searchInput').addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#tablaHistorico tr');
+            const rows = document.querySelectorAll('#tablaHistoricoClientes tr');
 
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
@@ -80,5 +84,4 @@
         });
     </script>
 </body>
-
 </html>
