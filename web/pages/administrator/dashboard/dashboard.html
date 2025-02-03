@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./dashboard.css">
+
+    <!-- Librerías -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Sidebar (se cargará dinámicamente) -->
+    <div id="sidebar"></div>
+
+    <div class="dashboard">
+
+        <!-- Encabezado -->
+        <header>
+            <h3>Panel del administrador</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Usuario</span>
+            </div>
+        </header>
+
+        <!-- Contenido principal -->
+        <main>
+
+            <!-- Sección de estadísticas -->
+            <div class="statistics">
+
+                <div class="card">
+                    <div class="icon">
+                        <img src="../../../image/heart.png" alt="Icono de corazón" class="img-hert">
+                    </div>
+                    <div class="info">
+                        <p id="ingresos_hoy"></p>  <!-- Se actualizará dinámicamente -->
+                        <span>Ingresos de hoy</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="icon">
+                        <img src="../../../image/shopping_cart.png" alt="Icono de carrito de compras" class="img-hert">
+                    </div>
+                    <div class="info">
+                        <p id="ventas_hoy"></p>  <!-- Se actualizará dinámicamente -->
+                        <span>Servicios de hoy</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="icon">
+                        <img src="../../../image/historialLavado.png" alt="Icono de carrito de compras" class="img-hert">
+                    </div>
+                    <div class="info">
+                        <p id="lavado_bajo">0</p>  <!-- Se actualizará dinámicamente -->
+                        <span>Lavado bajo</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="icon">
+                        <img src="../../../image/historialLavado.png" alt="Icono de carrito de compras" class="img-hert">
+                    </div>
+                    <div class="info">
+                        <p id="lavado_moderado">0</p>  <!-- Se actualizará dinámicamente -->
+                        <span>Lavado moderado</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="icon">
+                        <img src="../../../image/historialLavado.png" alt="Icono de carrito de compras" class="img-hert">
+                    </div>
+                    <div class="info">
+                        <p id="lavado_profundo">0</p>  <!-- Se actualizará dinámicamente -->
+                        <span>Lavado profundo</span>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Sección de gráficos -->
+            <div class="charts">
+
+                <!-- Gráfico de ventas de hoy -->
+                <div class="sales">
+                    <h3>Servicios de hoy</h3>
+                    <div class="donut_chart">
+                        <div class="donut">
+                            <canvas id="sales_chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="membership">
+                        <div class="with_membership">
+                            Con membresía
+                            <div class="count">
+                                <div class="circle_green"></div>
+                                <p id="valor1"></p>
+                            </div>
+                        </div>
+                        <div class="no_membership">
+                            Sin membresía
+                            <div class="count">
+                                <div class="circle_gray"></div>
+                                <p id="valor2"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfico de ventas e ingresos por día -->
+                <div class="graphic_container">
+                    <h3>Comparación de servicios e ingresos por día</h3>
+                    <div class="mix_graphic">
+                        <canvas id="graficoMixto"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./dashboard.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script>
+        // Cargar el sidebar dinámicamente
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+    </script>
+
+</body>
+
+</html>
