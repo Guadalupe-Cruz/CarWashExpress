@@ -1,6 +1,6 @@
 import eel
 from flask import Flask
-from backend import clientes, login, sucursales, historial_lavados, pagos, usuarios, insumos, dashboard # Importación de módulos del backend
+from backend import clientes_admin, insumos_admin, login, sucursales, historial_lavados, pagos, usuarios, dashboard # Importación de módulos del backend
 
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
@@ -15,18 +15,18 @@ eel.init("web")
 # ---------------------------------------
 # FUNCIONES PARA CLIENTES
 # ---------------------------------------
-eel.expose(clientes.get_clients)
-eel.expose(clientes.get_client_by_id)
-eel.expose(clientes.add_client)
-eel.expose(clientes.update_client)
-eel.expose(clientes.delete_client)
+eel.expose(clientes_admin.get_clients)
+eel.expose(clientes_admin.get_client_by_id)
+eel.expose(clientes_admin.add_client)
+eel.expose(clientes_admin.update_client)
+eel.expose(clientes_admin.delete_client)
 
 # ---------------------------------------
 # FUNCIONES PARA HISTORICOS DE CLIENTES
 # ---------------------------------------
-eel.expose(clientes.restore_client)
-eel.expose(clientes.get_client_hts)
-eel.expose(clientes.get_client_by_id_hts)
+eel.expose(clientes_admin.restore_client)
+eel.expose(clientes_admin.get_client_hts)
+eel.expose(clientes_admin.get_client_by_id_hts)
 
 # ---------------------------------------
 # FUNCIONES PARA HISTORIAL DE LAVADOS
@@ -49,13 +49,13 @@ eel.expose(usuarios.get_users_historical)
 # ---------------------------------------
 # FUNCIONES PARA INSUMOS
 # ---------------------------------------
-eel.expose(insumos.get_insumos)
-eel.expose(insumos.add_insumo)
-eel.expose(insumos.update_insumo)
-eel.expose(insumos.delete_insumos)
-eel.expose(insumos.get_insumo_by_id)
-eel.expose(insumos.restore_insumos)
-eel.expose(insumos.get_insumos_historical)
+eel.expose(insumos_admin.get_insumos)
+eel.expose(insumos_admin.add_insumo)
+eel.expose(insumos_admin.update_insumo)
+eel.expose(insumos_admin.delete_insumos)
+eel.expose(insumos_admin.get_insumo_by_id)
+eel.expose(insumos_admin.restore_insumos)
+eel.expose(insumos_admin.get_insumos_historical)
 
 # ---------------------------------------
 # FUNCIONES PARA SUCURSALES
