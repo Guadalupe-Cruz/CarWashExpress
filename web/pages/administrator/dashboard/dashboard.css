@@ -263,9 +263,6 @@ header h3 {
     height: 90%;
     position: relative;
     margin-top: 23px;
+    min-height: 300px; /* Agregar altura mínima */
 }
 
-.mix_graphic canvas {
-    width: 100% !important;
-    height: 100% !important;
-}

@@ -76,4 +76,4 @@ eel.expose(dashboard.obtener_todos_los_datos)
 # =======================================
 # EJECUTAR APLICACION
 # =======================================
-eel.start("login.html", size=(800, 600))
+eel.start("login.html", size=(1024, 768))
