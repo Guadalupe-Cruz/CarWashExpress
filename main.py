@@ -19,6 +19,11 @@ from backend.crud_clientes import (
     delete_cliente, get_historico_clientes, recuperar_cliente
 )
 
+from backend.crud_promociones import (
+    get_promociones, add_promocion, update_promocion,
+    delete_promocion, get_historico_promociones, recuperar_promocion
+)
+
 eel.init("web")
 
 # Funciones para sucursales
@@ -120,6 +125,31 @@ def obtener_historico_cliente():
 @eel.expose
 def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
     recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+
+# Funciones para promociones
+@eel.expose
+def obtener_promociones():
+    return get_promociones()
+
+@eel.expose
+def agregar_promocion(nombre, descripcion, descuento, fecha1, fecha2, id_sucursal):
+    add_promocion(nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)
+
+@eel.expose
+def actualizar_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal):
+    update_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)
+
+@eel.expose
+def eliminar_promocion(id_promocion):
+    delete_promocion(id_promocion)
+
+@eel.expose
+def obtener_historico_promocion():
+    return get_historico_promociones()
+
+@eel.expose
+def recuperar_promocion_exposed(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal):
+    recuperar_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)
 
 
 eel.start("pages/superusuario/sucursal/sucursal.html", size=(1024, 768))

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promociones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="promociones.js"></script>
+    <link rel="stylesheet" href="../../superusuario/css/styles.css">
+</head>
+<body>
+    <div id="sidebar"></div>
+    <div class="client_records">
+        <header>
+            <h3>Gestión de Promociones</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Promociones</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="table_container">
+                <div class="container">
+                    <div class="top-bar">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Buscar Promociones...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <button class="icon-button add-button button-large" id="showFormButton">
+                            <i class="fi fi-rr-add"> Agregar</i>
+                        </button>
+                    </div>
+
+                    <div class="content-wrapper">
+                        <div class="table-section">
+                            <br>
+                            <h2>Lista de promociones</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Descuento %</th>
+                                        <th>Fecha de inicio</th>
+                                        <th>Fecha de finalización</th>
+                                        <th>Sucursal</th>
+                                        <th style="text-align: center;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaPromociones"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de edición -->
+                <div id="editFormContainer" class="form-container" style="display: none;">
+                    <h2 class="form-title">Actualizar Promoción</h2><br>
+                    <input type="hidden" id="edit_id"> <!-- Campo oculto para ID -->
+                    <br><br>
+                    <h5>Nombre:</h5><br>
+                    <input type="text" id="edit_nombre" class="styled-input" placeholder="Nombre">
+                    <br><br>
+                    <h5>Descripción:</h5><br>
+                    <input type="text" id="edit_descripcion" class="styled-input" placeholder="Descripción">
+                    <br><br>
+                    <h5>Descuento:</h5><br>
+                    <input type="number" id="edit_descuento" class="styled-input" placeholder="Descuento">
+                    <br><br>
+                    <h5>Fecha de inicio:</h5><br>
+                    <input type="datetime-local" id="edit_fecha1" class="styled-input" placeholder="">
+                    <br><br>
+                    <h5>Fecha de finalización:</h5><br>
+                    <input type="datetime-local" id="edit_fecha2" class="styled-input" placeholder="">
+                    <br><br>
+                    <h5>Sucursal:</h5><br>
+                    <select id="edit_id_sucursal" class="styled-input"></select>
+
+                    <div class="button-container">
+                        <button onclick="actualizarPromocion()" class="icon-button add-button">
+                            <i class="fi fi-rr-check"></i>
+                        </button>
+
+                        <button type="button" id="cancelEditButton" class="icon-button trash-button">
+                            <i class="fi fi-rr-cross"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formulario de agregar -->
+                <div id="formContainer" class="form-container" style="display: none;">
+                    <h2 class="form-title">Agregar Promoción</h2><br>
+                    <h5>Nombre:</h5><br>
+                    <input type="text" id="nombre" class="styled-input" placeholder="Nombre" required>
+                    <br><br>
+                    <h5>Descripción:</h5><br>
+                    <input type="text" id="descripcion" class="styled-input" placeholder="Descripción" required>
+                    <br><br>
+                    <h5>Descuento:</h5><br>
+                    <input type="number" id="descuento" class="styled-input" placeholder="Descuento" required>
+                    <br><br>
+                    <h5>Fecha de inicio:</h5><br>
+                    <input type="datetime-local" id="fecha1" class="styled-input" placeholder="">
+                    <br><br>
+                    <h5>Fecha de finalización:</h5><br>
+                    <input type="datetime-local" id="fecha2" class="styled-input" placeholder="">
+                    <br><br>
+                    <h5>Sucursal:</h5><br>
+                    <select id="id_sucursal" class="styled-input"></select>
+
+                    <div class="button-container">
+                        <button onclick="agregarPromocion()" class="icon-button add-button">
+                            <i class="fi fi-rr-check"></i>
+                        </button>
+                        <button type="button" id="cancelButton" class="icon-button trash-button">
+                            <i class="fi fi-rr-cross"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Cargar el sidebar
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            })
+            .catch(error => console.error("Error al cargar el sidebar:", error));
+
+        // Función de búsqueda en la tabla
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#tablaPromociones tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Mostrar y ocultar el formulario de agregar
+        document.getElementById('showFormButton').addEventListener('click', function () {
+            document.getElementById('formContainer').style.display = 'block';
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            document.getElementById('formContainer').style.display = 'none';
+        });
+
+        // Ocultar el formulario de edición al cancelar
+        document.getElementById('cancelEditButton').addEventListener('click', function () {
+            document.getElementById('editFormContainer').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

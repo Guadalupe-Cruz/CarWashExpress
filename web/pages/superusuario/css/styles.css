@@ -27,7 +27,7 @@ body {
 /* Sidebar */
 .sidebar {
     width: 250px;
-    height: 100vh;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
     background-color: var(--second-background-color);
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -36,6 +36,22 @@ body {
     position: fixed;
     left: 0;
     top: 0;
+    overflow-y: auto; /* Permite desplazamiento vertical */
+    overflow-x: hidden; /* Evita desplazamiento horizontal */
+}
+
+/* Opcional: Personalizar la barra de desplazamiento */
+.sidebar::-webkit-scrollbar {
+    width: 8px; /* Ancho del scrollbar */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Color del "pulgar" del scrollbar */
+    border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .sidebar iframe {
