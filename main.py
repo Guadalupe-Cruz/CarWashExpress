@@ -243,4 +243,4 @@ eel.expose(login.verify_login)
 eel.expose(dashboard.obtener_datos_dashboard)
 eel.expose(dashboard.obtener_todos_los_datos)
 
-eel.start("pages/superusuario/sucursal/sucursal.html", size=(1024, 768))
+eel.start("login.html", size=(1024, 768))
