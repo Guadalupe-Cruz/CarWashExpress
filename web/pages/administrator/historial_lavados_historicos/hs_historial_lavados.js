@@ -50,6 +50,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Capturar el campo de búsqueda
+    document.getElementById("search-input").addEventListener("keyup", function () {
+        let searchTerm = this.value.toLowerCase();
+        let rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(row => {
+            let nombre = row.children[3].textContent.toLowerCase(); // Columna de nombre
+
+            // Mostrar solo las filas que coincidan con la búsqueda
+            if (nombre.includes(searchTerm)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
     // Carga de los clientes
     loadClients(currentPage);
 

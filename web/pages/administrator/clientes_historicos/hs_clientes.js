@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             data.clientes.forEach(cliente => {
                 let row = `<tr>
                     <td>${cliente.id_cliente}</td>
-                    <td>${cliente.nombre}</td>
+                    <td>${cliente.nombre_cliente}</td>
                     <td>${cliente.apellido_pt}</td>
                     <td>${cliente.apellido_mt}</td>
                     <td>${cliente.correo}</td>
@@ -108,5 +108,22 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 3000);
         }
     }
+
+    // Capturar el campo de búsqueda
+    document.getElementById("search-input").addEventListener("keyup", function () {
+        let searchTerm = this.value.toLowerCase();
+        let rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(row => {
+            let nombre = row.children[1].textContent.toLowerCase(); // Columna de nombre
+
+            // Mostrar solo las filas que coincidan con la búsqueda
+            if (nombre.includes(searchTerm)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
 
 });
