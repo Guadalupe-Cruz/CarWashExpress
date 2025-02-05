@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${cliente.correo}</td>
                     <td>${cliente.telefono}</td>
                     <td><span class="status delivered">${cliente.nombre_sucursal}</span></td>
+                    <td>${cliente.fecha_borrado}</td>
                     <td class="actions">
                         <button class="restore-btn" data-id="${cliente.id_cliente}">
                             <img src="../../../image/delete.png" alt="Eliminar">

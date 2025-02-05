@@ -187,6 +187,9 @@ def get_client_hts(page=1, limit=6):
     cursor.execute("SELECT * FROM VW_Clientes_Eliminados LIMIT %s OFFSET %s", (limit, offset))
     clientes_eliminados = cursor.fetchall()
     
+    for clientes in clientes_eliminados:
+        clientes['fecha_borrado'] = format_datetime(clientes['fecha_borrado'])
+    
     cursor.execute("SELECT COUNT(*) AS total FROM VW_Clientes_Eliminados")
     total_clients = cursor.fetchone()["total"]
     
@@ -209,3 +212,7 @@ def get_client_by_id_hts(client_id):
     connection.close()
     
     return cliente
+
+def format_datetime(datetime_obj):
+    """Formato de fecha y hora en formato legible."""
+    return datetime_obj.strftime('%Y-%m-%d %H:%M:%S') if datetime_obj else None

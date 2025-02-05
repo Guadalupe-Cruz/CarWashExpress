@@ -105,6 +105,9 @@ def delete_insumos(insumoId):
     cursor.close()
     connection.close()
     
+# =====================================
+# FUNCIONES PARA HISTORICOS DE INSUMOS
+# =====================================
 
 def restore_insumos(insumoId):
     """Recupera un insumo."""
@@ -132,6 +135,7 @@ def get_insumos_historical(page=1, limit=6):
     # Formatear las fechas 'tiempo_inicio' y 'tiempo_fin' antes de enviarlas
     for insumo in insumos:
         insumo['fecha_suministro'] = format_datetime(insumo['fecha_suministro'])
+        insumo['fecha_borrado'] = format_datetime(insumo['fecha_borrado'])
     
     cursor.execute("SELECT COUNT(*) AS total FROM insumos_historicos")
     total_insumos = cursor.fetchone()["total"]

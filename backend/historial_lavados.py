@@ -55,6 +55,7 @@ def get_wash_history_historical(page=1, limit=7):
     for historial in historial_lavados:
         historial['tiempo_inicio'] = format_datetime(historial['tiempo_inicio'])
         historial['tiempo_fin'] = format_datetime(historial['tiempo_fin'])
+        historial['fecha_borrado'] = format_datetime(historial['fecha_borrado'])
     
     cursor.execute("SELECT COUNT(*) AS total FROM VW_Historial_Lavados_Eliminados")
     total_lavados = cursor.fetchone()["total"]

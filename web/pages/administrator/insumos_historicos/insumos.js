@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${insumo.inventario}</td>
                     <td>${insumo.fecha_suministro}</td>
                     <td>${insumo.cantidad_minima}</td>
+                    <td>${insumo.fecha_borrado}</td>
                     <td class="actions">
                         <button class="restore-btn" data-id="${insumo.id_insumo}">
                             <img src="../../../image/delete.png" alt="Eliminar">

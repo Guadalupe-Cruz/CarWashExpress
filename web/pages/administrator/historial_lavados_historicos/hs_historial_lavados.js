@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${historial_lavado.tiempo_fin}</td>
                     <td><span class="status shipped">${historial_lavado.nombre_cliente}</span></td>
                     <td><span class="status delivered">${historial_lavado.nombre_lavado}</span></td>
+                    <td>${historial_lavado.fecha_borrado}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
