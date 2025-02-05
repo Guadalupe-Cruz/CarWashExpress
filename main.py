@@ -29,6 +29,10 @@ from backend.crud_usuarios import (
     delete_usuario, get_historico_usuarios, recuperar_usuario
 )
 
+from backend.crud_pagos import (
+    get_pagos, delete_pago, get_historico_pagos, recuperar_pago
+)
+
 eel.init("web")
 
 # Funciones para sucursales
@@ -180,6 +184,24 @@ def obtener_historico_usuario():
 @eel.expose
 def recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal):
     recuperar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)
+
+# Funciones para pagos
+@eel.expose
+def obtener_pagos():
+    return get_pagos()
+
+@eel.expose
+def eliminar_pago(id_pago):
+    delete_pago(id_pago)
+
+@eel.expose
+def obtener_historico_pago():
+    return get_historico_pagos()
+
+@eel.expose
+def recuperar_pago_exposed(id, monto, metodo, fecha, id_cliente, id_lavado):
+    recuperar_pago(id, monto, metodo, fecha, id_cliente, id_lavado)
+
 
 
 eel.start("pages/superusuario/sucursal/sucursal.html", size=(1024, 768))

@@ -1,6 +1,5 @@
 from backend.database import get_db_connection
 
-# Función para obtener todos las promociones
 # Función para obtener todas las promociones
 def get_promociones():
     conn = get_db_connection()

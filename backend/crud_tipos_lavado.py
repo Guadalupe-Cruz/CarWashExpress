@@ -26,12 +26,19 @@ def update_tipo(id_lavado, nombre, duracion, costo):
     connection.commit()
     connection.close()
 
-# Función para eliminar un tipo de lavado (moverla al histórico)
+# Función para eliminar un tipo de lavado (marcarlo como eliminado sin afectar pagos)
 def delete_tipo(id_lavado):
     connection = get_db_connection()
     cursor = connection.cursor()
     
-    # Recuperamos el tipo de lavado antes de moverla al histórico
+    # Actualizar la tabla pagos para marcar el tipo de lavado como eliminado
+    cursor.execute('''
+        UPDATE pagos
+        SET id_lavado = NULL
+        WHERE id_lavado = %s
+    ''', (id_lavado,))
+    
+    # Recuperamos el tipo de lavado antes de moverlo al histórico
     cursor.execute('SELECT id_lavado, nombre_lavado, duracion_minutos, costos_pesos FROM tipos_lavado WHERE id_lavado = %s', (id_lavado,))
     tipo = cursor.fetchone()
 
@@ -55,17 +62,29 @@ def get_historico_tipos():
     connection.close()
     return historico
 
-# Función para recuperar un tipo de lavado del histórico
+# Función para recuperar un tipo de lavado del histórico y restaurarlo en pagos
 def recuperar_tipo(id_lavado, nombre_lavado, duracion_minutos, costos_pesos):
     connection = get_db_connection()
     cursor = connection.cursor()
     
-    # Insertamos el tipo de lavado de nuevo en la tabla 'tipos_lavado'
-    cursor.execute('INSERT INTO tipos_lavado (id_lavado, nombre_lavado, duracion_minutos, costos_pesos) VALUES (%s, %s, %s, %s)', 
-                   (id_lavado, nombre_lavado, duracion_minutos, costos_pesos))
-    
-    # Elimina el tipo de lavado de la tabla 'tipos_lavado_historicos'
-    cursor.execute('DELETE FROM tipos_lavado_historicos WHERE id_lavado = %s', (id_lavado,))
-    
-    connection.commit()
-    connection.close()
+    try:
+        # Insertamos el tipo de lavado de nuevo en la tabla 'tipos_lavado'
+        cursor.execute('INSERT INTO tipos_lavado (id_lavado, nombre_lavado, duracion_minutos, costos_pesos) VALUES (%s, %s, %s, %s)', 
+                       (id_lavado, nombre_lavado, duracion_minutos, costos_pesos))
+        
+        # Restaurar el id_lavado en la tabla pagos
+        cursor.execute('''
+            UPDATE pagos
+            SET id_lavado = %s
+            WHERE id_lavado IS NULL
+        ''', (id_lavado,))
+        
+        # Elimina el tipo de lavado de la tabla 'tipos_lavado_historicos'
+        cursor.execute('DELETE FROM tipos_lavado_historicos WHERE id_lavado = %s', (id_lavado,))
+        
+        connection.commit()
+    except Exception as e:
+        print(f"Error al recuperar el tipo de lavado: {e}")
+        connection.rollback()
+    finally:
+        connection.close()
