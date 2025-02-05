@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
+    <title>Usuarios</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="text/javascript" src="/eel.js"></script>
-    <script src="clientes.js"></script>
+    <script src="usuarios.js"></script>
     <link rel="stylesheet" href="../../superusuario/css/styles.css">
 </head>
 <body>
     <div id="sidebar"></div>
     <div class="client_records">
         <header>
-            <h3>Gestión de Clientes</h3>
+            <h3>Gestión de Usuarios</h3>
             <div class="user-info">
                 <div class="user-avatar"></div>
-                <span>Clientes</span>
+                <span>Usuarios</span>
             </div>
         </header>
 
@@ -29,7 +29,7 @@
                 <div class="container">
                     <div class="top-bar">
                         <div class="search-box">
-                            <input type="text" id="searchInput" placeholder="Buscar Cliente...">
+                            <input type="text" id="searchInput" placeholder="Buscar usuario...">
                             <i class="fas fa-search"></i>
                         </div>
                         <button class="icon-button add-button button-large" id="showFormButton">
@@ -40,7 +40,7 @@
                     <div class="content-wrapper">
                         <div class="table-section">
                             <br>
-                            <h2>Lista de clientes</h2>
+                            <h2>Lista de usuarios</h2>
                             <table>
                                 <thead>
                                     <tr>
@@ -49,12 +49,16 @@
                                         <th>Apellido Paterno</th>
                                         <th>Apellido Materno</th>
                                         <th>Correo</th>
+                                        <th>Contraseña</th>
                                         <th>Teléfono</th>
+                                        <th>Direccion</th>
+                                        <th>Puesto</th>
+                                        <th>Tipo de usuario</th>
                                         <th>Sucursal</th>
                                         <th style="text-align: center;">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tablaClientes"></tbody>
+                                <tbody id="tablaUsuarios"></tbody>
                             </table>
                         </div>
                     </div>
@@ -62,9 +66,9 @@
 
                 <!-- Formulario de edición -->
                 <div id="editFormContainer" class="form-container" style="display: none;">
-                    <h2 class="form-title">Actualizar Cliente</h2><br>
-                    <h5>ID de cliente:</h5><br>
-                    <input type="number" id="edit_id_cliente" class="styled-input" placeholder="ID" readonly>
+                    <h2 class="form-title">Actualizar Usuario</h2><br>
+                    <h5>ID de usuario:</h5><br>
+                    <input type="number" id="edit_id_usuario" class="styled-input" placeholder="ID" readonly>
                     <br><br>
                     <h5>Nombre:</h5><br>
                     <input type="text" id="edit_nombre" class="styled-input" placeholder="Nombre">
@@ -78,16 +82,28 @@
                     <h5>Correo:</h5><br>
                     <input type="email" id="edit_correo" class="styled-input" placeholder="Correo">
                     <br><br>
+                    <h5>Contraseña:</h5><br>
+                    <input type="password" id="edit_contrasena" class="styled-input" placeholder="Cpntraseña">
+                    <br><br>
                     <h5>Teléfono:</h5><br>
                     <input type="text" id="edit_telefono" class="styled-input" placeholder="Teléfono">
+                    <br><br>
+                    <h5>Dirección:</h5><br>
+                    <input type="text" id="edit_direccion" class="styled-input" placeholder="Dirección">
+                    <br><br>
+                    <h5>Puesto:</h5><br>
+                    <input type="text" id="edit_puesto" class="styled-input" placeholder="Puesto">
+                    <br><br>
+                    <h5>Tipo de usuario:</h5><br>
+                    <input type="text" id="edit_tipo" class="styled-input" placeholder="Tipo de usuario">
                     <br><br>
                     <h5>Sucursal:</h5><br>
                     <select id="edit_id_sucursal" class="styled-input">
                         <!-- Las opciones se cargarán dinámicamente aquí -->
-                    </select>
+                    </select>                    
 
                     <div class="button-container">
-                        <button onclick="actualizarCliente()" class="icon-button add-button">
+                        <button onclick="actualizarUsuario()" class="icon-button add-button">
                             <i class="fi fi-rr-check"></i>
                         </button>
 
@@ -99,9 +115,9 @@
 
                 <!-- Formulario de agregar -->
                 <div id="formContainer" class="form-container" style="display: none;">
-                    <h2 class="form-title">Agregar Cliente</h2><br>
-                    <h5>ID del cliente:</h5><br>
-                    <input type="number" id="id_cliente" class="styled-input" placeholder="ID" required>
+                    <h2 class="form-title">Agregar Usuario</h2><br>
+                    <h5>ID del usuario:</h5><br>
+                    <input type="number" id="id_usuario" class="styled-input" placeholder="ID" required>
                     <br><br>
                     <h5>Nombre:</h5><br>
                     <input type="text" id="nombre" class="styled-input" placeholder="Nombre" required>
@@ -115,14 +131,26 @@
                     <h5>Correo:</h5><br>
                     <input type="email" id="correo" class="styled-input" placeholder="Correo">
                     <br><br>
+                    <h5>Contraseña:</h5><br>
+                    <input type="password" id="contrasena" class="styled-input" placeholder="Contraseña">
+                    <br><br>
                     <h5>Teléfono:</h5><br>
                     <input type="text" id="telefono" class="styled-input" placeholder="Teléfono" required>
+                    <br><br>
+                    <h5>Direccion:</h5><br>
+                    <input type="text" id="direccion" class="styled-input" placeholder="Direccion">
+                    <br><br>
+                    <h5>Puesto:</h5><br>
+                    <input type="text" id="puesto" class="styled-input" placeholder="Puesto">
+                    <br><br>
+                    <h5>Tipo de usuario:</h5><br>
+                    <input type="text" id="tipo" class="styled-input" placeholder="Tipo de usuario">
                     <br><br>
                     <h5>Sucursal:</h5><br>
                     <select id="id_sucursal" class="styled-input"></select>
 
                     <div class="button-container">
-                        <button onclick="agregarCliente()" class="icon-button add-button">
+                        <button onclick="agregarUsuario()" class="icon-button add-button">
                             <i class="fi fi-rr-check"></i>
                         </button>
                         <button type="button" id="cancelButton" class="icon-button trash-button">
@@ -146,7 +174,7 @@
         // Función de búsqueda en la tabla
         document.getElementById('searchInput').addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#tablaClientes tr');
+            const rows = document.querySelectorAll('#tablaUsuarios tr');
 
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();

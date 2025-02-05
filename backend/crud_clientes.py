@@ -1,14 +1,16 @@
 from backend.database import get_db_connection
 
 # Función para obtener todos los clientes
+# Función para obtener todos los clientes
 def get_clientes():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     try:
         cursor.execute("""
-            SELECT c.id_cliente, c.nombre_cliente, c.apellido_pt, c.apellido_mt, c.correo, c.telefono, s.nombre_sucursal 
-            FROM clientes c 
-            JOIN sucursales s ON c.id_sucursal = s.id_sucursal
+            SELECT c.id_cliente, c.nombre_cliente, c.apellido_pt, c.apellido_mt, c.correo, c.telefono, 
+                   IFNULL(s.nombre_sucursal, 'Sucursal eliminada') AS nombre_sucursal
+            FROM clientes c
+            LEFT JOIN sucursales s ON c.id_sucursal = s.id_sucursal
         """)
         clientes = cursor.fetchall()
     except Exception as e:
@@ -18,6 +20,7 @@ def get_clientes():
         cursor.close()
         conn.close()
     return clientes
+
 
 # Función para agregar un nuevo cliente
 def add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):

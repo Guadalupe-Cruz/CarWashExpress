@@ -76,12 +76,29 @@ function prepararEdicion(id_cliente, nombre, apellido1, apellido2, correo, telef
     document.getElementById("edit_correo").value = correo;
     document.getElementById("edit_telefono").value = telefono;
 
-    // Seleccionar la sucursal correcta en el menú desplegable de edición
-    const editSelect = document.getElementById('edit_id_sucursal');
-    editSelect.value = id_sucursal;
+        // Seleccionar la sucursal correcta en el menú desplegable de edición
+        const editSelect = document.getElementById("edit_id_sucursal");
 
-    // Mostrar el formulario de edición
-    document.getElementById("editFormContainer").style.display = "block";
+        // Asegurar que el select tiene opciones antes de asignar el valor
+        setTimeout(() => {
+            let optionExists = false;
+    
+            for (let option of editSelect.options) {
+                if (option.value == id_sucursal) {
+                    optionExists = true;
+                    break;
+                }
+            }
+    
+            if (optionExists) {
+                editSelect.value = id_sucursal;
+            } else {
+                console.warn(`La sucursal con ID ${id_sucursal} no está en la lista de opciones.`);
+            }
+        }, 200); // Pequeño retraso para asegurar que las opciones se han cargado
+    
+        // Mostrar el formulario de edición
+        document.getElementById("editFormContainer").style.display = "block";
 }
 
 function actualizarCliente() {

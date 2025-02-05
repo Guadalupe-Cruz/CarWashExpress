@@ -26,7 +26,7 @@ def update_sucursal(id_sucursal, nombre, direccion):
     connection.commit()
     connection.close()
 
-# Función para eliminar una sucursal (moverla al histórico)
+# Función para eliminar una sucursal (marcarla como eliminada sin borrar los clientes)
 def delete_sucursal(id_sucursal):
     connection = get_db_connection()
     
@@ -34,39 +34,48 @@ def delete_sucursal(id_sucursal):
         try:
             cursor = connection.cursor()
 
-            # Mover los clientes de la sucursal al histórico antes de eliminarlos
+            # Actualizar los clientes de la sucursal para poner id_sucursal a NULL (sin eliminar los clientes)
             cursor.execute('''
-                INSERT INTO clientes_historicos (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal, fecha_borrado)
-                SELECT id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal, NOW()
-                FROM clientes
+                UPDATE clientes
+                SET id_sucursal = NULL
                 WHERE id_sucursal = %s
             ''', (id_sucursal,))
-            
-            # Eliminar los clientes de la tabla 'clientes'
-            cursor.execute('DELETE FROM clientes WHERE id_sucursal = %s', (id_sucursal,))
+
+            # Actualizar los usuarios de la sucursal para poner id_sucursal a NULL (sin eliminar los usuarios)
+            cursor.execute('''
+                UPDATE usuarios
+                SET id_sucursal = NULL
+                WHERE id_sucursal = %s
+            ''', (id_sucursal,))
+
+            # Actualizar las promociones de la sucursal para poner id_sucursal a NULL (sin eliminar las promociones)
+            cursor.execute('''
+                UPDATE promociones
+                SET id_sucursal = NULL
+                WHERE id_sucursal = %s
+            ''', (id_sucursal,))
 
             # Recuperar los datos de la sucursal antes de eliminarla
             cursor.execute('SELECT id_sucursal, nombre_sucursal, direccion FROM sucursales WHERE id_sucursal = %s', (id_sucursal,))
             sucursal = cursor.fetchone()
 
             if sucursal:
-                # Mover la sucursal al histórico
-                cursor.execute('''
+                # Mover la sucursal al histórico (sin eliminar los datos de la sucursal)
+                cursor.execute(''' 
                     INSERT INTO sucursales_historicos (id_sucursal, nombre_sucursal, direccion, fecha_borrado)
                     VALUES (%s, %s, %s, NOW())
                 ''', (sucursal[0], sucursal[1], sucursal[2]))
 
-                # Eliminar la sucursal de la tabla principal
+                # Eliminar solo la sucursal de la tabla principal (sin eliminar datos de clientes, usuarios ni promociones)
                 cursor.execute('DELETE FROM sucursales WHERE id_sucursal = %s', (id_sucursal,))
 
             # Confirmar cambios en la base de datos
             connection.commit()
-            print("Sucursal y clientes eliminados correctamente y movidos al histórico.")
+            print("Sucursal eliminada correctamente, y las tablas clientes, usuarios y promociones actualizadas.")
 
         finally:
             cursor.close()
             connection.close()
-
 
 # Función para obtener las sucursales del histórico
 def get_historico_sucursales():
@@ -83,7 +92,7 @@ def recuperar_sucursal(id_sucursal, nombre_sucursal, direccion):
     cursor = connection.cursor()
     
     try:
-        # Insertamos la sucursal de nuevo en la tabla 'sucursal'
+        # Insertamos la sucursal de nuevo en la tabla 'sucursales'
         cursor.execute('INSERT INTO sucursales (id_sucursal, nombre_sucursal, direccion) VALUES (%s, %s, %s)', 
                        (id_sucursal, nombre_sucursal, direccion))
         

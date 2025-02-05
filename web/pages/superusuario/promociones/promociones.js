@@ -83,8 +83,25 @@ function prepararEdicion(id, nombre, descripcion, descuento, fecha1, fecha2, id_
     document.getElementById("edit_fecha2").value = fecha2.replace(" ", "T").slice(0, 16);
 
     // Seleccionar la sucursal correcta en el menú desplegable de edición
-    const editSelect = document.getElementById('edit_id_sucursal');
-    editSelect.value = id_sucursal;
+    const editSelect = document.getElementById("edit_id_sucursal");
+
+    // Asegurar que el select tiene opciones antes de asignar el valor
+    setTimeout(() => {
+        let optionExists = false;
+
+        for (let option of editSelect.options) {
+            if (option.value == id_sucursal) {
+                optionExists = true;
+                break;
+            }
+        }
+
+        if (optionExists) {
+            editSelect.value = id_sucursal;
+        } else {
+            console.warn(`La sucursal con ID ${id_sucursal} no está en la lista de opciones.`);
+        }
+    }, 200); // Pequeño retraso para asegurar que las opciones se han cargado
 
     // Mostrar el formulario de edición
     document.getElementById("editFormContainer").style.display = "block";

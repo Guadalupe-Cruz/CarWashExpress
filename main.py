@@ -24,6 +24,11 @@ from backend.crud_promociones import (
     delete_promocion, get_historico_promociones, recuperar_promocion
 )
 
+from backend.crud_usuarios import (
+    get_usuarios, add_usuario, update_usuario,
+    delete_usuario, get_historico_usuarios, recuperar_usuario
+)
+
 eel.init("web")
 
 # Funciones para sucursales
@@ -150,6 +155,31 @@ def obtener_historico_promocion():
 @eel.expose
 def recuperar_promocion_exposed(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal):
     recuperar_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)
+
+# Funciones para usuarios
+@eel.expose
+def obtener_usuarios():
+    return get_usuarios()
+
+@eel.expose
+def agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal):
+    add_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)
+
+@eel.expose
+def actualizar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal):
+    update_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)
+
+@eel.expose
+def eliminar_usuario(id_usuario):
+    delete_usuario(id_usuario)
+
+@eel.expose
+def obtener_historico_usuario():
+    return get_historico_usuarios()
+
+@eel.expose
+def recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal):
+    recuperar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)
 
 
 eel.start("pages/superusuario/sucursal/sucursal.html", size=(1024, 768))

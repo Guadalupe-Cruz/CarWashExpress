@@ -1,14 +1,16 @@
 from backend.database import get_db_connection
 
 # Función para obtener todos las promociones
+# Función para obtener todas las promociones
 def get_promociones():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     try:
         cursor.execute("""
-            SELECT p.id_promocion, p.nombre_promociones, p.descripcion, p.descuento, p.fecha_inicio, p.fecha_fin, s.nombre_sucursal 
-            FROM promociones p 
-            JOIN sucursales s ON p.id_sucursal = s.id_sucursal
+            SELECT p.id_promocion, p.nombre_promociones, p.descripcion, p.descuento, p.fecha_inicio, p.fecha_fin, 
+                   IFNULL(s.nombre_sucursal, 'Sucursal eliminada') AS nombre_sucursal
+            FROM promociones p
+            LEFT JOIN sucursales s ON p.id_sucursal = s.id_sucursal
         """)
         promociones = cursor.fetchall()
     except Exception as e:
@@ -18,6 +20,7 @@ def get_promociones():
         cursor.close()
         conn.close()
     return promociones
+
 
 # Función para agregar una nueva promocion
 def add_promocion(nombre, descripcion, descuento, fecha1, fecha2, id_sucursal):
