@@ -1,4 +1,5 @@
 import eel
+from backend import clientes_admin, insumos_admin, login, sucursales, historial_lavados, pagos, usuarios, dashboard
 from backend.crud_sucursal import (
     get_sucursales, add_sucursal, update_sucursal,
     delete_sucursal, get_historico_sucursales, recuperar_sucursal
@@ -181,5 +182,65 @@ def obtener_historico_usuario():
 def recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal):
     recuperar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)
 
+# ---------------------------------------
+# FUNCIONES PARA CLIENTES
+# ---------------------------------------
+eel.expose(clientes_admin.get_clients)
+eel.expose(clientes_admin.get_client_by_id)
+eel.expose(clientes_admin.add_client)
+eel.expose(clientes_admin.update_client)
+eel.expose(clientes_admin.delete_client)
+
+# ---------------------------------------
+# FUNCIONES PARA HISTORICOS DE CLIENTES
+# ---------------------------------------
+eel.expose(clientes_admin.restore_client)
+eel.expose(clientes_admin.get_client_hts)
+eel.expose(clientes_admin.get_client_by_id_hts)
+
+# ---------------------------------------
+# FUNCIONES PARA HISTORIAL DE LAVADOS
+# ---------------------------------------
+eel.expose(historial_lavados.get_wash_history)
+eel.expose(historial_lavados.get_wash_history_historical)
+
+# ---------------------------------------
+# FUNCIONES PARA PAGOS
+# ---------------------------------------
+eel.expose(pagos.get_payments)
+eel.expose(pagos.get_payments_historical)
+
+# ---------------------------------------
+# FUNCIONES PARA USUARIOS
+# ---------------------------------------
+eel.expose(usuarios.get_users)
+eel.expose(usuarios.get_users_historical)
+
+# ---------------------------------------
+# FUNCIONES PARA INSUMOS
+# ---------------------------------------
+eel.expose(insumos_admin.get_insumos)
+eel.expose(insumos_admin.add_insumo)
+eel.expose(insumos_admin.update_insumo)
+eel.expose(insumos_admin.delete_insumos)
+eel.expose(insumos_admin.get_insumo_by_id)
+eel.expose(insumos_admin.restore_insumos)
+eel.expose(insumos_admin.get_insumos_historical)
+
+# ---------------------------------------
+# FUNCIONES PARA SUCURSALES
+# ---------------------------------------
+eel.expose(sucursales.get_branches)
+
+# ---------------------------------------
+# FUNCIONES PARA LOGIN
+# ---------------------------------------
+eel.expose(login.verify_login)
+
+# ---------------------------------------
+# FUNCIONES PARA DASHBOARD
+# ---------------------------------------
+eel.expose(dashboard.obtener_datos_dashboard)
+eel.expose(dashboard.obtener_todos_los_datos)
 
 eel.start("pages/superusuario/sucursal/sucursal.html", size=(1024, 768))

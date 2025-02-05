@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de pagos</title>
+    <link rel="stylesheet" href="./pagos.css">
+</head>
+<body>
+
+    <!-- Aquí se incluye el sidebar como un componente mediante JavaScript -->
+    <div id="sidebar"></div>
+
+    <div class="client_records">
+        <header>
+            <h3>Panel del administrador</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Usuario</span>
+            </div>
+        </header>
+        <main>
+            <div class="table_container">
+
+                <div class="container">
+                    <h3>Registros de pagos</h3>
+                    <div class="top-bar">
+                        <div class="search-box">
+                            <input type="text" id="search-input" placeholder="Buscar por cliente">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Monto pagado</th>
+                                <th>Metodo de pago</th>
+                                <th>Fecha de pago</th>
+                                <th>Cliente</th>
+                                <th>Tipo de lavado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="./pagos.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script>
+        // Aquí cargas el sidebar desde el archivo HTML
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+    </script>
+    
+</body>
+</html>

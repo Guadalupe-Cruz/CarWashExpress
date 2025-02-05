@@ -1,45 +1,65 @@
-from backend.database import get_db_connection
+import eel
+import mysql.connector
 
-# Función para recuperar el usuario y agregarla nuevamente a la tabla de usuarios
-def recuperar_usuario(id_usuario, nombre_usuario, apellido_pt, apellido_mt, correo, contrasena, telefono, direccion, puesto, tipo_usuario, id_sucursal):
+# ==============================
+# CONEXIÓN A LA BASE DE DATOS
+# ==============================
+def get_db_connection():
+    return mysql.connector.connect(
+        host='localhost',          # Cambia esto por tu host
+        user='root',               # Cambia esto por tu usuario
+        password='',                # Cambia esto por tu contraseña
+        database='db_carwashexpress'    # Cambia esto por tu base de datos
+    )
+
+# ==============================
+# FUNCIONES PARA LOS USUARIO
+# ==============================
+
+def get_users(page=1, limit=7):
+    """Obtiene los usuarios con paginación."""
     connection = get_db_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(dictionary=True)
     
-    # Inserta el usuario de nuevo en la tabla 'usuarios'
-    cursor.execute('INSERT INTO usuarios (id_usuario, nombre_usuario, apellido_pt, apellido_mt, correo, contrasena, telefono, direccion, puesto, tipo_usuario, id_sucursal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', 
-                   (id_usuario, nombre_usuario, apellido_pt, apellido_mt, correo, contrasena, telefono, direccion, puesto, tipo_usuario, id_sucursal))
+    offset = (page - 1) * limit
+    cursor.execute("SELECT * FROM usuarios LIMIT %s OFFSET %s", (limit, offset))
+    usuarios = cursor.fetchall()
     
-    # Elimina el usuario de la tabla 'usuarios_historicos'
-    cursor.execute('DELETE FROM usuarios_historicos WHERE id_usuario = %s', (id_usuario,))
+    cursor.execute("SELECT COUNT(*) AS total FROM usuarios")
+    total_usuarios = cursor.fetchone()["total"]
     
-    connection.commit()
+    cursor.close()
     connection.close()
+    
+    total_pages = (total_usuarios + limit - 1) // limit  # Cálculo de páginas
+    
+    return {"usuarios": usuarios, "total_pages": total_pages}
 
-# Función para obtener los usuarios del histórico
-def get_historico_usuarios():
+
+def get_users_historical(page=1, limit=7):
+    """Obtiene los historicos de usuarios con paginación."""
     connection = get_db_connection()
-    cursor = connection.cursor()
-    cursor.execute('SELECT id_usuario, nombre_usuario, apellido_pt, apellido_mt, correo, contrasena, telefono, direccion, puesto, tipo_usuario, id_sucursal, fecha_borrado FROM usuarios_historicos')
-    historico = cursor.fetchall()
-    connection.close()
-    return historico
-
-# Función para eliminar un usuario (mueve el usuario al histórico)
-def delete_usuario(id_usuario):
-    connection = get_db_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(dictionary=True)
     
-    # Recuperamos el usuario antes de eliminarla
-    cursor.execute('SELECT id_usuario, nombre_usuario, apellido_pt, apellido_mt, correo, contrasena, telefono, direccion, puesto, tipo_usuario, id_sucursal FROM usuarios WHERE id_usuario = %s', (id_usuario,))
-    usuario = cursor.fetchone()
-
-    if usuario:
-        # Insertamos el usuario en el histórico
-        cursor.execute('INSERT INTO usuarios_historicos  (id_usuario, nombre_usuario, apellido_pt, apellido_mt, correo, contrasena, telefono, direccion, puesto, tipo_usuario, id_sucursal, fecha_borrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())', 
-                       (usuario[0], usuario[1], usuario[2], usuario[3], usuario[4], usuario[5], usuario[6], usuario[7], usuario[8], usuario[9], usuario[10]))
-        
-        # Elimina el usuario de la tabla 'usuarios'
-        cursor.execute('DELETE FROM usuarios WHERE id_usuario = %s', (id_usuario,))
-
-    connection.commit()
+    offset = (page - 1) * limit
+    cursor.execute("SELECT * FROM usuarios_historicos LIMIT %s OFFSET %s", (limit, offset))
+    usuarios = cursor.fetchall()
+    
+    # Formatear las fechas 'tiempo_inicio' y 'tiempo_fin' antes de enviarlas
+    for usuario in usuarios:
+        usuario['fecha_borrado'] = format_datetime(usuario['fecha_borrado'])
+    
+    cursor.execute("SELECT COUNT(*) AS total FROM usuarios_historicos")
+    total_usuarios = cursor.fetchone()["total"]
+    
+    cursor.close()
     connection.close()
+    
+    total_pages = (total_usuarios + limit - 1) // limit  # Cálculo de páginas
+    
+    return {"usuarios": usuarios, "total_pages": total_pages}
+
+
+def format_datetime(datetime_obj):
+    """Formato de fecha y hora en formato legible."""
+    return datetime_obj.strftime('%Y-%m-%d %H:%M:%S') if datetime_obj else None
