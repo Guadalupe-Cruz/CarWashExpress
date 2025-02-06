@@ -33,6 +33,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
             assignTableEvents();
             renderPagination(data.total_pages, page);
+
+            // Capturar el campo de búsqueda
+            document.getElementById("search-input").addEventListener("keyup", function () {
+                let searchTerm = this.value.toLowerCase();
+                let rows = document.querySelectorAll("tbody tr");
+
+                rows.forEach(row => {
+                    let nombre = row.children[1].textContent.toLowerCase(); // Columna de nombre
+
+                    // Mostrar solo las filas que coincidan con la búsqueda
+                    if (nombre.includes(searchTerm)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
         });
     }
 
@@ -55,41 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     loadClients(currentPage);
-    
-    
-    /*
-    eel.get_clients()(function (clientes) {
-        let tbody = document.querySelector("tbody");
-        tbody.innerHTML = ""; // Limpiar la tabla antes de agregar los datos
-
-        clientes.forEach(cliente => {
-            let row = `<tr>
-                <td>${cliente.id_cliente}</td>
-                <td>${cliente.nombre}</td>
-                <td>${cliente.apellido_pt}</td>
-                <td>${cliente.apellido_mt}</td>
-                <td><span class="status delivered">${cliente.nombre_sucursal}</span></td>
-                <td class="actions">
-                    <button class="edit-btn" data-id="${cliente.id_cliente}">
-                        <img src="../../../image/pencil.png" alt="Editar">
-                    </button>
-                    <button class="view-btn" data-id="${cliente.id_cliente}">
-                        <img src="../../../image/research.png" alt="Ver">
-                    </button>
-                    <button class="delete-btn" data-id="${cliente.id_cliente}">
-                        <img src="../../../image/delete.png" alt="Eliminar">
-                    </button>
-                </td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
-
-        // Reasignar eventos a los botones de la tabla
-        assignTableEvents();
-        
-    });
-
-    */
 
     // Función para asignar los eventos a los botones de la tabla
     function assignTableEvents() {
@@ -306,6 +288,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let correo = document.getElementById('correo').value;
                         let nuevo_correo = document.getElementById('nuevo_correo').value;
                         let telefono = document.getElementById('telefono').value;
+                        let nuevo_telefono = document.getElementById('nuevo_telefono').value;
                         let id_sucursal = document.getElementById('id_sucursal').value;
 
                         // Validaciones
@@ -348,8 +331,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             return;
                         }
 
+                        if (nuevo_telefono) {
+                            if (!phoneRegex.test(nuevo_telefono)) {
+                                showAlert("El ID debe contener solo números.");
+                                return;
+                            }
+                        }
+
                         // Llamar a eel para actualizar el cliente
-                        eel.update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, id_sucursal)(function (response) {
+                        eel.update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, id_sucursal)(function (response) {
 
                             if (response.status === "error") {
                                 showAlert(response.message); // Mostrar alerta si el correo ya está registrado
@@ -389,23 +379,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 3000);
         }
     }
-
-    // Capturar el campo de búsqueda
-    document.getElementById("search-input").addEventListener("keyup", function () {
-        let searchTerm = this.value.toLowerCase();
-        let rows = document.querySelectorAll("tbody tr");
-
-        rows.forEach(row => {
-            let nombre = row.children[1].textContent.toLowerCase(); // Columna de nombre
-
-            // Mostrar solo las filas que coincidan con la búsqueda
-            if (nombre.includes(searchTerm)) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    });
 
     
 });

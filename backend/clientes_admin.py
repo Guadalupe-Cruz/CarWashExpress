@@ -61,15 +61,23 @@ def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, tel
     cursor.execute("SELECT id_cliente FROM clientes WHERE id_cliente = %s", (id_cliente,)) # Verificar si el id_cliente ya existe
     existing_idclient = cursor.fetchone()
     
-    if existing_client:
-        cursor.close()
-        connection.close()
-        return {"status": "error", "message": "El correo ya está registrado."}
+    cursor.execute("SELECT id_cliente FROM clientes WHERE telefono = %s", (telefono,)) # Verificar si el id_cliente ya existe
+    existing_telefono = cursor.fetchone()
     
     if existing_idclient:
         cursor.close()
         connection.close()
         return {"status": "error", "message": "El id de membresia ya está registrado."}
+    
+    if existing_client:
+        cursor.close()
+        connection.close()
+        return {"status": "error", "message": "El correo ya está registrado."}
+    
+    if existing_telefono:
+        cursor.close()
+        connection.close()
+        return {"status": "error", "message": "El telefono ya está registrado."}
     
     # Insertar el nuevo cliente si el correo no está registrado
     query = """
@@ -86,35 +94,49 @@ def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, tel
     return {"status": "success", "message": "Cliente agregado correctamente."}
 
 
-
-def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, id_sucursal):
+def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, id_sucursal):
     """Actualiza la información de un cliente."""
     try:
         connection = get_db_connection()
         with connection.cursor() as cursor:
             # Verificar si el nuevo id_cliente ya está registrado
             if nuevo_id_cliente and existing_idClient(cursor, nuevo_id_cliente):
-                return {"status": "error", "message": "El id de la membresia ya está registrado."}
+                return {"status": "error", "message": "El id de la membresía ya está registrado."}
 
             # Verificar si el nuevo correo ya está registrado
             if nuevo_correo and existing_mail(cursor, nuevo_correo):
                 return {"status": "error", "message": "El correo ya está registrado."}
 
+            # Verificar si el nuevo teléfono ya está registrado
+            if nuevo_telefono and existing_phone(cursor, nuevo_telefono):
+                return {"status": "error", "message": "El teléfono ya está registrado."}
+
             # Crear el query de actualización
             query = """
-                UPDATE clientes SET nombre_cliente = %s, apellido_pt = %s, apellido_mt = %s, 
-                correo = %s, telefono = %s, id_sucursal = %s WHERE id_cliente = %s
+                UPDATE clientes SET 
+                    nombre_cliente = %s, 
+                    apellido_pt = %s, 
+                    apellido_mt = %s, 
+                    correo = %s, 
+                    telefono = %s, 
+                    id_sucursal = %s
             """
+
             # Preparar los parámetros
-            params = (nombre_cliente, apellido_pt, apellido_mt, correo if not nuevo_correo else nuevo_correo, telefono, id_sucursal, id_cliente)
-            
-            # Si se proporciona un nuevo id_cliente, actualizarlo
+            correo_final = nuevo_correo if nuevo_correo else correo
+            telefono_final = nuevo_telefono if nuevo_telefono else telefono
+            params = [nombre_cliente, apellido_pt, apellido_mt, correo_final, telefono_final, id_sucursal]
+
+            # Si se proporciona un nuevo id_cliente, actualizarlo también
             if nuevo_id_cliente:
-                query = query.replace("id_cliente = %s", "id_cliente = %s, id_cliente = %s")
-                params = (nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, nuevo_correo or correo, telefono, id_sucursal, id_cliente)
-                
+                query += ", id_cliente = %s"
+                params.append(nuevo_id_cliente)
+
+            query += " WHERE id_cliente = %s"
+            params.append(id_cliente)
+
             # Ejecutar la consulta
-            cursor.execute(query, params)
+            cursor.execute(query, tuple(params))
 
             # Confirmar cambios
             connection.commit()
@@ -127,6 +149,8 @@ def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, ape
 
     finally:
         connection.close()
+
+
 
 def delete_client(id_cliente):
     """Elimina un cliente utilizando un Stored Procedure para mantener integridad referencial."""
@@ -159,6 +183,15 @@ def existing_idClient(cursor, nuevo_id_cliente):
     existing_id_client = cursor.fetchone()
     
     if existing_id_client:
+        return True  # El id_cliente ya existe
+    return False  # El id_cliente no existe
+
+def existing_phone(cursor, nuevo_telefono):
+    """Verifica si el nuevo_telefono ya existe en la base de datos."""
+    cursor.execute("SELECT id_cliente FROM clientes WHERE telefono = %s", (nuevo_telefono,))
+    existing_telefono = cursor.fetchone()
+    
+    if existing_telefono:
         return True  # El id_cliente ya existe
     return False  # El id_cliente no existe
 
