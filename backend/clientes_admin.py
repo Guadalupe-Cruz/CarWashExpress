@@ -40,6 +40,7 @@ def get_clients(page=1, limit=6):
 
     return {"clientes": clientes, "total_pages": total_pages}
 
+# =======================================================================================================================
 
 def get_client_by_id(client_id):
     """
@@ -66,6 +67,7 @@ def get_client_by_id(client_id):
 
     return cliente
 
+# =======================================================================================================================
 
 def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal, fecha_expiracion_membresia):
     """
@@ -116,6 +118,7 @@ def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, tel
 
     return {"status": "success", "message": "Cliente agregado correctamente."}
 
+# =======================================================================================================================
 
 def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, id_sucursal, fecha_expiracion_membresia):
     """
@@ -177,6 +180,7 @@ def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, ape
     finally:
         connection.close()
 
+# =======================================================================================================================
 
 def delete_client(id_cliente):
     """
