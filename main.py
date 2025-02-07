@@ -33,6 +33,11 @@ from backend.crud_pagos import (
     get_pagos, delete_pago, get_historico_pagos, recuperar_pago
 )
 
+from backend.crud_roles import (
+    get_roles, add_rol, update_rol,
+    delete_rol, get_historico_roles, recuperar_rol
+)
+
 eel.init("web")
 
 # Funciones para sucursales
@@ -166,12 +171,12 @@ def obtener_usuarios():
     return get_usuarios()
 
 @eel.expose
-def agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal):
-    add_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)
+def agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal):
+    add_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)
 
 @eel.expose
-def actualizar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal):
-    update_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)
+def actualizar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal):
+    update_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)
 
 @eel.expose
 def eliminar_usuario(id_usuario):
@@ -182,8 +187,8 @@ def obtener_historico_usuario():
     return get_historico_usuarios()
 
 @eel.expose
-def recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal):
-    recuperar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)
+def recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal):
+    recuperar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)
 
 # Funciones para pagos
 @eel.expose
@@ -201,6 +206,31 @@ def obtener_historico_pago():
 @eel.expose
 def recuperar_pago_exposed(id, monto, metodo, fecha, id_cliente, id_lavado):
     recuperar_pago(id, monto, metodo, fecha, id_cliente, id_lavado)
+
+# Funciones para roles
+@eel.expose
+def obtener_roles():
+    return get_roles()
+
+@eel.expose
+def agregar_rol(nombre):
+    add_rol(nombre)
+
+@eel.expose
+def actualizar_rol(id_rol, nombre):
+    update_rol(id_rol, nombre)
+
+@eel.expose
+def eliminar_rol(id_rol):
+    delete_rol(id_rol)
+
+@eel.expose
+def obtener_historico_rol():
+    return get_historico_roles()
+
+@eel.expose
+def recuperar_rol_exposed(id_rol, nombre):
+    recuperar_rol(id_rol, nombre)
 
 
 

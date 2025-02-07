@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    obtenerSucursales();
+    obtenerRoles();
 
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {
@@ -7,21 +7,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function obtenerSucursales() {
-    eel.obtener_sucursales()(function (sucursales) {
-        let tabla = document.getElementById("tablaSucursales");
+function obtenerRoles() {
+    eel.obtener_roles()(function (roles) {
+        let tabla = document.getElementById("tablaRoles");
         tabla.innerHTML = "";
-        sucursales.forEach(sucursal => {
+        roles.forEach(rol => {
             let fila = `
                 <tr>
-                    <td>${sucursal.id_sucursal}</td>
-                    <td>${sucursal.nombre_sucursal}</td>
-                    <td>${sucursal.direccion}</td>
+                    <td>${rol.id_rol}</td>
+                    <td>${rol.nombre_rol}</td>
                     <td class="table-buttons">
-                        <button class="icon-button edit-button" onclick="prepararEdicion(${sucursal.id_sucursal}, '${sucursal.nombre_sucursal}', '${sucursal.direccion}')">
+                        <button class="icon-button edit-button" onclick="prepararEdicion('${rol.id_rol}', '${rol.nombre_rol}')">
                             <i class="fi fi-rr-edit"></i>
                         </button>
-                        <button class="icon-button trash-button" onclick="eliminarSucursal(${sucursal.id_sucursal})">
+                        <button class="icon-button trash-button" onclick="eliminarRol(${rol.id_rol})">
                             <i class="fi fi-rr-trash"></i>
                         </button>
                     </td>
@@ -32,38 +31,35 @@ function obtenerSucursales() {
     });
 }
 
-function agregarSucursal() {
+function agregarRol() {
     let nombre = document.getElementById("nombre").value;
-    let direccion = document.getElementById("direccion").value;
     
-    eel.agregar_sucursal(nombre, direccion)(function () {
-        obtenerSucursales();
+    eel.agregar_rol(nombre)(function () {
+        obtenerRoles();
         document.getElementById("formContainer").style.display = "none";
     });
 }
 
-function prepararEdicion(id, nombre, direccion) {
+function prepararEdicion(id, nombre) {
     document.getElementById("edit_id").value = id;
     document.getElementById("edit_nombre").value = nombre;
-    document.getElementById("edit_direccion").value = direccion;
 
     // Mostrar el formulario de edición
     document.getElementById("editFormContainer").style.display = "block";
 }
 
-function actualizarSucursal() {
+function actualizarRol() {
     let id = document.getElementById("edit_id").value;
     let nombre = document.getElementById("edit_nombre").value;
-    let direccion = document.getElementById("edit_direccion").value;
 
-    eel.actualizar_sucursal(id, nombre, direccion)(function () {
-        obtenerSucursales();
+    eel.actualizar_rol(id, nombre)(function () {
+        obtenerRoles();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
     });
 }
 
-function eliminarSucursal(id_sucursal) {
-    eel.eliminar_sucursal(id_sucursal)(function () {
-        obtenerSucursales();
+function eliminarRol(id_rol) {
+    eel.eliminar_rol(id_rol)(function () {
+        obtenerRoles();
     });
 }

@@ -65,6 +65,7 @@ function agregarCliente() {
     
     eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)(function () {
         obtenerClientes();
+        document.getElementById("formContainer").style.display = "none";
     });
 }
 

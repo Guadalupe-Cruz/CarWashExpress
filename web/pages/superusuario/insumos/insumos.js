@@ -42,6 +42,7 @@ function agregarInsumo() {
     
     eel.agregar_insumo(nombre, inventario, fecha, cantidad)(function () {
         obtenerInsumos();
+        document.getElementById("formContainer").style.display = "none";
     });
 }
 

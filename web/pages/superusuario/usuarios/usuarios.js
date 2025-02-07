@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     obtenerUsuarios();
     obtenerSucursales();
+    obtenerRoles();
 
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {
@@ -8,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+//Obtener sucursales
 function obtenerSucursales() {
     eel.obtener_sucursales()(function(sucursales) {
         const select = document.getElementById('id_sucursal');
@@ -19,6 +21,24 @@ function obtenerSucursales() {
             const option = document.createElement('option');
             option.value = sucursal.id_sucursal;
             option.textContent = sucursal.nombre_sucursal;
+            select.appendChild(option.cloneNode(true)); // Clonar la opción para el select de edición
+            editSelect.appendChild(option);
+        });
+    });
+}
+
+//Obtener roles
+function obtenerRoles() {
+    eel.obtener_roles()(function(roles) {
+        const select = document.getElementById('id_rol');
+        const editSelect = document.getElementById('edit_id_rol');
+        select.innerHTML = ''; // Limpiar el select antes de agregar opciones
+        editSelect.innerHTML = ''; // Limpiar el select de edición también
+
+        roles.forEach(rol => {
+            const option = document.createElement('option');
+            option.value = rol.id_rol;
+            option.textContent = rol.nombre_rol;
             select.appendChild(option.cloneNode(true)); // Clonar la opción para el select de edición
             editSelect.appendChild(option);
         });
@@ -41,10 +61,10 @@ function obtenerUsuarios() {
                     <td>${usuario.telefono}</td>
                     <td>${usuario.direccion}</td>
                     <td>${usuario.puesto}</td>
-                    <td>${usuario.tipo_usuario}</td>
+                    <td>${usuario.nombre_rol}</td>
                     <td>${usuario.nombre_sucursal}</td>
                     <td class="table-buttons">
-                        <button class="icon-button edit-button" onclick="prepararEdicion(${usuario.id_usuario}, '${usuario.nombre_usuario}', '${usuario.apellido_pt}', '${usuario.apellido_mt}', '${usuario.correo}', '${usuario.contrasena}', '${usuario.telefono}', '${usuario.direccion}', '${usuario.puesto}', '${usuario.tipo_usuario}', ${usuario.id_sucursal})">
+                        <button class="icon-button edit-button" onclick="prepararEdicion(${usuario.id_usuario}, '${usuario.nombre_usuario}', '${usuario.apellido_pt}', '${usuario.apellido_mt}', '${usuario.correo}', '${usuario.contrasena}', '${usuario.telefono}', '${usuario.direccion}', '${usuario.puesto}', '${usuario.id_rol}', ${usuario.id_sucursal})">
                             <i class="fi fi-rr-edit"></i>
                         </button>
                         <button class="icon-button trash-button" onclick="eliminarUsuario(${usuario.id_usuario})">
@@ -68,16 +88,16 @@ function agregarUsuario() {
     let telefono = document.getElementById("telefono").value;
     let direccion = document.getElementById("direccion").value;
     let puesto = document.getElementById("puesto").value;
-    let tipo = document.getElementById("tipo").value;
+    let id_rol = document.getElementById("id_rol").value;
     let id_sucursal = document.getElementById("id_sucursal").value;
     
-    eel.agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)(function () {
+    eel.agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)(function () {
         obtenerUsuarios();
-        document.getElementById("FormContainer").style.display = "none"; // Ocultar el formulario después de agregar
+        document.getElementById("formContainer").style.display = "none"; // Ocultar el formulario después de agregar
     });
 }
 
-function prepararEdicion(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal) {
+function prepararEdicion(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal) {
     document.getElementById("edit_id_usuario").value = id_usuario;
     document.getElementById("edit_nombre").value = nombre;
     document.getElementById("edit_apellido1").value = apellido1;
@@ -87,7 +107,27 @@ function prepararEdicion(id_usuario, nombre, apellido1, apellido2, correo, contr
     document.getElementById("edit_telefono").value = telefono;
     document.getElementById("edit_direccion").value = direccion;
     document.getElementById("edit_puesto").value = puesto;
-    document.getElementById("edit_tipo").value = tipo;
+
+    // Seleccionar el rol correcta en el menú desplegable de edición
+    const editSelect2 = document.getElementById("edit_id_rol");
+
+    // Asegurar que el select tiene opciones antes de asignar el valor
+    setTimeout(() => {
+        let optionExists = false;
+
+        for (let option of editSelect2.options) {
+            if (option.value == id_rol) {
+                optionExists = true;
+                break;
+            }
+        }
+
+        if (optionExists) {
+            editSelect.value = id_rol;
+        } else {
+            console.warn(`El rol con ID ${id_rol} no está en la lista de opciones.`);
+        }
+    }, 200); // Pequeño retraso para asegurar que las opciones se han cargado
 
     // Seleccionar la sucursal correcta en el menú desplegable de edición
     const editSelect = document.getElementById("edit_id_sucursal");
@@ -125,10 +165,10 @@ function actualizarUsuario() {
     let telefono = document.getElementById("edit_telefono").value;
     let direccion = document.getElementById("edit_direccion").value;
     let puesto = document.getElementById("edit_puesto").value;
-    let tipo = document.getElementById("edit_tipo").value;
+    let id_rol = document.getElementById("edit_id_rol").value;
     let id_sucursal = document.getElementById("edit_id_sucursal").value;
 
-    eel.actualizar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)(function () {
+    eel.actualizar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)(function () {
         obtenerUsuarios();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
     });

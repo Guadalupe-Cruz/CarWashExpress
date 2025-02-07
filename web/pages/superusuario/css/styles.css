@@ -1,10 +1,16 @@
 :root {
-    --background-color: #F1F6F9; /* Color de fondo principal */
-    --second-background-color: #ffffff; /* Color de fondo para otros elementos como tarjetas */
-    --title-color: #333333; /* Color para los títulos principales */
-    --second-title-color: #666; /* Color para los subtítulos */
-    --border-radius: 15px; /* Rango general de bordes redondeados */
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra general */
+    --background-color: #F1F6F9;
+    /* Color de fondo principal */
+    --second-background-color: #ffffff;
+    /* Color de fondo para otros elementos como tarjetas */
+    --title-color: #333333;
+    /* Color para los títulos principales */
+    --second-title-color: #666;
+    /* Color para los subtítulos */
+    --border-radius: 15px;
+    /* Rango general de bordes redondeados */
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Sombra general */
     --background-color-and-lines: #6a5acd;
     --background-color-btn: #3B82F6;
     --background-color-btnHover: #1d64d8;
@@ -27,7 +33,8 @@ body {
 /* Sidebar */
 .sidebar {
     width: 250px;
-    height: 100vh; /* Ocupa toda la altura de la ventana */
+    height: 100vh;
+    /* Ocupa toda la altura de la ventana */
     background-color: var(--second-background-color);
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -36,17 +43,21 @@ body {
     position: fixed;
     left: 0;
     top: 0;
-    overflow-y: auto; /* Permite desplazamiento vertical */
-    overflow-x: hidden; /* Evita desplazamiento horizontal */
+    overflow-y: auto;
+    /* Permite desplazamiento vertical */
+    overflow-x: hidden;
+    /* Evita desplazamiento horizontal */
 }
 
 /* Opcional: Personalizar la barra de desplazamiento */
 .sidebar::-webkit-scrollbar {
-    width: 8px; /* Ancho del scrollbar */
+    width: 8px;
+    /* Ancho del scrollbar */
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2); /* Color del "pulgar" del scrollbar */
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Color del "pulgar" del scrollbar */
     border-radius: 4px;
 }
 
@@ -60,17 +71,86 @@ body {
     border: none;
 }
 
-.sidebar h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--title-color);
+@keyframes fadeScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
+@keyframes pulseGlow {
+    0% {
+        text-shadow: 0 0 4px rgba(52, 152, 219, 0.5);
+    }
+
+    50% {
+        text-shadow: 0 0 12px rgba(52, 152, 219, 0.9);
+    }
+
+    100% {
+        text-shadow: 0 0 4px rgba(52, 152, 219, 0.5);
+    }
+}
+
+.sidebar h5 {
+    font-size: 18px;
+    /* Tamaño más compacto */
+    font-weight: 700;
+    /* Sigue siendo fuerte pero no exagerado */
+    text-align: center;
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(90deg, #3498DB, #6A89CC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(52, 152, 219, 0.5);
+    box-shadow: 0px 3px 8px rgba(52, 152, 219, 0.3);
+
+    /* Animaciones */
+    animation: fadeScale 1s ease-out, pulseGlow 2s infinite alternate;
+}
+
+/* Efecto al pasar el mouse */
+.sidebar h5:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0px 5px 12px rgba(52, 152, 219, 0.5);
+}
+
+/* Estilo básico para el h3 */
 nav h3 {
     margin: 10px 0;
     font-size: 14px;
     color: var(--second-title-color);
+    font-weight: 600;
+    /* Hacer el texto más audaz */
+    text-transform: uppercase;
+    /* Hacer las letras en mayúsculas */
+    letter-spacing: 1px;
+    /* Espaciado entre letras */
 }
+
+/* Efecto al pasar el mouse */
+nav h3:hover {
+    color: var(--primary-color);
+    /* Cambia el color cuando se pasa el mouse */
+    transform: translateY(-5px);
+    /* Mueve ligeramente el texto hacia arriba */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Agrega sombra al pasar el mouse */
+}
+
 
 .sidebar ul {
     list-style: none;
@@ -152,12 +232,96 @@ header h3 {
     padding: 20px;
     border-radius: 15px;
     box-shadow: var(--box-shadow);
-    width: 75%;
+    width: 100%;
 }
 
+/* Asegúrate de importar la tipografía desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+
 h2 {
-    margin: 0 0 15px;
+    margin: 0 0 20px;
+    font-size: 1.5 rem;
+    /* Tamaño de letra moderado */
+    font-weight: 700;
+    font-family: 'Lora', serif;
+    /* Tipografía elegante y única */
+    text-transform: uppercase;
+    text-align: center;
+    color: #7296A4;
+    /* Color solicitado */
+    position: relative;
+    letter-spacing: 3px;
+    animation: fadeIn 1s ease-in-out, slideUp 1s ease-out;
 }
+
+/* Animación de aparición suave */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animación de deslizamiento hacia arriba */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Efecto de subrayado animado */
+h2::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: #7296A4;
+    margin: 10px auto 0;
+    border-radius: 1px;
+    animation: expandLine 0.6s ease-in-out forwards;
+}
+
+/* Animación de expansión de la línea debajo del h2 */
+@keyframes expandLine {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 70px;
+    }
+}
+
+/* Efecto de sombra suave al pasar el mouse */
+h2:hover {
+    color: #5c7f8b;
+    /* Tono más oscuro en hover */
+    text-shadow: 0 0 10px rgba(114, 150, 164, 0.4);
+    animation: none;
+}
+
+/* Animación de brillo sutil en hover */
+@keyframes pulseGlow {
+    0% {
+        text-shadow: 0 0 8px rgba(114, 150, 164, 0.3);
+    }
+
+    50% {
+        text-shadow: 0 0 18px rgba(114, 150, 164, 0.5);
+    }
+
+    100% {
+        text-shadow: 0 0 8px rgba(114, 150, 164, 0.3);
+    }
+}
+
 
 .top-bar {
     display: flex;
@@ -169,21 +333,43 @@ h2 {
 .search-box {
     display: flex;
     align-items: center;
-    background: #f1f1f1;
-    padding: 8px 12px;
-    border-radius: 20px;
+    background: #e6e6e6;
+    padding: 10px 15px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.search-box:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .search-box input {
     border: none;
     background: none;
     outline: none;
-    padding: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    width: 100%;
+    color: #333;
+    border-radius: 20px;
+}
+
+.search-box input::placeholder {
+    color: #bbb;
 }
 
 .search-box i {
     color: #888;
+    margin-right: 10px;
+    font-size: 18px;
+    transition: color 0.3s ease;
 }
+
+.search-box:hover i {
+    color: #333;
+}
+
 
 .btn_newClient {
     background: #3B82F6;
@@ -197,48 +383,41 @@ h2 {
 /*Estilos de tablas*/
 /* Estilo general de la tabla */
 table {
-    width: 100%; /* Se adapta al contenedor flexible */
-    max-width: 100%; /* Evita que desborde */
+    width: 100%;
+    /* Se adapta al contenedor flexible */
+    max-width: 100%;
+    /* Evita que desborde */
     border-collapse: collapse;
     background: white;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'nunito', sans-serif;
-    table-layout: fixed; /* Hace que las columnas se distribuyan proporcionalmente */
+    font-family: 'Nunito', sans-serif;
 }
 
 /* Estilo de las celdas */
-th, td {
-    white-space: normal; /* Evita saltos de línea innecesarios */
-    padding: 8px;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
+th,
+td {
+    white-space: normal;
+    /* Permite saltos de línea */
+    word-break: break-word;
+    /* Divide palabras largas si es necesario */
+    overflow-wrap: break-word;
+    padding: 10px 14px;
+    text-align: left;
     border-bottom: 1px solid #e0e0e0;
-    font-size: 16px;
+    font-size: 14px;
     color: #444;
+    line-height: 1.4;
 }
-th.small {
-    width: 40px; /* Ajusta el tamaño que necesites */
-    text-align: center;
-}
-th.small2 {
-    width: 105px; /* Ajusta el tamaño que necesites */
-    text-align: center;
-}
+
 /* Estilo de los encabezados */
 th {
     background: #7296A4;
     color: white;
-    font-weight: 200;
-    white-space: normal; /* Permite que el texto se ajuste y haga saltos de línea */
-    word-wrap: break-word; /* Permite que las palabras se dividan si es necesario */
-    overflow-wrap: break-word; /* Para mayor compatibilidad con navegadores */
-    padding: 10px;
+    font-weight: 600;
+    padding: 12px;
     text-align: left;
-    word-break: break-word; /* Si el contenido es muy largo, se ajusta por palabras completas */
-    min-width: 100px; 
 }
 
 /* Estilo de las filas alternas */
@@ -255,13 +434,14 @@ tr:hover {
 /* Estilo de las celdas de la primera columna */
 td:first-child {
     font-weight: 600;
+    color: #333;
 }
 
-/* Ajuste del tamaño de las celdas y la alineación de texto */
-td, th {
-    padding-left: 20px;
-    padding-right: 20px;
-    text-align: center;
+/* Ajuste de padding y alineación de texto */
+td,
+th {
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
 /* Agregar una sombra sutil a las celdas */
@@ -269,8 +449,18 @@ td {
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
 }
 
-/* Fuentes personalizadas */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap');
+
+
+/* Mejora la legibilidad en dispositivos móviles */
+@media (max-width: 768px) {
+
+    th,
+    td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
+
 
 .status {
     padding: 5px 12px;
@@ -279,10 +469,6 @@ td {
     font-size: 12px;
     font-weight: bold;
 }
-
-.shipped { background: #7296A4; }
-.delivered { background: #10B981; }
-.pending { background: #F59E0B; }
 
 .actions img {
     width: 20px;
@@ -295,7 +481,9 @@ td {
     color: #333;
 }
 
-.actions .edit-btn, .view-btn, .delete-btn {
+.actions .edit-btn,
+.view-btn,
+.delete-btn {
     background: transparent;
     padding: 10px 20px;
     font-size: 14px;
@@ -307,114 +495,171 @@ td {
 
 /* Form */
 .content-wrapper {
-    display: flex; /* Alinea la tabla y el formulario horizontalmente */
-    align-items: flex-start; /* Alinea ambos elementos en la parte superior */
-    gap: 20px; /* Espacio entre la tabla y el formulario */
+    display: flex;
+    /* Alinea la tabla y el formulario horizontalmente */
+    align-items: flex-start;
+    /* Alinea ambos elementos en la parte superior */
+    gap: 20px;
+    /* Espacio entre la tabla y el formulario */
 }
 
 .table-section {
-    flex: 1; /* Hace que la tabla use el espacio disponible */
-    min-width: 300px; /* Evita que se encoja demasiado */
-    max-width: 100%; /* No permite que crezca más allá del contenedor */
+    flex: 1;
+    /* Hace que la tabla use el espacio disponible */
+    min-width: 300px;
+    /* Evita que se encoja demasiado */
+    max-width: 100%;
+    /* No permite que crezca más allá del contenedor */
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300&display=swap');
 
 .form-container {
-    width: 300px; /* Establece un ancho fijo para el formulario */
-    background-color: #f8f8f8;
-    padding: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    display: none; /* El formulario está oculto inicialmente */
+    width: 220px;
+    /* Más compacto */
+    background: linear-gradient(135deg, #ffffff, #f4f8ff);
+    padding: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 5px;
+    display: none;
+
+    font-family: 'Poppins', sans-serif;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-#formContainer input, #formContainer button {
-    margin-bottom: 10px;
-}
-
-/*.form-container {
-    width: 25%;
-}*/
-
-.form {
-    width: 100%;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: var(--box-shadow);
-    background: var(--second-background-color);
+.form-container.show {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .form h2 {
-    color: var(--title-color);
-    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 10px;
+    /* ¡Texto más pequeño! */
+    font-weight: 400;
+    margin-bottom: 5px;
 }
 
-/*Input*/
+/* Input */
 .input-container {
     position: relative;
     display: flex;
     align-items: center;
-    border: 2px solid #CDDEE5;
-    border-radius: 8px;
-    padding: 10px;
+    border: 1px solid #A6B1E1;
+    border-radius: 4px;
+    padding: 2px;
     width: 100%;
     background: white;
     transition: all 0.3s;
-    margin-bottom: 15px;
+    margin-bottom: 2px;
+    /* Menos espacio entre inputs */
 }
 
 .input-container:focus-within {
-    border-color: #7296A4;
+    border-color: #6A89CC;
+    box-shadow: 0px 0px 3px rgba(106, 137, 204, 0.3);
 }
 
-.input-container input, .input-container select {
+.input-container input,
+.input-container select {
     border: none;
     outline: none;
     flex: 1;
-    font-size: 16px;
-    padding-left: 8px;
+    font-size: 8px;
+    /* Texto más pequeño */
+    padding: 2px;
     background: transparent;
+    color: #333;
+    font-weight: 300;
 }
 
 .input-container img {
-    color: var(--background-color-and-lines);
-    width: 15px;
-    height: 15px;
+    width: 8px;
+    height: 8px;
+    opacity: 0.6;
 }
 
 .input-container label {
     position: absolute;
     top: 50%;
-    left: 40px;
+    left: 18px;
     transform: translateY(-50%);
-    color: var(--background-color-and-lines);
-    font-size: 14px;
+    color: #7A8BA0;
+    font-size: 7px;
+    /* ¡Texto aún más pequeño! */
     transition: all 0.3s;
 }
 
-.input-container input:focus + label,
-.input-container input:not(:placeholder-shown) + label,
-.input-container select:focus + label,
-.input-container select:not(:placeholder-shown) + label {
-    top: -1px;
-    font-size: 12px;
+.input-container input:focus+label,
+.input-container input:not(:placeholder-shown)+label,
+.input-container select:focus+label,
+.input-container select:not(:placeholder-shown)+label {
+    top: -4px;
+    font-size: 6px;
+    /* Súper compacto */
     font-weight: bold;
-    background-color: white;
+    background: white;
+    padding: 1px 2px;
+    border-radius: 2px;
 }
 
+/* Select */
 .select-container select {
     appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-right: 20px;
+    padding-right: 14px;
+    font-size: 8px;
 }
 
 .select-container::after {
     content: '\25BC';
     position: absolute;
-    right: 10px;
-    color: var(--background-color-and-lines);
+    right: 6px;
+    color: #7A8BA0;
     pointer-events: none;
 }
+
+/* Botones */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.button-container .btn_cancelar {
+    padding: 3px 8px;
+    font-size: 8px;
+    /* Más pequeño */
+    cursor: pointer;
+    background: transparent;
+    color: #E74C3C;
+    border: 1px solid #E74C3C;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.button-container .btn_cancelar:hover {
+    background: #E74C3C;
+    color: white;
+}
+
+.button-container .btn_accion {
+    padding: 3px 8px;
+    font-size: 8px;
+    /* Más pequeño */
+    cursor: pointer;
+    border: none;
+    background: #3498DB;
+    color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.button-container .btn_accion:hover {
+    background: #2980B9;
+}
+
 
 /* Button Container */
 .button-container {
@@ -531,100 +776,178 @@ td {
     color: white;
 }
 
-/* Icon Buttons */
+/* Animaciones */
+@keyframes rotateButton {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(5px);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes glowEffect {
+    0% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Icon Buttons - Estilos Modernos */
 .icon-button {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 22px;
-    padding: 8px;
+    font-size: 18px;
+    /* Tamaño equilibrado */
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    transition: background 0.3s, color 0.3s;
+    border-radius: 50%;
+    /* Botón circular */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: slideUp 0.4s ease-in-out;
 }
 
+/* Asegurar que los iconos estén centrados */
+.icon-button i {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: transform 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+.icon-button:hover {
+    transform: scale(1.1);
+    animation: glowEffect 1.5s infinite alternate;
+}
+
+/* Botón de eliminar */
 .trash-button {
-    color: red;
+    color: #e74c3c;
+    background: linear-gradient(145deg, rgba(231, 76, 60, 0.2), rgba(192, 57, 43, 0.3));
 }
 
 .trash-button:hover {
-    color: darkred;
-    background: rgba(255, 0, 0, 0.1);
+    color: #c0392b;
+    background: linear-gradient(145deg, rgba(192, 57, 43, 0.3), rgba(231, 76, 60, 0.4));
+    animation: rotateButton 0.6s ease-in-out;
 }
 
+/* Botón de editar */
 .edit-button {
-    color: #007bff;
+    color: #3498db;
+    background: linear-gradient(145deg, rgba(52, 152, 219, 0.2), rgba(33, 125, 187, 0.3));
 }
 
 .edit-button:hover {
-    color: #0056b3;
-    background: rgba(0, 123, 255, 0.1);
+    color: #217dbb;
+    background: linear-gradient(145deg, rgba(33, 125, 187, 0.3), rgba(52, 152, 219, 0.4));
 }
 
-.recover-button {
-    color: #44A54B;
-}
-
-.recover-button:hover {
-    color: #388E3C;
-    background: rgba(68, 165, 75, 0.1);
-}
-
+/* Botón de recuperar */
+.recover-button,
 .add-button {
-    color:#44A54B;
+    color: #2ecc71;
+    background: linear-gradient(145deg, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.3));
 }
 
+.recover-button:hover,
 .add-button:hover {
-    color: #388E3C;
-    background: rgba(68, 165, 75, 0.1);
+    color: #27ae60;
+    background: linear-gradient(145deg, rgba(39, 174, 96, 0.3), rgba(46, 204, 113, 0.4));
 }
 
+/* Contenedores */
 .table-buttons {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     justify-content: center;
     align-items: center;
 }
 
 .button-container {
     display: flex;
-    justify-content: center;  /* Centra los botones horizontalmente */
-    align-items: center;      /* Centra los botones verticalmente */
-    gap: 30px;                /* Ajusta el espacio entre los botones */
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
-.icon-button {
-    margin: 0;                /* Elimina márgenes extra */
-    padding: 10px;            /* Ajusta el padding para dar un poco de espacio interno */
-    display: flex;            /* Alinea los iconos dentro de los botones */
-    justify-content: center;  /* Centra el contenido dentro de los botones */
-    align-items: center;      /* Alinea verticalmente los iconos */
+/* Efecto en el icono al hacer hover */
+.icon-button:hover i {
+    transform: scale(1.2);
 }
 
-.icon-button i {
-    font-size: 20px;          /* Ajusta el tamaño del icono */
-}
 
 /*Estilo de los input*/
 /* Estilo para el título */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Lora:wght@600&display=swap');
+
 .form-title {
-    font-size: 30px;
-    font-weight: 600;  /* Un peso más alto para hacerlo más prominente */
-    color: var(--title-color);
-    margin-bottom: 20px;
+    font-size: 14px;
+    /* Más pequeño y elegante */
+    font-weight: 700;
+    /* Negrita para mayor presencia */
+    color: var(--title-color, #2C3E50);
     text-align: center;
-    letter-spacing: 1px;
-    font-family: 'Lora', serif; /* Aplica Poppins solo al título */
+    letter-spacing: 0.6px;
+    /* Menos separación para un look más compacto */
+    font-family: 'Lora', serif;
+    background: linear-gradient(90deg, #3498DB, #6A89CC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #3498DB;
+    /* Línea más sutil */
+    display: inline-block;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.06);
+    /* Sombra más ligera */
+    transition: transform 0.3s ease, letter-spacing 0.3s ease;
 }
+
+.form-title:hover {
+    transform: scale(1.03);
+    /* Efecto sutil al pasar el mouse */
+    letter-spacing: 1px;
+    /* Un poco más de separación */
+}
+
 
 /* Estilo para los inputs */
 .styled-input {
     width: 100%;
     padding: 5px 10px;
     font-size: 15px;
-    font-family: 'Poppins', sans-serif; /* Fuente más estilizada en los inputs */
+    font-family: 'Poppins', sans-serif;
+    /* Fuente más estilizada en los inputs */
     border: 2px solid #7296A4;
     border-radius: 8px;
     background-color: #fff;
@@ -651,20 +974,84 @@ td {
     color: #6a5acd;
 }
 
-h5 {
-    font-family: 'Roboto', sans-serif; /* Aplica la fuente Roboto */
-    font-size: 18px; /* Tamaño de la fuente */
-    font-weight: 500; /* Peso medio para un texto claro */
-    color: #333; /* Color oscuro para el texto */
-    margin-bottom: 5px; /* Espacio debajo del h5 */
-    line-height: 1.4; /* Altura de línea para mejor legibilidad */
+h6 {
+    font-family: 'Poppins', sans-serif;
+    /* Fuente más moderna */
+    font-size: 12px;
+    /* Un poco más compacto */
+    font-weight: 600;
+    /* Más marcado para destacar */
+    color: #2C3E50;
+    /* Azul grisáceo elegante */
+    text-transform: uppercase;
+    /* Texto en mayúsculas para énfasis */
+    letter-spacing: 0.8px;
+    /* Espaciado para mayor claridad */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+    margin-bottom: 8px;
+    /* Espaciado inferior */
+    line-height: 1.3;
+    /* Mejor legibilidad */
+    display: inline-block;
+    /* Para mejor ajuste */
+    border-bottom: 2px solid #3498DB;
+    /* Línea decorativa */
+    padding-bottom: 3px;
+    /* Separación con la línea */
+    transition: color 0.3s ease, transform 0.2s ease;
 }
+
+h6:hover {
+    color: #2980B9;
+    /* Cambio de color al pasar el mouse */
+    transform: scale(1.05);
+    /* Efecto de aumento */
+}
+
 
 /* Si deseas agregar el salto de línea después del h5 */
 br {
-    margin-bottom: 10px; /* Espacio después del salto de línea */
+    margin-bottom: 10px;
+    /* Espacio después del salto de línea */
 }
 
 .button-large {
-    font-size: 100px; /* Tamaño del ícono */
+    font-size: 100px;
+    /* Tamaño del ícono */
 }
+
+/*Paginación*/
+#sucursales-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  #sucursales-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #sucursales-table th, #sucursales-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  #pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  #pagination-controls button {
+    padding: 5px 10px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  #pagination-controls span {
+    padding: 5px 10px;
+  }
+  

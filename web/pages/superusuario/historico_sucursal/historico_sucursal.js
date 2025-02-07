@@ -14,7 +14,7 @@ function obtenerHistorico() {
                     <td>${sucursal.direccion}</td>
                     <td>${sucursal.fecha_borrado}</td>
                     <td class="table-buttons">
-                        <button class="icon-button recover-button" onclick="recuperarSucursal(${sucursal.id_sucursal}, '${sucursal.nombre_sucursal}', '${sucursal.direccion}')">
+                        <button class="icon-button recover-button" onclick="recuperarSucursal('${sucursal.id_sucursal}', '${sucursal.nombre_sucursal}', '${sucursal.direccion}')">
                             <i class="fi fi-rr-trash-restore-alt"></i>
                         </button>
                     </td>

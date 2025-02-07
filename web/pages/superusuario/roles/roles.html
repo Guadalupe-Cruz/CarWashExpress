@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sucursales</title>
+    <title>Roles</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="text/javascript" src="/eel.js"></script>
-    <script src="sucursal.js"></script>
+    <script src="roles.js"></script>
     <link rel="stylesheet" href="../../superusuario/css/styles.css">
 </head>
 
@@ -19,10 +19,10 @@
     <div id="sidebar"></div>
     <div class="client_records">
         <header>
-            <h3>Gestión de Sucursales</h3>
+            <h3>Gestión de Roles</h3>
             <div class="user-info">
                 <div class="user-avatar"></div>
-                <span>Sucursales</span>
+                <span>Roles</span>
             </div>
         </header>
 
@@ -31,7 +31,7 @@
                 <div class="container">
                     <div class="top-bar">
                         <div class="search-box">
-                            <input type="text" id="searchInput" placeholder="Buscar Sucursal...">
+                            <input type="text" id="searchInput" placeholder="Buscar rol...">
                             <i class="fas fa-search"></i>
                         </div>
                         <button class="icon-button add-button button-large" id="showFormButton">
@@ -42,17 +42,16 @@
                     <div class="content-wrapper">
                         <div class="table-section">
                             <br>
-                            <h2>Lista de Sucursales</h2>
+                            <h2>Lista de Roles</h2>
                             <table>
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Dirección</th>
                                         <th style="text-align: center;">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tablaSucursales"></tbody>
+                                <tbody id="tablaRoles"></tbody>
                             </table>
                         </div>
                     </div>
@@ -60,15 +59,13 @@
 
                 <!-- Formulario de edición -->
                 <div id="editFormContainer" class="form-container" style="display: none;">
-                    <h4 class="form-title">Actualizar Sucursal</h4><br><br>
+                    <h4 class="form-title">Actualizar Rol</h4><br><br>
                     <input type="hidden" id="edit_id"> <!-- Campo oculto para ID -->
-                    <h6>Nombre de la sucursal:</h6>
-                    <input type="text" id="edit_nombre" class="styled-input" placeholder="">
-                    <h6>Dirección:</h6>
-                    <input type="text" id="edit_direccion" class="styled-input" placeholder="">
+                    <h6>Rol:</h6>
+                    <input type="text" id="edit_nombre" class="styled-input" placeholder="Rol">
 
                     <div class="button-container">
-                        <button onclick="actualizarSucursal()" class="icon-button add-button">
+                        <button onclick="actualizarRol()" class="icon-button add-button">
                             <i class="fi fi-rr-check"></i>
                         </button>
                         <button type="button" id="cancelEditButton" class="icon-button trash-button">
@@ -77,16 +74,14 @@
                     </div>
                 </div>
 
-                <!-- Formulario de agregar sucursal -->
+                <!-- Formulario de agregar -->
                 <div id="formContainer" class="form-container" style="display: none;">
-                    <h4 class="form-title">Agregar Sucursal</h4><br><br>
-                    <h6>Nombre de la sucursal:</h6>
-                    <input type="text" id="nombre" class="styled-input" placeholder="" required>
-                    <h6>Dirección:</h6>
-                    <input type="text" id="direccion" class="styled-input" placeholder="" required>
+                    <h4 class="form-title">Agregar Rol</h4><br><br>
+                    <h6>Rol:</h6>
+                    <input type="text" id="nombre" class="styled-input" placeholder="Rol" required>
 
                     <div class="button-container">
-                        <button onclick="agregarSucursal()" class="icon-button add-button">
+                        <button onclick="agregarRol()" class="icon-button add-button">
                             <i class="fi fi-rr-check"></i>
                         </button>
                         <button type="button" id="cancelButton" class="icon-button trash-button">
@@ -110,7 +105,7 @@
         // Función de búsqueda en la tabla
         document.getElementById('searchInput').addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#tablaSucursales tr');
+            const rows = document.querySelectorAll('#tablaRoles tr');
 
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();

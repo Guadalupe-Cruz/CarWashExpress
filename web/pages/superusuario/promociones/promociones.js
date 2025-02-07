@@ -70,7 +70,7 @@ function agregarPromocion() {
     
     eel.agregar_promocion(nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)(function () {
         obtenerPromociones();
-        document.getElementById("FormContainer").style.display = "none";
+        document.getElementById("formContainer").style.display = "none";
     });
 }
 

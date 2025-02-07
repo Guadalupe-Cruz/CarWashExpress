@@ -40,6 +40,7 @@ function agregarTipo() {
     
     eel.agregar_tipo(nombre, duracion, costo)(function () {
         obtenerTipos();
+        document.getElementById("formContainer").style.display = "none";
     });
 }
 
