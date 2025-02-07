@@ -13,9 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 let row = `<tr>
                     <td>${cliente.id_cliente}</td>
                     <td>${cliente.nombre_cliente}</td>
-                    <td>${cliente.apellido_pt}</td>
-                    <td>${cliente.apellido_mt}</td>
                     <td><span class="status delivered">${cliente.nombre_sucursal}</span></td>
+                    <td><span class="status delivered">${cliente.fecha_expiracion_membresia}</span></td>
                     <td class="actions">
                         <button class="edit-btn" data-id="${cliente.id_cliente}">
                             <img src="../../../image/pencil.png" alt="Editar">
@@ -171,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let correo = document.getElementById('correo').value.trim();
                         let telefono = document.getElementById('telefono').value.trim();
                         let id_sucursal = document.getElementById('id_sucursal').value;
+                        let fecha_expiracion_membresia = document.getElementById('fecha_expiracion_membresia').value.trim();
                     
                         // Validaciones
                         let idRegex = /^[0-9]+$/; // Solo números
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     
                         // Llamar a eel para agregar un nuevo cliente si pasa todas las validaciones
-                        eel.add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal)(function (response) {
+                        eel.add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal, fecha_expiracion_membresia)(function (response) {
                             if (response.status === "error") {
                                 showAlert(response.message); // Mostrar alerta si el correo ya está registrado
                                 return;
@@ -267,6 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 document.getElementById('correo').disabled = form.includes('viewClient.html') || form.includes('updateClient.html'); // Deshabilitar si es solo ver
                                 document.getElementById('telefono').value = client.telefono || '';
                                 document.getElementById('id_sucursal').value = client.id_sucursal || '';
+                                document.getElementById('fecha_expiracion_membresia').value = client.fecha_expiracion_membresia || '';
                             } else {
                                 console.error('Cliente no encontrado en la base de datos.');
                             }
@@ -290,6 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let telefono = document.getElementById('telefono').value;
                         let nuevo_telefono = document.getElementById('nuevo_telefono').value;
                         let id_sucursal = document.getElementById('id_sucursal').value;
+                        let fecha_expiracion_membresia = document.getElementById('fecha_expiracion_membresia').value;
 
                         // Validaciones
                         let idRegex = /^[0-9]+$/; // Solo números
@@ -339,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
 
                         // Llamar a eel para actualizar el cliente
-                        eel.update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, id_sucursal)(function (response) {
+                        eel.update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, id_sucursal, fecha_expiracion_membresia)(function (response) {
 
                             if (response.status === "error") {
                                 showAlert(response.message); // Mostrar alerta si el correo ya está registrado
