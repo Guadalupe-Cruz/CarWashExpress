@@ -304,6 +304,7 @@ def format_datetime(datetime_obj):
     """
     return datetime_obj.strftime('%Y-%m-%d %H:%M:%S') if datetime_obj else None
 
+
 def format_date(date_obj):
     """
     Formatea un objeto date en un string legible.
