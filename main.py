@@ -56,6 +56,7 @@ eel.expose(insumos_admin.delete_insumos)
 eel.expose(insumos_admin.get_insumo_by_id)
 eel.expose(insumos_admin.restore_insumos)
 eel.expose(insumos_admin.get_insumos_historical)
+eel.expose(insumos_admin.actualizar_insumos)
 
 # ---------------------------------------
 # FUNCIONES PARA SUCURSALES

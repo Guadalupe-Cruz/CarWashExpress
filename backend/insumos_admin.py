@@ -36,7 +36,7 @@ def get_insumos(page=1, limit=6):
 
     return {"insumos": insumos, "total_pages": total_pages}
 
-def add_insumo(nombre_insumo, inventario, fecha_suministro, cantidad_minima):
+def add_insumo(nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento):
     """
     Agrega un nuevo insumo.
 
@@ -45,6 +45,8 @@ def add_insumo(nombre_insumo, inventario, fecha_suministro, cantidad_minima):
         inventario (int): Cantidad en inventario.
         fecha_suministro (str): Fecha de suministro.
         cantidad_minima (int): Cantidad mínima requerida.
+        unidades (varchar): Litros, piezas, mililitros.
+        cantidad_descuento (int): Cantidad que se descontara a "inventario".
 
     Returns:
         dict: Resultado de la operación.
@@ -53,16 +55,46 @@ def add_insumo(nombre_insumo, inventario, fecha_suministro, cantidad_minima):
     cursor = connection.cursor(dictionary=True)
 
     query = """
-        INSERT INTO insumos (nombre_insumo, inventario, fecha_suministro, cantidad_minima)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO insumos (nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento)
+        VALUES (%s, %s, %s, %s, %s, %s)
     """
 
-    cursor.execute(query, (nombre_insumo, inventario, fecha_suministro, cantidad_minima))
+    cursor.execute(query, (nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento))
     connection.commit()
 
     cursor.close()
     connection.close()
     return {"status": "success", "message": "Insumo agregado correctamente."}
+
+def actualizar_insumos(p_id_insumo, p_cantidad_descuento, p_unidades, p_id_usuario, p_id_sucursal):
+    """
+    Actualiza el inventario de insumos, agrega un registro a la tabla descuentos_insumos
+    mediante un Stored Procedure.
+
+    Args:
+        nombre_insumo (str): Nombre del insumo.
+        inventario (int): Cantidad en inventario.
+        fecha_suministro (str): Fecha de suministro.
+        cantidad_minima (int): Cantidad mínima requerida.
+        unidades (varchar): Litros, piezas, mililitros.
+        cantidad_descuento (int): Cantidad que se descontara a "inventario".
+
+    Returns:
+        dict: Resultado de la operación.
+    """
+    
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    # Llamar al stored procedure
+    cursor.callproc('sp_actualizar_insumos_admin', (p_id_insumo, p_cantidad_descuento, p_unidades, p_id_usuario, p_id_sucursal))
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+    
+    return {"status": "success", "message": "Insumo descontado correctamente."}
+
 
 def get_insumo_by_id(insumoId):
     """
@@ -88,7 +120,7 @@ def get_insumo_by_id(insumoId):
 
     return insumo
 
-def update_insumo(insumoId, nombre_insumo, inventario, fecha_suministro, cantidad_minima):
+def update_insumo(insumoId, nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento):
     """
     Actualiza un insumo existente en la base de datos.
 
@@ -98,6 +130,8 @@ def update_insumo(insumoId, nombre_insumo, inventario, fecha_suministro, cantida
         inventario (int): Cantidad en inventario.
         fecha_suministro (str): Fecha de suministro.
         cantidad_minima (int): Cantidad mínima requerida.
+        unidades (varchar): Litros, piezas, mililitros.
+        cantidad_descuento (int): Cantidad que se descontara a "inventario".
 
     Returns:
         dict: Resultado de la operación.
@@ -107,11 +141,11 @@ def update_insumo(insumoId, nombre_insumo, inventario, fecha_suministro, cantida
 
     query = """
         UPDATE insumos
-        SET nombre_insumo = %s, inventario = %s, fecha_suministro = %s, cantidad_minima = %s
+        SET nombre_insumo = %s, inventario = %s, fecha_suministro = %s, cantidad_minima = %s, unidades = %s, cantidad_descuento = %s
         WHERE id_insumo = %s
     """
 
-    cursor.execute(query, (nombre_insumo, inventario, fecha_suministro, cantidad_minima, insumoId))
+    cursor.execute(query, (nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento, insumoId))
     connection.commit()
 
     cursor.close()
@@ -198,12 +232,12 @@ def get_insumos_historical(page=1, limit=6):
 
 def format_datetime(datetime_obj):
     """
-    Convierte la fecha a formato compatible con <input type='datetime-local'>.
+    Formatea un objeto datetime a un string legible.
 
     Args:
         datetime_obj (datetime): Objeto de fecha y hora.
 
     Returns:
-        str: Fecha formateada en formato 'YYYY-MM-DDTHH:MM'.
+        str: Fecha y hora en formato 'YYYY-MM-DD HH:MM:SS' o None si no hay fecha.
     """
-    return datetime_obj.strftime('%Y-%m-%dT%H:%M') if datetime_obj else None
+    return datetime_obj.strftime('%Y-%m-%d %H:%M:%S') if datetime_obj else None

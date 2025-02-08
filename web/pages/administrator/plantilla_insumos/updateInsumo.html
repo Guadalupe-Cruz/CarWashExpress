@@ -23,11 +23,29 @@
     <div class="input-container">
         <img src="../../../image/arroba.png" alt="">
         <input type="number" id="cantidad_minima" placeholder=" " required>
-        <label for="cantidad_minima">Canridad minima</label>
+        <label for="cantidad_minima">Cantidad minima</label>
+    </div>
+
+    <div class="input-container select-container">
+        <img src="../../../image/world.png" alt="">
+        <select id="unidades" required>
+            <option value="" disabled selected hidden></option>
+            <option value="litros">Litros</option>
+            <option value="piezas">Piezas</option>
+            <option value="mililitros">Mililitros</option>
+        </select>
+        <label for="unidades">Unidades</label>
+    </div>
+
+    <div class="input-container">
+        <img src="../../../image/arroba.png" alt="">
+        <input type="number" id="cantidad_descuento" placeholder=" " required>
+        <label for="cantidad_descuento">Cantidad de descuento</label>
     </div>
 
     <div class="button-container">
         <button class="btn_cancelar" type="button" id="cancelar">Cancelar</button>
+        <button class="btn_venta" type="button" id="venta">Realizar descuento</button>
         <button class="btn_accion" type="submit" id="actualizar">Actualizar</button>
     </div>
 
