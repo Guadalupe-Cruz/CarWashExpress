@@ -1,65 +1,68 @@
-let doughnutChart;
-let mixedChart;
+// Declaración de variables globales para los gráficos
+let doughnutChart;  // Referencia al gráfico de dona
+let mixedChart;     // Referencia al gráfico mixto
 
+// Evento que se ejecuta cuando el DOM ha sido completamente cargado
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadSales();
+    await loadSales();  // Cargar datos de ventas inicialmente
+
+    // Configurar la actualización automática de los datos cada 5 minutos (300,000 ms)
     setInterval(async () => {
-        await loadSales();
-    }, 300000); // 300,000 ms = 5 minutos
+        await loadSales();  // Recargar los datos periódicamente
+    }, 300000); // 5 minutos
 });
 
+// Función principal para cargar los datos del dashboard de ventas
 async function loadSales() {
-    const data = await fetchDashboardData();
-    updateSalesCards(data);
-    updateDoughnutChart(data); // Este gráfico podría ser recreado, pero asegúrate de que no se destruya innecesariamente
-    await updateMixedChart(); // Esto también debe ser solo actualización de datos, no recrear el gráfico completo
+    const data = await fetchDashboardData();  // Obtener los datos del servidor
+    updateSalesCards(data);                  // Actualizar las tarjetas de resumen
+    updateDoughnutChart(data);               // Actualizar el gráfico de dona
+    await updateMixedChart();                // Actualizar el gráfico mixto
 }
 
+// Función para obtener los datos del dashboard desde el servidor (Python)
 async function fetchDashboardData() {
-    // Obtener los datos desde Python
-    const data = await eel.obtener_datos_dashboard()();
-    return data[0]; // Asumimos que los datos de interés están en la primera posición
+    const data = await eel.obtener_datos_dashboard()();  // Llamada a la función de Python usando eel
+    return data[0];  // Asumimos que los datos de interés están en la primera posición del array
 }
 
+// Función para actualizar las tarjetas de resumen con los datos obtenidos
 function updateSalesCards(data) {
-    // Actualizar los valores de las tarjetas (gráfico)
-    document.getElementById("valor1").textContent = data.clientes_con_membresia;
-    document.getElementById("valor2").textContent = data.cliente_general;
-    document.getElementById("ingresos_hoy").textContent = `$${data.total_pagado.toLocaleString()}`;
-    document.getElementById("ventas_hoy").textContent = `Cantidad: ${data.total_pagos}`;
-    document.getElementById("lavado_bajo").textContent = `Hoy: ${data.lavado_bajo}`;
-    document.getElementById("lavado_moderado").textContent = `Hoy: ${data.lavado_moderado}`;
-    document.getElementById("lavado_profundo").textContent = `Hoy: ${data.lavado_profundo}`;
+    document.getElementById("valor1").textContent = data.clientes_con_membresia; // Clientes con membresía
+    document.getElementById("valor2").textContent = data.cliente_general;        // Clientes generales
+    document.getElementById("ingresos_hoy").textContent = `$${data.total_pagado.toLocaleString()}`; // Ingresos del día
+    document.getElementById("ventas_hoy").textContent = `Cantidad: ${data.total_pagos}`;           // Ventas del día
+    document.getElementById("lavado_bajo").textContent = `Hoy: ${data.lavado_bajo}`;              // Lavados bajos del día
+    document.getElementById("lavado_moderado").textContent = `Hoy: ${data.lavado_moderado}`;      // Lavados moderados del día
+    document.getElementById("lavado_profundo").textContent = `Hoy: ${data.lavado_profundo}`;      // Lavados profundos del día
 }
 
+// Función para actualizar o crear el gráfico de dona
 function updateDoughnutChart(data) {
-    const ctx = document.getElementById('sales_chart').getContext('2d');
-    const chartData = [data.clientes_con_membresia, data.cliente_general];
-
-    console.log("Actualizando gráfico de dona...");
+    const ctx = document.getElementById('sales_chart').getContext('2d');  // Contexto del lienzo para el gráfico
+    const chartData = [data.clientes_con_membresia, data.cliente_general]; // Datos para el gráfico de dona
 
     if (doughnutChart) {
         console.log("Gráfico de dona ya existe. Actualizando...");
-        doughnutChart.data.datasets[0].data = chartData;
-        doughnutChart.update();
+        doughnutChart.data.datasets[0].data = chartData; // Actualizar los datos existentes
+        doughnutChart.update();                          // Refrescar el gráfico
     } else {
-        console.log("Creando nuevo gráfico de dona...");
         doughnutChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 datasets: [{
                     label: 'Número de ventas',
                     data: chartData,
-                    backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)'],
-                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                    backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)'], // Colores de las secciones
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],         // Bordes
                     borderWidth: 2
                 }]
             },
             options: {
-                responsive: true,
+                responsive: true, // Adaptable al tamaño de la pantalla
                 plugins: {
                     legend: {
-                        position: 'top'
+                        position: 'top' // Posición de la leyenda
                     }
                 }
             }
@@ -67,66 +70,64 @@ function updateDoughnutChart(data) {
     }
 }
 
+// Función para actualizar o crear el gráfico mixto (barras + líneas)
 async function updateMixedChart() {
-    const data2 = await eel.obtener_todos_los_datos()();
-    const labelsDias = data2.map(item => item.fecha);
-    const datosIngresos = data2.map(item => item.total_pagado);
-    const datosVentas = data2.map(item => item.total_pagos);
+    const data2 = await eel.obtener_todos_los_datos()(); // Obtener datos históricos del servidor
+    const labelsDias = data2.map(item => item.fecha);    // Fechas para el eje X
+    const datosIngresos = data2.map(item => item.total_pagado); // Ingresos diarios
+    const datosVentas = data2.map(item => item.total_pagos);    // Ventas diarias
 
-    const ctx2 = document.getElementById('graficoMixto').getContext('2d');
-
-    console.log("Actualizando gráfico mixto...");
+    const ctx2 = document.getElementById('graficoMixto').getContext('2d'); // Contexto del gráfico mixto
 
     if (!mixedChart) {
-        console.log("Creando nuevo gráfico mixto...");
         mixedChart = new Chart(ctx2, {
-            type: 'bar',
+            type: 'bar', // Tipo base del gráfico
             data: {
-                labels: labelsDias,
+                labels: labelsDias, // Etiquetas para el eje X
                 datasets: [
                     {
                         label: 'Ingresos en pesos',
                         data: datosIngresos,
-                        type: 'bar',
+                        type: 'bar', // Tipo de gráfico para este dataset
                         backgroundColor: 'rgba(54, 162, 235, 0.6)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 2,
-                        yAxisID: 'y',
+                        yAxisID: 'y', // Eje Y principal
                         order: 1
                     },
                     {
                         label: 'Cantidad de servicios',
                         data: datosVentas,
-                        type: 'line',
+                        type: 'line', // Tipo de gráfico para este dataset
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.6)',
                         borderWidth: 2,
                         pointRadius: 6,
                         pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                        yAxisID: 'y2',
+                        yAxisID: 'y2', // Eje Y secundario (derecha)
                         order: 0
                     }
                 ]
             },
             options: {
-                responsive: true,
+                responsive: true, // Adaptable al tamaño de la pantalla
                 scales: {
                     y: {
-                        beginAtZero: true,
+                        beginAtZero: true, // Iniciar el eje Y desde 0
                         title: {
                             display: true,
-                            text: 'Ingresos en $',
+                            text: 'Ingresos en $' // Título del eje Y principal
                         }
                     },
                     y2: {
-                        beginAtZero: true,
-                        position: 'right',
+                        beginAtZero: true, // Iniciar el eje Y secundario desde 0
+                        position: 'right', // Posición a la derecha del gráfico
                         title: {
                             display: true,
-                            text: 'Cantidad de servicios',
+                            text: 'Cantidad de servicios' // Título del eje Y secundario
                         },
                         grid: {
-                            drawOnChartArea: false
+                            drawOnChartArea: false // Evitar que la cuadrícula se dibuje en el área del gráfico principal
                         }
                     }
                 }
@@ -134,10 +135,9 @@ async function updateMixedChart() {
         });
     } else {
         console.log("Gráfico mixto ya existe. Actualizando...");
-        mixedChart.data.labels = labelsDias;
-        mixedChart.data.datasets[0].data = datosIngresos;
-        mixedChart.data.datasets[1].data = datosVentas;
-        mixedChart.update();
+        mixedChart.data.labels = labelsDias;               // Actualizar etiquetas del eje X
+        mixedChart.data.datasets[0].data = datosIngresos;  // Actualizar datos de ingresos
+        mixedChart.data.datasets[1].data = datosVentas;    // Actualizar datos de ventas
+        mixedChart.update();                               // Refrescar el gráfico
     }
 }
-

@@ -1,6 +1,6 @@
 import eel
 from flask import Flask
-from backend import clientes_admin, insumos_admin, login, pagos_historial_lavados_admin, sucursales, pagos, dashboard, usuarios_admin # Importación de módulos del backend
+from backend import clientes_admin, dashboard_admin, insumos_admin, login, pagos_historial_lavados_admin, sucursales, pagos, usuarios_admin # Importación de módulos del backend
 
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
@@ -71,8 +71,8 @@ eel.expose(login.verify_login)
 # ---------------------------------------
 # FUNCIONES PARA DASHBOARD
 # ---------------------------------------
-eel.expose(dashboard.obtener_datos_dashboard)
-eel.expose(dashboard.obtener_todos_los_datos)
+eel.expose(dashboard_admin.obtener_datos_dashboard)
+eel.expose(dashboard_admin.obtener_todos_los_datos)
 
 # =======================================
 # EJECUTAR APLICACION

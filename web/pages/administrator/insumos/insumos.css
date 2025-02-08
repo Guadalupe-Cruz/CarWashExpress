@@ -228,6 +228,10 @@ th {
 .delivered { background: #10B981; }
 .pending { background: #F59E0B; }
 
+.actions {
+    display: flex;
+}
+
 .actions img {
     width: 20px;
     height: 20px;
@@ -240,7 +244,7 @@ th {
     color: #333;
 }
 
-.actions .edit-btn, .view-btn, .delete-btn {
+.actions .edit-btn, .delete-btn {
     background: transparent;
     padding: 10px 20px;
     font-size: 14px;
