@@ -7,11 +7,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const idUsuario = localStorage.getItem("id_usuario");
     const idRol = localStorage.getItem("id_rol");
-    const logoutLink = document.querySelector(".logout"); // Seleccionar el enlace con la clase "logout"
 
     // Si no hay usuario logueado, redirigir al login
     if (!idUsuario || !idRol) {
-        window.location.href = "login.html";
+        window.location.href = "/login.html";
     }
 
     await loadSales();  // Cargar datos de ventas inicialmente
@@ -21,15 +20,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         await loadSales();  // Recargar los datos periódicamente
     }, 300000); // 5 minutos
 
-    // Agregar evento de clic para cerrar sesión
-    logoutLink.addEventListener("click", function (event) {
-        event.preventDefault();  // Evita que el enlace recargue la página
-
-        // Limpiar la sesión almacenada en localStorage
-        localStorage.clear();
-
-        // Redirigir al login
-        window.location.href = "login.html";
+    document.getElementById("btn_logout").addEventListener("click", function() {
+        localStorage.clear();  // Elimina todos los datos de la sesión
+        window.location.href = "/login.html";  // Redirige al login
     });
 
 });
