@@ -17,14 +17,19 @@ function obtenerInsumos() {
                     <td>${insumo.id_insumo}</td>
                     <td>${insumo.nombre_insumo}</td>
                     <td>${insumo.inventario}</td>
+                    <td>${insumo.unidades}</td>
                     <td>${insumo.fecha_suministro}</td>
                     <td>${insumo.cantidad_minima}</td>
+                    <td>${insumo.cantidad_descuento}</td>
                     <td class="table-buttons">
-                        <button class="icon-button edit-button" onclick="prepararEdicion(${insumo.id_insumo}, '${insumo.nombre_insumo}', '${insumo.inventario}', '${insumo.fecha_suministro}', '${insumo.cantidad_minima}')">
+                        <button class="icon-button edit-button" onclick="prepararEdicion(${insumo.id_insumo}, '${insumo.nombre_insumo}', '${insumo.inventario}', '${insumo.unidades}', '${insumo.fecha_suministro}', '${insumo.cantidad_minima}', '${insumo.cantidad_descuento}')">
                             <i class="fi fi-rr-edit"></i>
                         </button>
                         <button class="icon-button trash-button" onclick="eliminarInsumo(${insumo.id_insumo})">
                             <i class="fi fi-rr-trash"></i>
+                        </button>
+                        <button class="icon-button discount-button" onclick="descontarInsumo(${insumo.id_inventario})">
+                           <i class="fi fi-rr-minus-circle"></i>
                         </button>
                     </td>
                 </tr>
@@ -37,21 +42,28 @@ function obtenerInsumos() {
 function agregarInsumo() {
     let nombre = document.getElementById("nombre").value;
     let inventario = document.getElementById("inventario").value;
-    let fecha = document.getElementById("fecha").value;
+    let unidad = document.getElementById("unidad").value;
     let cantidad = document.getElementById("cantidad").value;
-    
-    eel.agregar_insumo(nombre, inventario, fecha, cantidad)(function () {
+    let cantidad2 = document.getElementById("cantidad2").value;
+
+    // No se pasa la fecha, ya que se establece automáticamente en el backend
+    eel.agregar_insumo(nombre, inventario, unidad, cantidad, cantidad2)(function () {
         obtenerInsumos();
         document.getElementById("formContainer").style.display = "none";
     });
 }
 
-function prepararEdicion(id, nombre, inventario, fecha, cantidad) {
+function prepararEdicion(id, nombre, inventario, unidad, fecha, cantidad, cantidad2) {
     document.getElementById("edit_id").value = id;
     document.getElementById("edit_nombre").value = nombre;
     document.getElementById("edit_inventario").value = parseInt(inventario);
+    document.getElementById("edit_unidad").value = unidad;
     document.getElementById("edit_fecha").value = fecha.replace(" ", "T").slice(0, 16);
     document.getElementById("edit_cantidad").value = parseInt(cantidad);
+    document.getElementById("edit_cantidad2").value = parseInt(cantidad2);
+
+    // Deshabilitar el campo de fecha para evitar su modificación
+    document.getElementById("edit_fecha").disabled = true;
 
     // Mostrar el formulario de edición
     document.getElementById("editFormContainer").style.display = "block";
@@ -61,10 +73,11 @@ function actualizarInsumo() {
     let id = document.getElementById("edit_id").value;
     let nombre = document.getElementById("edit_nombre").value;
     let inventario = document.getElementById("edit_inventario").value;
-    let fecha = document.getElementById("edit_fecha").value;
+    let unidad = document.getElementById("edit_unidad").value;
     let cantidad = document.getElementById("edit_cantidad").value;
+    let cantidad2 = document.getElementById("edit_cantidad2").value;
 
-    eel.actualizar_insumo(id, nombre, inventario, fecha, cantidad)(function () {
+    eel.actualizar_insumo(id, nombre, inventario, unidad, cantidad, cantidad2)(function () {
         obtenerInsumos();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
     });

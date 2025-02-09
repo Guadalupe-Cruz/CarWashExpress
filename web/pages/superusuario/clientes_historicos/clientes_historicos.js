@@ -15,10 +15,11 @@ function obtenerHistorico() {
                     <td>${cliente.apellido_mt}</td>
                     <td>${cliente.correo}</td>
                     <td>${cliente.telefono}</td>
+                    <td>${cliente.fecha_expiracion_membresia}</td>
                     <td>${cliente.id_sucursal}</td>
                     <td>${cliente.fecha_borrado}</td>
                     <td class="table-buttons">
-                        <button class="icon-button recover-button" onclick="recuperarCliente(${cliente.id_cliente}, '${cliente.nombre_cliente}', '${cliente.apellido_pt}', '${cliente.apellido_mt}',  '${cliente.correo}', '${cliente.telefono}', '${cliente.id_sucursal}')">
+                        <button class="icon-button recover-button" onclick="recuperarCliente(${cliente.id_cliente}, '${cliente.nombre_cliente}', '${cliente.apellido_pt}', '${cliente.apellido_mt}',  '${cliente.correo}', '${cliente.telefono}', '${cliente.fecha_expiracion_membresia}', '${cliente.id_sucursal}')">
                             <i class="fi fi-rr-trash-restore-alt"></i>
                         </button>
                     </td>
@@ -29,8 +30,8 @@ function obtenerHistorico() {
     });
 }
 
-function recuperarCliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal) {
-    eel.recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)(function () {
+function recuperarCliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal) {
+    eel.recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)(function () {
         obtenerHistorico();
     });
 }

@@ -33,7 +33,7 @@
                             <i class="fas fa-search"></i>
                         </div>
                         <button class="icon-button add-button button-large" id="showFormButton">
-                            <i class="fi fi-rr-add"> Agregar</i>
+                            <i class="fi fi-rr-add"></i>
                         </button>
                     </div>
 
@@ -50,6 +50,7 @@
                                         <th>Apellido Materno</th>
                                         <th>Correo</th>
                                         <th>Teléfono</th>
+                                        <th>Expiración de membresia</th>
                                         <th>Sucursal</th>
                                         <th style="text-align: center;">Acciones</th>
                                     </tr>
@@ -75,6 +76,7 @@
                     <input type="email" id="edit_correo" class="styled-input" placeholder="Correo">
                     <h6>Teléfono:</h6>
                     <input type="text" id="edit_telefono" class="styled-input" placeholder="Teléfono">
+                    <input type="hidden" id="edit_membresia">
                     <h6>Sucursal:</h6>
                     <select id="edit_id_sucursal" class="styled-input">
                         <!-- Las opciones se cargarán dinámicamente aquí -->
@@ -106,6 +108,8 @@
                     <input type="email" id="correo" class="styled-input" placeholder="Correo">
                     <h6>Teléfono:</h6>
                     <input type="text" id="telefono" class="styled-input" placeholder="Teléfono" required>
+                    <h6>Fecha de membresia:</h6>
+                    <input type="datetime-local" id="membresia" class="styled-input" placeholder="">
                     <h6>Sucursal:</h6>
                     <select id="id_sucursal" class="styled-input"></select>
 

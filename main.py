@@ -96,12 +96,12 @@ def obtener_insumos():
     return get_insumos()
 
 @eel.expose
-def agregar_insumo(nombre, inventario, fecha, cantidad):
-    add_insumo(nombre, inventario, fecha, cantidad)
+def agregar_insumo(nombre, inventario, unidad, fecha, cantidad, cantidad2):
+    add_insumo(nombre, inventario, unidad, fecha, cantidad, cantidad2)
 
 @eel.expose
-def actualizar_insumo(id_insumo, nombre, inventario, fecha, cantidad):
-    update_insumo(id_insumo, nombre, inventario, fecha, cantidad)
+def actualizar_insumo(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2):
+    update_insumo(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2)
 
 @eel.expose
 def eliminar_insumo(id_insumo):
@@ -112,8 +112,8 @@ def obtener_historico_insumo():
     return get_historico_insumos()
 
 @eel.expose
-def recuperar_insumo_exposed(id_insumo, nombre, inventario, fecha, cantidad):
-    recuperar_insumo(id_insumo, nombre, inventario, fecha, cantidad)
+def recuperar_insumo_exposed(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2):
+    recuperar_insumo(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2)
 
 # Funciones para clientes
 @eel.expose
@@ -121,12 +121,12 @@ def obtener_clientes():
     return get_clientes()
 
 @eel.expose
-def agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
-    add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+def agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal):
+    add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)
 
 @eel.expose
-def actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
-    update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+def actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal):
+    update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)
 
 @eel.expose
 def eliminar_cliente(id_cliente):
@@ -137,8 +137,8 @@ def obtener_historico_cliente():
     return get_historico_clientes()
 
 @eel.expose
-def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
-    recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal):
+    recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)
 
 # Funciones para promociones
 @eel.expose
