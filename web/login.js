@@ -7,23 +7,39 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // Agregar evento al botón de login
+    // Evento para el botón de login
     document.getElementById("btn_login").addEventListener("click", function(event) {
-        event.preventDefault();  // Evita que el formulario se envíe de forma tradicional
+        event.preventDefault();
 
-        // Obtener valores de los campos de entrada
         const correo = document.getElementById("correo").value;
         const contrasena = document.getElementById("contrasena").value;
 
-        // Llamar a la función de verificación de login en el backend
+        // Llamada a la función de Python
         eel.verify_login(correo, contrasena)(function(response) {
-            // Si el login es exitoso, redirigir al dashboard
             if (response.mensaje === "Login exitoso") {
-                window.location.href = "pages/administrator/dashboard/dashboard.html";
+                // Guardar datos del usuario en localStorage (para uso en el frontend)
+                localStorage.setItem("id_usuario", response.id_usuario);
+                localStorage.setItem("nombre_usuario", response.nombre_usuario);
+                localStorage.setItem("id_rol", response.id_rol);
+                localStorage.setItem("id_sucursal", response.id_sucursal);
+
+                // Redirigir según el rol
+                if (response.id_rol === 3) {
+                    window.location.href = "/pages/superuser/historico_usuarios/historico_usuarios.html";
+                }
+                
+                if (response.id_rol === 1) {
+                    window.location.href = "/pages/administrator/dashboard/dashboard.html";
+                }
+
+                if (response.id_rol === 2) {
+                    alert("Acceso denegado para un auxiliar.");
+                }
+
             } else {
-                // Mostrar mensaje de error en la interfaz
-                document.getElementById("message").innerText = response.mensaje;
+                alert("Credenciales incorrectas. Intenta de nuevo.");
             }
         });
     });
+
 });

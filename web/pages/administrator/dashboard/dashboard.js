@@ -4,12 +4,34 @@ let mixedChart;     // Referencia al gráfico mixto
 
 // Evento que se ejecuta cuando el DOM ha sido completamente cargado
 document.addEventListener("DOMContentLoaded", async function () {
+
+    const idUsuario = localStorage.getItem("id_usuario");
+    const idRol = localStorage.getItem("id_rol");
+    const logoutLink = document.querySelector(".logout"); // Seleccionar el enlace con la clase "logout"
+
+    // Si no hay usuario logueado, redirigir al login
+    if (!idUsuario || !idRol) {
+        window.location.href = "login.html";
+    }
+
     await loadSales();  // Cargar datos de ventas inicialmente
 
     // Configurar la actualización automática de los datos cada 5 minutos (300,000 ms)
     setInterval(async () => {
         await loadSales();  // Recargar los datos periódicamente
     }, 300000); // 5 minutos
+
+    // Agregar evento de clic para cerrar sesión
+    logoutLink.addEventListener("click", function (event) {
+        event.preventDefault();  // Evita que el enlace recargue la página
+
+        // Limpiar la sesión almacenada en localStorage
+        localStorage.clear();
+
+        // Redirigir al login
+        window.location.href = "login.html";
+    });
+
 });
 
 // Función principal para cargar los datos del dashboard de ventas
