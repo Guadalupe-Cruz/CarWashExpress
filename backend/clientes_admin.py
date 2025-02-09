@@ -1,4 +1,5 @@
 from backend.database import get_db_connection
+from backend.sesion import get_session
 
 # ==============================
 # FUNCIONES CRUD PARA CLIENTES
@@ -6,7 +7,7 @@ from backend.database import get_db_connection
 
 def get_clients(page=1, limit=6):
     """
-    Obtiene la lista de clientes con paginación.
+    Obtiene la lista de clientes con paginación, filtrados por id_sucursal.
     
     Args:
         page (int): Número de la página actual.
@@ -15,12 +16,16 @@ def get_clients(page=1, limit=6):
     Returns:
         dict: Diccionario con la lista de clientes y el total de páginas.
     """
+    
+    session = get_session()  # Obtener los datos de la sesión actual
+    idsucursal = session.get("id_sucursal")
+    
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
     # Cálculo del offset para la paginación
     offset = (page - 1) * limit
-    cursor.execute("SELECT * FROM VW_Clientes_admin LIMIT %s OFFSET %s", (limit, offset))
+    cursor.execute("SELECT * FROM vw_clientes_admin WHERE id_sucursal = %s LIMIT %s OFFSET %s", (idsucursal, limit, offset))
     clientes = cursor.fetchall()
 
     # Formatear la fecha de expiración de la membresía
@@ -28,7 +33,7 @@ def get_clients(page=1, limit=6):
         cliente['fecha_expiracion_membresia'] = format_date(cliente['fecha_expiracion_membresia'])
 
     # Obtener el número total de clientes
-    cursor.execute("SELECT COUNT(*) AS total FROM VW_Clientes_admin")
+    cursor.execute("SELECT COUNT(*) AS total FROM vw_clientes_admin WHERE id_sucursal = %s", (idsucursal,))
     total_clients = cursor.fetchone()["total"]
 
     # Cierre de la conexión
