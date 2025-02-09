@@ -64,6 +64,12 @@ function agregarCliente() {
     let telefono = document.getElementById("telefono").value;
     let membresia = document.getElementById("membresia").value;
     let id_sucursal = document.getElementById("id_sucursal").value;
+
+    // Validaciones básicas
+    if (!nombre || !apellido1 || !apellido2 || !correo || !telefono | !membresia || !id_sucursal) {
+        showAlert("Por favor, complete todos los campos correctamente.", "info");
+        return;
+        }
     
     eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)(function () {
         obtenerClientes();
@@ -125,4 +131,22 @@ function eliminarCliente(id_cliente) {
     eel.eliminar_cliente(id_cliente)(function () {
         obtenerClientes();
     });
+}
+
+function showAlert(message, type = "info", duration = 3000) {
+    const alertContainer = document.getElementById("alert-container");
+
+    // Crear la alerta
+    const alertDiv = document.createElement("div");
+    alertDiv.classList.add("alert", type); // Agrega la clase .alert y el tipo (info, success, error, etc.)
+    alertDiv.textContent = message;
+
+    // Agregar la alerta al contenedor
+    alertContainer.appendChild(alertDiv);
+
+    // Ocultar la alerta después de un tiempo
+    setTimeout(() => {
+        alertDiv.classList.add("hidden");
+        setTimeout(() => alertDiv.remove(), 500); // Elimina el elemento del DOM después de la animación
+    }, duration);
 }

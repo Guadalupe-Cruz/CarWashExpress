@@ -35,6 +35,12 @@ def add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, memb
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
+        # Verificar si el teléfono ya existe
+        cursor.execute("SELECT COUNT(*) FROM clientes WHERE telefono = %s", (telefono,))
+        (existe,) = cursor.fetchone()
+        if existe:
+            raise ValueError("El número de teléfono ya está registrado.")
+
         cursor.execute("""
             INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia, id_sucursal)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -68,7 +74,6 @@ def update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, m
         cursor.close()
         conn.close()
 
-# Función para eliminar un cliente (moverlo al histórico)
 def delete_cliente(id_cliente):
     connection = get_db_connection()
     cursor = connection.cursor()

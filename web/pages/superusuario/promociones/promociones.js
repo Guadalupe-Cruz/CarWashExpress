@@ -62,11 +62,12 @@ function agregarPromocion() {
     let fecha2 = document.getElementById("fecha2").value;
     let id_sucursal = document.getElementById("id_sucursal").value;
 
-     // Validaciones básicas
-     if (!nombre || !descripcion || isNaN(descuento) || descuento <= 0 || !fecha1 || !fecha2 || !id_sucursal) {
-        alert("Por favor, complete todos los campos correctamente.");
-        return;
+    // Validaciones básicas
+    if (!nombre || !descripcion || isNaN(descuento) || descuento <= 0 || !fecha1 || !fecha2 || !id_sucursal) {
+    showAlert("Por favor, complete todos los campos correctamente.", "info");
+    return;
     }
+
     
     eel.agregar_promocion(nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)(function () {
         obtenerPromociones();
@@ -126,4 +127,22 @@ function eliminarPromocion(id_promocion) {
     eel.eliminar_promocion(id_promocion)(function () {
         obtenerPromociones();
     });
+}
+
+function showAlert(message, type = "info", duration = 3000) {
+    const alertContainer = document.getElementById("alert-container");
+
+    // Crear la alerta
+    const alertDiv = document.createElement("div");
+    alertDiv.classList.add("alert", type); // Agrega la clase .alert y el tipo (info, success, error, etc.)
+    alertDiv.textContent = message;
+
+    // Agregar la alerta al contenedor
+    alertContainer.appendChild(alertDiv);
+
+    // Ocultar la alerta después de un tiempo
+    setTimeout(() => {
+        alertDiv.classList.add("hidden");
+        setTimeout(() => alertDiv.remove(), 500); // Elimina el elemento del DOM después de la animación
+    }, duration);
 }

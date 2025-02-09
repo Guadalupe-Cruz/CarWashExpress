@@ -694,21 +694,51 @@ td {
     position: fixed;
     top: 20px;
     right: 20px;
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #4CAF50;
     color: white;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 16px;
+    font-weight: bold;
     z-index: 1000;
-    opacity: 0.9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: opacity 0.3s ease-out;
+    opacity: 0.95;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
+/* Icono de alerta */
+.alert::before {
+    content: "✔"; /* Puedes cambiarlo por un icono */
+    font-size: 18px;
+}
+
+/* Estilos cuando la alerta está oculta */
 .alert.hidden {
     opacity: 0;
     visibility: hidden;
+    transform: translateX(20px);
 }
+
+/* Variantes de colores para diferentes tipos de alerta */
+.alert.success {
+    background-color: #4CAF50;
+}
+
+.alert.error {
+    background-color: #D32F2F;
+}
+
+.alert.warning {
+    background-color: #FFA000;
+}
+
+.alert.info {
+    background-color: #2196F3;
+}
+
 
 /* Pagination */
 .pagination {

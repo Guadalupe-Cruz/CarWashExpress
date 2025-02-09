@@ -112,7 +112,7 @@ def obtener_historico_insumo():
     return get_historico_insumos()
 
 @eel.expose
-def recuperar_insumo_exposed(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2=0):
+def recuperar_insumo_exposed(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2):
     recuperar_insumo(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2)
 
 # Funciones para clientes
