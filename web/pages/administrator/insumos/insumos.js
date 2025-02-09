@@ -4,6 +4,14 @@ const recordsPerPage = 6;  // Número de registros a mostrar por página
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    const idUsuario = localStorage.getItem("id_usuario");
+    const idRol = localStorage.getItem("id_rol");
+
+    // Si no hay usuario logueado, redirigir al login
+    if (!idUsuario || !idRol) {
+        window.location.href = "/login.html";
+    }
+
     // Cargar los insumos iniciales
     loadInsumos(currentPage);
 
@@ -286,8 +294,6 @@ function loadForm(form, insumoId = null) {
 
                     let cantidad_descuento = document.getElementById('cantidad_descuento').value;
                     let unidades = document.getElementById('unidades').value;
-                    let id_usuario = 1;
-                    let id_sucursal = 1;
 
                     let cantidadRegex = /^[0-9]+$/; // Solo números
 
@@ -297,7 +303,7 @@ function loadForm(form, insumoId = null) {
                     }
 
                     // Llamada al servidor para actualizar el insumo
-                    eel.actualizar_insumos(window.idInsumo, cantidad_descuento, unidades, id_usuario, id_sucursal)(function (response) {
+                    eel.actualizar_insumos(window.idInsumo, cantidad_descuento, unidades)(function (response) {
                         if (response.status === "error") {
                             showAlert(response.message);
                             return;

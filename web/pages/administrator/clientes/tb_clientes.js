@@ -18,11 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(() => {
         loadClients(currentPage);  // Volver a cargar los datos de la tabla
     }, 300000); // 5 minutos
-
-    document.getElementById("btn_logout").addEventListener("click", function() {
-        localStorage.clear();  // Elimina todos los datos de la sesión
-        window.location.href = "/login.html";  // Redirige al login
-    });
     
 });
 

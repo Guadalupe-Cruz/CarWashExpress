@@ -77,6 +77,16 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById('sidebar').innerHTML = data;
+
+                // Configurar el botón de cerrar sesión después de cargar el sidebar
+                const logoutButton = document.getElementById("btn_logout");
+                if (logoutButton) {
+                    logoutButton.addEventListener("click", function() {
+                        localStorage.clear();  // Elimina todos los datos de la sesión
+                        window.location.href = "/login.html";  // Redirige al login
+                    });
+                }
+
             });
     </script>
 </body>

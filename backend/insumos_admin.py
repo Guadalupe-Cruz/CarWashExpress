@@ -1,4 +1,5 @@
 from backend.database import get_db_connection
+from backend.sesion import get_session
 
 # =================================
 # FUNCIONES CRUD PARA INSUMOS
@@ -6,7 +7,7 @@ from backend.database import get_db_connection
 
 def get_insumos(page=1, limit=6):
     """
-    Obtiene los insumos con paginación.
+    Obtiene los insumos con paginación filtrados por idsucursal.
 
     Args:
         page (int): Número de página.
@@ -15,18 +16,22 @@ def get_insumos(page=1, limit=6):
     Returns:
         dict: Diccionario con la lista de insumos y el total de páginas.
     """
+    
+    session = get_session()  # Obtener los datos de la sesión actual
+    idsucursal = session.get("id_sucursal")
+    
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
     offset = (page - 1) * limit
-    cursor.execute("SELECT * FROM insumos LIMIT %s OFFSET %s", (limit, offset))
+    cursor.execute("SELECT * FROM insumos WHERE id_sucursal = %s LIMIT %s OFFSET %s", (idsucursal, limit, offset))
     insumos = cursor.fetchall()
 
     # Formatear la fecha de suministro
     for insumo in insumos:
         insumo['fecha_suministro'] = format_datetime(insumo['fecha_suministro'])
 
-    cursor.execute("SELECT COUNT(*) AS total FROM insumos")
+    cursor.execute("SELECT COUNT(*) AS total FROM insumos WHERE id_sucursal = %s", (idsucursal,))
     total_insumos = cursor.fetchone()["total"]
 
     cursor.close()
@@ -51,22 +56,26 @@ def add_insumo(nombre_insumo, inventario, fecha_suministro, cantidad_minima, uni
     Returns:
         dict: Resultado de la operación.
     """
+    
+    session = get_session()  # Obtener los datos de la sesión actual
+    idsucursal = session.get("id_sucursal")
+    
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
     query = """
-        INSERT INTO insumos (nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        INSERT INTO insumos (nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento, id_sucursal)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 
-    cursor.execute(query, (nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento))
+    cursor.execute(query, (nombre_insumo, inventario, fecha_suministro, cantidad_minima, unidades, cantidad_descuento, idsucursal))
     connection.commit()
 
     cursor.close()
     connection.close()
     return {"status": "success", "message": "Insumo agregado correctamente."}
 
-def actualizar_insumos(p_id_insumo, p_cantidad_descuento, p_unidades, p_id_usuario, p_id_sucursal):
+def actualizar_insumos(p_id_insumo, p_cantidad_descuento, p_unidades):
     """
     Actualiza el inventario de insumos, agrega un registro a la tabla descuentos_insumos
     mediante un Stored Procedure.
@@ -83,11 +92,15 @@ def actualizar_insumos(p_id_insumo, p_cantidad_descuento, p_unidades, p_id_usuar
         dict: Resultado de la operación.
     """
     
+    session = get_session()  # Obtener los datos de la sesión actual
+    idsucursal = session.get("id_sucursal")
+    id_usuario = session.get("id_usuario");
+    
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
     # Llamar al stored procedure
-    cursor.callproc('sp_actualizar_insumos_admin', (p_id_insumo, p_cantidad_descuento, p_unidades, p_id_usuario, p_id_sucursal))
+    cursor.callproc('sp_actualizar_insumos_admin', (p_id_insumo, p_cantidad_descuento, p_unidades, id_usuario, idsucursal))
     connection.commit()
     
     cursor.close()
