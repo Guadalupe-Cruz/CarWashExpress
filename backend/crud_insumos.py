@@ -1,6 +1,6 @@
 from backend.database import get_db_connection
 
-# Función para obtener todos los insumos
+# Función para obtener todas los insumos
 def get_insumos():
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
@@ -10,22 +10,19 @@ def get_insumos():
     return insumos
 
 # Función para agregar un nuevo insumo
-def add_insumo(nombre, inventario, unidad, cantidad, cantidad2):
+def add_insumo(nombre, inventario, unidad, fecha, cantidad, cantidad2):
     connection = get_db_connection()
     cursor = connection.cursor()
-    # Establece la fecha_suministro automáticamente a la fecha y hora actual
-    cursor.execute("INSERT INTO insumos (nombre_insumo, inventario, unidades, fecha_suministro, cantidad_minima, cantidad_descuento) VALUES (%s, %s, %s, NOW(), %s, %s)", 
-                   (nombre, inventario, unidad, cantidad, cantidad2))
+    cursor.execute("INSERT INTO insumos (nombre_insumo, inventario, unidades, fecha_suministro, cantidad_minima, cantidad_descuento) VALUES (%s, %s, %s, %s, %s, %s)", (nombre, inventario, unidad, fecha, cantidad, cantidad2))
     connection.commit()
     connection.close()
 
 # Función para actualizar un insumo
-def update_insumo(id_insumo, nombre, inventario, unidad, cantidad, cantidad2):
+def update_insumo(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2):
     connection = get_db_connection()
     cursor = connection.cursor()
-    # Omite la actualización de fecha_suministro
-    cursor.execute("UPDATE insumos SET nombre_insumo=%s, inventario=%s, unidades=%s, cantidad_minima=%s, cantidad_descuento=%s WHERE id_insumo=%s",
-                   (nombre, inventario, unidad, cantidad, cantidad2, id_insumo))
+    cursor.execute("UPDATE insumos SET nombre_insumo=%s, inventario=%s, unidades=%s, fecha_suministro=%s, cantidad_minima=%s, cantidad_descuento=%s WHERE id_insumo=%s",
+                   (nombre, inventario, unidad, fecha, cantidad, cantidad2, id_insumo))
     connection.commit()
     connection.close()
 

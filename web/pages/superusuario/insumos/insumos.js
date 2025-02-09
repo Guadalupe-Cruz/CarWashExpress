@@ -43,11 +43,12 @@ function agregarInsumo() {
     let nombre = document.getElementById("nombre").value;
     let inventario = document.getElementById("inventario").value;
     let unidad = document.getElementById("unidad").value;
+    let fecha = document.getElementById("fecha").value;
     let cantidad = document.getElementById("cantidad").value;
     let cantidad2 = document.getElementById("cantidad2").value;
 
-    // No se pasa la fecha, ya que se establece automáticamente en el backend
-    eel.agregar_insumo(nombre, inventario, unidad, cantidad, cantidad2)(function () {
+    
+    eel.agregar_insumo(nombre, inventario, unidad, fecha, cantidad, cantidad2)(function () {
         obtenerInsumos();
         document.getElementById("formContainer").style.display = "none";
     });
@@ -62,9 +63,6 @@ function prepararEdicion(id, nombre, inventario, unidad, fecha, cantidad, cantid
     document.getElementById("edit_cantidad").value = parseInt(cantidad);
     document.getElementById("edit_cantidad2").value = parseInt(cantidad2);
 
-    // Deshabilitar el campo de fecha para evitar su modificación
-    document.getElementById("edit_fecha").disabled = true;
-
     // Mostrar el formulario de edición
     document.getElementById("editFormContainer").style.display = "block";
 }
@@ -74,10 +72,11 @@ function actualizarInsumo() {
     let nombre = document.getElementById("edit_nombre").value;
     let inventario = document.getElementById("edit_inventario").value;
     let unidad = document.getElementById("edit_unidad").value;
+    let fecha = document.getElementById("edit_fecha").value;
     let cantidad = document.getElementById("edit_cantidad").value;
     let cantidad2 = document.getElementById("edit_cantidad2").value;
 
-    eel.actualizar_insumo(id, nombre, inventario, unidad, cantidad, cantidad2)(function () {
+    eel.actualizar_insumo(id, nombre, inventario, unidad, fecha, cantidad, cantidad2)(function () {
         obtenerInsumos();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
     });
