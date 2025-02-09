@@ -1,6 +1,6 @@
 import eel
 from flask import Flask
-from backend import clientes_admin, dashboard_admin, insumos_admin, login, pagos_historial_lavados_admin, sucursales, pagos, usuarios_admin, sesion, descuentos_isumos_admin
+from backend import clientes_admin, dashboard_admin, insumos_admin, login, pagos_historial_lavados_admin, sucursales, usuarios_admin, sesion, descuentos_isumos_admin, ventas_admin
 
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
@@ -34,12 +34,6 @@ eel.expose(clientes_admin.get_client_by_id_hts)
 eel.expose(pagos_historial_lavados_admin.get_wash_history)
 eel.expose(pagos_historial_lavados_admin.get_wash_history_historical)
 eel.expose(pagos_historial_lavados_admin.search_wash_count_by_id)
-
-# ---------------------------------------
-# FUNCIONES PARA PAGOS
-# ---------------------------------------
-eel.expose(pagos.get_payments)
-eel.expose(pagos.get_payments_historical)
 
 # ---------------------------------------
 # FUNCIONES PARA USUARIOS
@@ -80,6 +74,11 @@ eel.expose(dashboard_admin.obtener_todos_los_datos)
 # FUNCIONES PARA DESCUENTOS DE INSUMOS
 # ---------------------------------------
 eel.expose(descuentos_isumos_admin.get_descuentos_insumos)
+
+# ---------------------------------------
+# FUNCIONES PARA VENTAS
+# ---------------------------------------
+eel.expose(ventas_admin.cierre_caja)
 
 # ---------------------------------------
 # FUNCIONES PARA SESION
