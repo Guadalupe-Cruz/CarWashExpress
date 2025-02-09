@@ -33,6 +33,7 @@ eel.expose(clientes_admin.get_client_by_id_hts)
 # ---------------------------------------
 eel.expose(pagos_historial_lavados_admin.get_wash_history)
 eel.expose(pagos_historial_lavados_admin.get_wash_history_historical)
+eel.expose(pagos_historial_lavados_admin.search_wash_count_by_id)
 
 # ---------------------------------------
 # FUNCIONES PARA PAGOS

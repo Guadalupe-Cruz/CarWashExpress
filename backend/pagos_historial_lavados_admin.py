@@ -78,6 +78,29 @@ def get_wash_history_historical(page=1, limit=7):
 
 # =======================================================================================================================
 
+def search_wash_count_by_id(client_id):
+    """
+    Obtiene la cantidad de lavados por id del cliente.
+
+    Args:
+        client_id (int): Número de la página actual.
+
+    Returns:
+        dict: Diccionario que contiene la cantidad de lavados del cliente.
+    """
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    
+    cursor.execute("SELECT * FROM vw_cantidad_lavados_admin WHERE id_cliente = %s", (client_id,))
+    cliente = cursor.fetchone()
+    
+    cursor.close()
+    connection.close()
+
+    return cliente
+
+# =======================================================================================================================
+
 def format_datetime(datetime_obj):
     """
     Formatea un objeto datetime a un string legible.

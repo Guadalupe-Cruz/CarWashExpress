@@ -28,6 +28,12 @@
                         <div class="search-box">
                             <input type="text" id="search-input" placeholder="Buscar por cliente">
                         </div>
+                        <div class="container_button">
+                            <div class="search-box">
+                                <input type="text" id="search-input-wash" placeholder="ID de cliente para cantidad de lavados">
+                            </div>
+                            <button class="cantidad_lavados" id="cantidad_lavados">Buscar</button>
+                        </div>
                     </div>
 
                     <table>
@@ -52,6 +58,28 @@
 
             </div>
         </main>
+    </div>
+
+    <!-- Alerta de Resultados (oculta por defecto) -->
+    <div id="wash-count-alert" class="alert" style="display:none;">
+        <h3>Cliente: <span id="user-name"></span></h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Lavado Básico</th>
+                    <th>Lavado Premium</th>
+                    <th>Lavado Completo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="basic-wash"></td>
+                    <td id="premium-wash"></td>
+                    <td id="full-wash"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn-close-alert" id="btn-close-alert">Cerrar</button>
     </div>
 
     <script src="./pagos_historial_lavado.js"></script>

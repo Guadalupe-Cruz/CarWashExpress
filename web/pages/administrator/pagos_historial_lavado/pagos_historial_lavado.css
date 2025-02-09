@@ -188,6 +188,14 @@ header h3 {
     color: #888;
 }
 
+.container_button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* -------------------------------------------- Table -------------------------------------------- */
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -200,6 +208,7 @@ th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    color: var(--second-title-color);
 }
 
 th {
@@ -329,4 +338,25 @@ th {
 #cancelDelete {
     background-color: gray;
     color: white;
+}
+
+/* -------------------------------------------- Lavados -------------------------------------------- */
+
+.btn-close-alert {
+    margin-top: 5px;
+    background-color: white;
+    color: var(--second-title-color);
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+}
+
+.cantidad_lavados {
+    background: #3B82F6;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    border: none;
 }

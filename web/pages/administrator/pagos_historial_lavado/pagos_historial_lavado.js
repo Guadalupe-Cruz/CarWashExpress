@@ -4,6 +4,9 @@ const recordsPerPage = 6;  // Número de registros a mostrar por página
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    const searchButton = document.getElementById("cantidad_lavados");
+    const searchInput = document.getElementById("search-input-wash");
+
     // Cargar los clientes iniciales
     loadClients(currentPage);
 
@@ -14,6 +17,18 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(() => {
         loadClients(currentPage);  // Volver a cargar los datos de la tabla
     }, 300000); // 5 minutos
+
+    // Evento para el botón de búsqueda
+    searchButton.addEventListener("click", function () {
+        const userId = searchInput.value.trim();
+
+        // Validar que el ID no esté vacío
+        if (userId) {
+            showWashCountAlert(userId); // Llamar la función para mostrar la alerta
+        } else {
+            alert("Por favor, ingrese un ID válido.");
+        }
+    });
 
 });
 
@@ -97,5 +112,36 @@ function searchTable(inputId, tableBodySelector, columnIndex) {
                 row.style.display = "none";  // Ocultar la fila si no hay coincidencia
             }
         });
+    });
+}
+
+
+// Función para mostrar la alerta con el conteo de lavados
+function showWashCountAlert(userId) {
+    const alertDiv = document.getElementById("wash-count-alert");
+    const userNameSpan = document.getElementById("user-name");
+    const basicWashTd = document.getElementById("basic-wash");
+    const premiumWashTd = document.getElementById("premium-wash");
+    const fullWashTd = document.getElementById("full-wash");
+    const closeButton = document.getElementById("btn-close-alert");
+
+    // Llamar a la función Eel para obtener el conteo de lavados
+    eel.search_wash_count_by_id(userId)(function(result) {
+        // Verificar que se hayan recibido los datos correctamente
+        if (result) {
+            // Mostrar el nombre del usuario y los conteos
+            userNameSpan.textContent = result.nombre_cliente || `Usuario ${userId}`;  // Mostrar nombre del cliente si está disponible
+            basicWashTd.textContent = `${result.lavado_basico} de 10`;  // Asumimos que el máximo es 10, ajusta según sea necesario
+            premiumWashTd.textContent = `${result.lavado_premium} de 10`;
+            fullWashTd.textContent = `${result.lavado_completo} de 10`;
+
+            // Mostrar la alerta con los resultados
+            alertDiv.style.display = "block";
+        }
+    });
+
+    // Cerrar la alerta
+    closeButton.addEventListener("click", function () {
+        alertDiv.style.display = "none";
     });
 }
