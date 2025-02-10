@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caja</title>
+    <link rel="stylesheet" href="./cierre_caja.css">
+</head>
+<body>
+
+    <!-- Aquí se incluye el sidebar como un componente -->
+    <div id="sidebar"></div>
+
+    <div class="client_records">
+        <header>
+            <h3>Panel del administrador</h3>
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span>Usuario</span>
+            </div>
+        </header>
+        <main>
+            <div class="table_container">
+
+                <div class="container">
+                    <h3>Cierre de caja por día</h3>
+                    <div class="top-bar">
+                        <div class="search-box">
+                            <input type="text" id="search-input" placeholder="Buscar por nombre">
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre del usuario</th>
+                                <th>Monto total</th>
+                                <th>Fecha de cierre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Alerta de accion -->
+    <div id="alerta" class="alert" style="display: none;">
+        <p id="mensaje-alerta"></p>
+    </div>
+
+    <!-- Alerta de eliminacion -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <p>¿Estás seguro de que quieres eliminar este cliente?</p>
+            <button id="confirmDelete">Aceptar</button>
+            <button id="cancelDelete">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="./cierre_caja.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script>
+        // Aquí cargas el sidebar desde el archivo HTML
+        fetch('../sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+
+                // Configurar el botón de cerrar sesión después de cargar el sidebar
+                const logoutButton = document.getElementById("btn_logout");
+                if (logoutButton) {
+                    logoutButton.addEventListener("click", function() {
+                        localStorage.clear();  // Elimina todos los datos de la sesión
+                        window.location.href = "/login.html";  // Redirige al login
+                    });
+                }
+
+            });
+    </script>
+    
+</body>
+</html>
