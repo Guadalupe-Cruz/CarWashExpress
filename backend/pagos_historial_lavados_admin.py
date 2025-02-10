@@ -1,8 +1,8 @@
 from backend.database import get_db_connection
 
-# =================================
+# ===============================
 # FUNCIONES PARA HISTORIAL_LAVADOS
-# =================================
+# ===============================
 
 def get_wash_history(page=1, limit=7):
     """
@@ -18,7 +18,10 @@ def get_wash_history(page=1, limit=7):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
-    offset = (page - 1) * limit  # Cálculo del desplazamiento para la paginación
+    # Cálculo del desplazamiento para la paginación
+    offset = (page - 1) * limit
+    
+    # Consulta para obtener el historial de lavados con paginación
     cursor.execute("SELECT * FROM vw_pagos_historial_lavado LIMIT %s OFFSET %s", (limit, offset))
     historial_lavados = cursor.fetchall()
 
@@ -35,7 +38,8 @@ def get_wash_history(page=1, limit=7):
     cursor.close()
     connection.close()
 
-    total_pages = (total_lavados + limit - 1) // limit  # Cálculo del total de páginas
+    # Cálculo del total de páginas
+    total_pages = (total_lavados + limit - 1) // limit
 
     return {"historial_lavados": historial_lavados, "total_pages": total_pages}
 
@@ -55,7 +59,10 @@ def get_wash_history_historical(page=1, limit=7):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
-    offset = (page - 1) * limit  # Cálculo del desplazamiento para la paginación
+    # Cálculo del desplazamiento para la paginación
+    offset = (page - 1) * limit
+    
+    # Consulta para obtener el historial de lavados eliminados con paginación
     cursor.execute("SELECT * FROM pagos_historial_lavado_historico LIMIT %s OFFSET %s", (limit, offset))
     historial_lavados = cursor.fetchall()
 
@@ -73,7 +80,8 @@ def get_wash_history_historical(page=1, limit=7):
     cursor.close()
     connection.close()
 
-    total_pages = (total_lavados + limit - 1) // limit  # Cálculo del total de páginas
+    # Cálculo del total de páginas
+    total_pages = (total_lavados + limit - 1) // limit
 
     return {"historial_lavados": historial_lavados, "total_pages": total_pages}
 
@@ -81,10 +89,10 @@ def get_wash_history_historical(page=1, limit=7):
 
 def search_wash_count_by_id(client_id):
     """
-    Obtiene la cantidad de lavados por id del cliente.
+    Obtiene la cantidad de lavados por ID del cliente.
 
     Args:
-        client_id (int): Número de la página actual.
+        client_id (int): ID del cliente.
 
     Returns:
         dict: Diccionario que contiene la cantidad de lavados del cliente.
@@ -92,6 +100,7 @@ def search_wash_count_by_id(client_id):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
     
+    # Consulta para obtener la cantidad de lavados de un cliente específico
     cursor.execute("SELECT * FROM vw_cantidad_lavados_admin WHERE id_cliente = %s", (client_id,))
     cliente = cursor.fetchone()
     

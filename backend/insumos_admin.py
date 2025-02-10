@@ -205,6 +205,8 @@ def restore_insumos(insumoId):
 
     cursor.close()
     connection.close()
+    
+# =======================================================================================================================
 
 def get_insumos_historical(page=1, limit=6):
     """

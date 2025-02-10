@@ -37,8 +37,3 @@ def verify_login(correo, contrasena):
         }
     else:
         return {"mensaje": "Credenciales incorrectas"}
-    
-
-def logout():
-    clear_session()
-    return 'login.html'

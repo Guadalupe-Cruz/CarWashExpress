@@ -1,6 +1,10 @@
 import eel
 from flask import Flask
-from backend import clientes_admin, dashboard_admin, insumos_admin, login, pagos_historial_lavados_admin, sucursales, usuarios_admin, sesion, descuentos_isumos_admin, ventas_admin
+from backend import (
+    clientes_admin, dashboard_admin, insumos_admin, login,
+    pagos_historial_lavados_admin, sucursales_admin, usuarios_admin,
+    sesion, descuentos_isumos_admin, ventas_admin
+)
 
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
@@ -9,86 +13,53 @@ app = Flask(__name__)
 eel.init("web")
 
 # =======================================
-# EXPONER TODAS LA FUNCIONES NECESARIAS
+# FUNCIÓN PARA EXPONER MÚLTIPLES FUNCIONES
 # =======================================
+def exponer_funciones(modulo, funciones):
+    for funcion in funciones:
+        eel.expose(getattr(modulo, funcion))
 
 # ---------------------------------------
-# FUNCIONES PARA CLIENTES
+# EXPOSICIÓN DE FUNCIONES AGRUPADAS
 # ---------------------------------------
-eel.expose(clientes_admin.get_clients)
-eel.expose(clientes_admin.get_client_by_id)
-eel.expose(clientes_admin.add_client)
-eel.expose(clientes_admin.update_client)
-eel.expose(clientes_admin.delete_client)
+exponer_funciones(clientes_admin, [
+    "get_clients", "get_client_by_id", "add_client", "update_client", "delete_client",
+    "restore_client", "get_client_hts", "get_client_by_id_hts"
+])
 
-# ---------------------------------------
-# FUNCIONES PARA HISTORICOS DE CLIENTES
-# ---------------------------------------
-eel.expose(clientes_admin.restore_client)
-eel.expose(clientes_admin.get_client_hts)
-eel.expose(clientes_admin.get_client_by_id_hts)
+exponer_funciones(pagos_historial_lavados_admin, [
+    "get_wash_history", "get_wash_history_historical", "search_wash_count_by_id"
+])
 
-# ---------------------------------------
-# FUNCIONES PARA HISTORIAL DE LAVADOS
-# ---------------------------------------
-eel.expose(pagos_historial_lavados_admin.get_wash_history)
-eel.expose(pagos_historial_lavados_admin.get_wash_history_historical)
-eel.expose(pagos_historial_lavados_admin.search_wash_count_by_id)
+exponer_funciones(usuarios_admin, [
+    "get_users", "get_users_historical"
+])
 
-# ---------------------------------------
-# FUNCIONES PARA USUARIOS
-# ---------------------------------------
-eel.expose(usuarios_admin.get_users)
-eel.expose(usuarios_admin.get_users_historical)
+exponer_funciones(insumos_admin, [
+    "get_insumos", "add_insumo", "update_insumo", "delete_insumos",
+    "get_insumo_by_id", "restore_insumos", "get_insumos_historical",
+    "actualizar_insumos"
+])
 
-# ---------------------------------------
-# FUNCIONES PARA INSUMOS
-# ---------------------------------------
-eel.expose(insumos_admin.get_insumos)
-eel.expose(insumos_admin.add_insumo)
-eel.expose(insumos_admin.update_insumo)
-eel.expose(insumos_admin.delete_insumos)
-eel.expose(insumos_admin.get_insumo_by_id)
-eel.expose(insumos_admin.restore_insumos)
-eel.expose(insumos_admin.get_insumos_historical)
-eel.expose(insumos_admin.actualizar_insumos)
+exponer_funciones(sucursales_admin, ["get_branches"])
 
-# ---------------------------------------
-# FUNCIONES PARA SUCURSALES
-# ---------------------------------------
-eel.expose(sucursales.get_branches)
+exponer_funciones(login, ["verify_login"])
 
-# ---------------------------------------
-# FUNCIONES PARA LOGIN
-# ---------------------------------------
-eel.expose(login.verify_login)
-eel.expose(login.logout)
+exponer_funciones(dashboard_admin, [
+    "obtener_datos_dashboard", "obtener_todos_los_datos"
+])
 
-# ---------------------------------------
-# FUNCIONES PARA DASHBOARD
-# ---------------------------------------
-eel.expose(dashboard_admin.obtener_datos_dashboard)
-eel.expose(dashboard_admin.obtener_todos_los_datos)
+exponer_funciones(descuentos_isumos_admin, ["get_descuentos_insumos"])
 
-# ---------------------------------------
-# FUNCIONES PARA DESCUENTOS DE INSUMOS
-# ---------------------------------------
-eel.expose(descuentos_isumos_admin.get_descuentos_insumos)
+exponer_funciones(ventas_admin, [
+    "cierre_caja", "cierre_caja_mes"
+])
 
-# ---------------------------------------
-# FUNCIONES PARA VENTAS
-# ---------------------------------------
-eel.expose(ventas_admin.cierre_caja)
-eel.expose(ventas_admin.cierre_caja_mes)
-
-# ---------------------------------------
-# FUNCIONES PARA SESION
-# ---------------------------------------
-eel.expose(sesion.get_session)
-eel.expose(sesion.set_session)
-eel.expose(sesion.clear_session)
+exponer_funciones(sesion, [
+    "get_session", "set_session", "clear_session"
+])
 
 # =======================================
-# EJECUTAR APLICACION
+# EJECUTAR APLICACIÓN
 # =======================================
 eel.start("login.html", size=(1024, 768))

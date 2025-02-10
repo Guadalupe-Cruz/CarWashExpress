@@ -246,6 +246,7 @@ def restore_client(id_cliente):
     cursor.close()
     connection.close()
 
+# =======================================================================================================================
 
 def get_client_hts(page=1, limit=6):
     """
@@ -278,6 +279,7 @@ def get_client_hts(page=1, limit=6):
 
     return {"clientes": clientes_eliminados, "total_pages": total_pages}
 
+# =======================================================================================================================
 
 def get_client_by_id_hts(client_id):
     """
@@ -300,6 +302,7 @@ def get_client_by_id_hts(client_id):
 
     return cliente
 
+# =======================================================================================================================
 
 def format_datetime(datetime_obj):
     """

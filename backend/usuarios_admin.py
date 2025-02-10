@@ -15,19 +15,19 @@ def get_users(page=1, limit=7):
     Returns:
         dict: Diccionario con la lista de usuarios y el total de páginas.
     """
-    connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    connection = get_db_connection()  # Establecer conexión a la base de datos
+    cursor = connection.cursor(dictionary=True)  # Crear un cursor para obtener resultados en formato de diccionario
 
-    offset = (page - 1) * limit
+    offset = (page - 1) * limit  # Calcular el desplazamiento para la paginación
     cursor.execute("SELECT * FROM vw_usuarios_admin LIMIT %s OFFSET %s", (limit, offset))
-    usuarios = cursor.fetchall()
+    usuarios = cursor.fetchall()  # Obtener la lista de usuarios
 
     # Calcular el número total de usuarios
     cursor.execute("SELECT COUNT(*) AS total FROM vw_usuarios_admin")
     total_usuarios = cursor.fetchone()["total"]
 
-    cursor.close()
-    connection.close()
+    cursor.close()  # Cerrar el cursor
+    connection.close()  # Cerrar la conexión
 
     # Calcular el total de páginas
     total_pages = (total_usuarios + limit - 1) // limit
@@ -47,14 +47,14 @@ def get_users_historical(page=1, limit=7):
     Returns:
         dict: Diccionario con la lista de usuarios históricos y el total de páginas.
     """
-    connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    connection = get_db_connection()  # Establecer conexión a la base de datos
+    cursor = connection.cursor(dictionary=True)  # Crear un cursor para obtener resultados en formato de diccionario
 
-    offset = (page - 1) * limit
+    offset = (page - 1) * limit  # Calcular el desplazamiento para la paginación
     cursor.execute("SELECT * FROM usuarios_historicos LIMIT %s OFFSET %s", (limit, offset))
-    usuarios = cursor.fetchall()
+    usuarios = cursor.fetchall()  # Obtener la lista de usuarios históricos
 
-    # Formatear las fechas 'tiempo_inicio' y 'tiempo_fin' antes de enviarlas
+    # Formatear la fecha de borrado antes de enviarla
     for usuario in usuarios:
         usuario['fecha_borrado'] = format_datetime(usuario['fecha_borrado'])
 
@@ -62,8 +62,8 @@ def get_users_historical(page=1, limit=7):
     cursor.execute("SELECT COUNT(*) AS total FROM usuarios_historicos")
     total_usuarios = cursor.fetchone()["total"]
 
-    cursor.close()
-    connection.close()
+    cursor.close()  # Cerrar el cursor
+    connection.close()  # Cerrar la conexión
 
     # Calcular el total de páginas
     total_pages = (total_usuarios + limit - 1) // limit
