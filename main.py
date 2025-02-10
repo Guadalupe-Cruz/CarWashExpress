@@ -79,6 +79,7 @@ eel.expose(descuentos_isumos_admin.get_descuentos_insumos)
 # FUNCIONES PARA VENTAS
 # ---------------------------------------
 eel.expose(ventas_admin.cierre_caja)
+eel.expose(ventas_admin.cierre_caja_mes)
 
 # ---------------------------------------
 # FUNCIONES PARA SESION
