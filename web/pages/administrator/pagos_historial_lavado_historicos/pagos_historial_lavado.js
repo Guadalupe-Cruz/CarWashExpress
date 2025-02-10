@@ -4,6 +4,9 @@ const recordsPerPage = 6;  // Número de registros a mostrar por página
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    const searchButton = document.getElementById("cantidad_lavados");
+    const searchInput = document.getElementById("search-input-wash");
+
     const idUsuario = localStorage.getItem("id_usuario");
     const idRol = localStorage.getItem("id_rol");
 
@@ -23,13 +26,24 @@ document.addEventListener("DOMContentLoaded", function () {
         loadClients(currentPage);  // Volver a cargar los datos de la tabla
     }, 300000); // 5 minutos
 
-});
+    // Evento para el botón de búsqueda
+    searchButton.addEventListener("click", function () {
+        const userId = searchInput.value.trim();
 
+        // Validar que el ID no esté vacío
+        if (userId) {
+            showWashCountAlert(userId); // Llamar la función para mostrar la alerta
+        } else {
+            alert("Por favor, ingrese un ID válido.");
+        }
+    });
+
+});
 
 // Función encargada de realizar la carga de los clientes desde el servidor
 function loadClients(page = 1) {
     // Llamada al servidor para obtener los datos de los lavados históricos (utilizando eel)
-    eel.get_descuentos_insumos(page)(function (data) {
+    eel.get_wash_history_historical(page)(function (data) {
         console.log(data);  // Para depuración, ver los datos obtenidos en la consola
 
         let tbody = document.querySelector("tbody");  // Seleccionar el cuerpo de la tabla
@@ -38,14 +52,17 @@ function loadClients(page = 1) {
         tbody.innerHTML = "";
 
         // Crear las filas de la tabla a partir de los datos recibidos
-        data.descuentos_insumos.forEach(descuento => {
+        data.historial_lavados.forEach(historial_lavado => {
             let row = `<tr>
-                <td>${descuento.id_descuento}</td>
-                <td>${descuento.cantidad_descontada}</td>
-                <td>${descuento.unidades}</td>
-                <td>${descuento.fecha_hora_descuento}</td>
-                <td><span class="status shipped">${descuento.nombre_usuario}</span></td>
-                <td><span class="status delivered">${descuento.nombre_insumo}</span></td>
+                <td>${historial_lavado.id_pago_historial}</td>
+                <td>${historial_lavado.monto_pagado}</td>
+                <td>${historial_lavado.metodo_pago}</td>
+                <td>${historial_lavado.fecha_pago}</td>
+                <td><span class="status shipped">${historial_lavado.id_cliente}</span></td>
+                <td><span class="status delivered">${historial_lavado.id_lavado}</span></td>
+                <td>${historial_lavado.tiempo_inicio}</td>
+                <td>${historial_lavado.tiempo_fin}</td>
+                <td>${historial_lavado.fecha_borrado}</td>
             </tr>`;
             tbody.innerHTML += row;  // Agregar la fila generada a la tabla
         });
@@ -54,7 +71,6 @@ function loadClients(page = 1) {
         renderPagination(data.total_pages, page);
     });
 }
-
 
 // Función para renderizar los botones de la paginación
 function renderPagination(totalPages, currentPage) {
@@ -84,7 +100,6 @@ function renderPagination(totalPages, currentPage) {
     }
 }
 
-
 // Función para realizar la búsqueda en la tabla según el valor del input
 function searchTable(inputId, tableBodySelector, columnIndex) {
     // Obtener el valor del input de búsqueda
@@ -106,5 +121,36 @@ function searchTable(inputId, tableBodySelector, columnIndex) {
                 row.style.display = "none";  // Ocultar la fila si no hay coincidencia
             }
         });
+    });
+}
+
+
+// Función para mostrar la alerta con el conteo de lavados
+function showWashCountAlert(userId) {
+    const alertDiv = document.getElementById("wash-count-alert");
+    const userNameSpan = document.getElementById("user-name");
+    const basicWashTd = document.getElementById("basic-wash");
+    const premiumWashTd = document.getElementById("premium-wash");
+    const fullWashTd = document.getElementById("full-wash");
+    const closeButton = document.getElementById("btn-close-alert");
+
+    // Llamar a la función Eel para obtener el conteo de lavados
+    eel.search_wash_count_by_id(userId)(function(result) {
+        // Verificar que se hayan recibido los datos correctamente
+        if (result) {
+            // Mostrar el nombre del usuario y los conteos
+            userNameSpan.textContent = result.nombre_cliente || `Usuario ${userId}`;  // Mostrar nombre del cliente si está disponible
+            basicWashTd.textContent = `${result.lavado_basico} de 10`;  // Asumimos que el máximo es 10, ajusta según sea necesario
+            premiumWashTd.textContent = `${result.lavado_premium} de 10`;
+            fullWashTd.textContent = `${result.lavado_completo} de 10`;
+
+            // Mostrar la alerta con los resultados
+            alertDiv.style.display = "block";
+        }
+    });
+
+    // Cerrar la alerta
+    closeButton.addEventListener("click", function () {
+        alertDiv.style.display = "none";
     });
 }

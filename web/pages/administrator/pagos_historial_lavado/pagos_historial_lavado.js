@@ -7,6 +7,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("cantidad_lavados");
     const searchInput = document.getElementById("search-input-wash");
 
+    const idUsuario = localStorage.getItem("id_usuario");
+    const idRol = localStorage.getItem("id_rol");
+
+    // Si no hay usuario logueado, redirigir al login
+    if (!idUsuario || !idRol) {
+        window.location.href = "/login.html";
+    }
+
     // Cargar los clientes iniciales
     loadClients(currentPage);
 

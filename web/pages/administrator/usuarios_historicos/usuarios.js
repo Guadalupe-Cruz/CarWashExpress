@@ -1,5 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    const idUsuario = localStorage.getItem("id_usuario");
+    const idRol = localStorage.getItem("id_rol");
+
+    // Si no hay usuario logueado, redirigir al login
+    if (!idUsuario || !idRol) {
+        window.location.href = "/login.html";
+    }
+
     let currentPage = 1;  // Página actual
     const recordsPerPage = 6;  // Número de registros por página
     const paginationContainer = document.getElementById("pagination");

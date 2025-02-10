@@ -4,6 +4,14 @@ const recordsPerPage = 6;  // Número de registros a mostrar por página
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    const idUsuario = localStorage.getItem("id_usuario");
+    const idRol = localStorage.getItem("id_rol");
+
+    // Si no hay usuario logueado, redirigir al login
+    if (!idUsuario || !idRol) {
+        window.location.href = "/login.html";
+    }
+
     // Cargar los usuarios iniciales
     loadUsers(currentPage);
 

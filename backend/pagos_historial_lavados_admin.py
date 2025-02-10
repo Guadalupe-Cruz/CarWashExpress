@@ -56,17 +56,18 @@ def get_wash_history_historical(page=1, limit=7):
     cursor = connection.cursor(dictionary=True)
 
     offset = (page - 1) * limit  # Cálculo del desplazamiento para la paginación
-    cursor.execute("SELECT * FROM VW_Historial_Lavados_Eliminados LIMIT %s OFFSET %s", (limit, offset))
+    cursor.execute("SELECT * FROM pagos_historial_lavado_historico LIMIT %s OFFSET %s", (limit, offset))
     historial_lavados = cursor.fetchall()
 
     # Formatear las fechas 'tiempo_inicio', 'tiempo_fin' y 'fecha_borrado' antes de enviarlas
     for historial in historial_lavados:
         historial['tiempo_inicio'] = format_datetime(historial['tiempo_inicio'])
         historial['tiempo_fin'] = format_datetime(historial['tiempo_fin'])
+        historial['fecha_pago'] = format_datetime(historial['fecha_pago'])
         historial['fecha_borrado'] = format_datetime(historial['fecha_borrado'])
 
     # Calcular el número total de registros eliminados
-    cursor.execute("SELECT COUNT(*) AS total FROM VW_Historial_Lavados_Eliminados")
+    cursor.execute("SELECT COUNT(*) AS total FROM pagos_historial_lavado_historico")
     total_lavados = cursor.fetchone()["total"]
 
     cursor.close()
