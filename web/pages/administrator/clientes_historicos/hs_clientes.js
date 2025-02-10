@@ -18,9 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             data.clientes.forEach(cliente => {
                 let row = `<tr>
                     <td>${cliente.id_cliente}</td>
-                    <td>${cliente.nombre_cliente}</td>
-                    <td>${cliente.apellido_pt}</td>
-                    <td>${cliente.apellido_mt}</td>
+                    <td>${cliente.nombre_completo}</td>
                     <td>${cliente.correo}</td>
                     <td>${cliente.telefono}</td>
                     <td><span class="status delivered">${cliente.nombre_sucursal}</span></td>

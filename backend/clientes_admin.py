@@ -262,13 +262,13 @@ def get_client_hts(page=1, limit=6):
     cursor = connection.cursor(dictionary=True)
 
     offset = (page - 1) * limit
-    cursor.execute("SELECT * FROM VW_Clientes_Eliminados LIMIT %s OFFSET %s", (limit, offset))
+    cursor.execute("SELECT * FROM vw_clientes_historicos_admin LIMIT %s OFFSET %s", (limit, offset))
     clientes_eliminados = cursor.fetchall()
 
     for cliente in clientes_eliminados:
         cliente['fecha_borrado'] = format_datetime(cliente['fecha_borrado'])
 
-    cursor.execute("SELECT COUNT(*) AS total FROM VW_Clientes_Eliminados")
+    cursor.execute("SELECT COUNT(*) AS total FROM vw_clientes_historicos_admin")
     total_clients = cursor.fetchone()["total"]
 
     cursor.close()
