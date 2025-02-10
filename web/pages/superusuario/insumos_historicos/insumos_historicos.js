@@ -13,12 +13,11 @@ function obtenerHistorico() {
                     <td>${insumo.nombre_insumo}</td>
                     <td>${insumo.inventario}</td>
                     <td>${insumo.unidades}</td>
-                    <td>${insumo.fecha_suministro}</td>
                     <td>${insumo.cantidad_minima}</td>
-                    <td>${insumo.cantidad_descuento}</td>
+                    <td>${insumo.fecha_suministro}</td>
                     <td>${insumo.fecha_borrado}</td>
                     <td class="table-buttons">
-                        <button class="icon-button recover-button" onclick="recuperarInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo}', '${insumo.inventario}', '${insumo.unidades}', '${insumo.fecha_suministro}',  '${insumo.cantidad_minima}', '${insumo.cantidad_descuento}')">
+                        <button class="icon-button recover-button" onclick="recuperarInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo}', '${insumo.inventario}', '${insumo.unidades}', '${insumo.cantidad_minima}')">
                             <i class="fi fi-rr-trash-restore-alt"></i>
                         </button>
                     </td>
@@ -29,8 +28,8 @@ function obtenerHistorico() {
     });
 }
 
-function recuperarInsumo(id, nombre, inventario, unidad, fecha, cantidad, cantidad2) {
-    eel.recuperar_insumo_exposed(id, nombre, inventario, unidad, fecha, cantidad, cantidad2)(function () {
+function recuperarInsumo(id, nombre, inventario, unidad, cantidad) {
+    eel.recuperar_insumo_exposed(id, nombre, inventario, unidad, cantidad)(function () {
         obtenerHistorico();
     });
 }

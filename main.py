@@ -96,12 +96,12 @@ def obtener_insumos():
     return get_insumos()
 
 @eel.expose
-def agregar_insumo(nombre, inventario, unidad, fecha, cantidad, cantidad2):
-    add_insumo(nombre, inventario, unidad, fecha, cantidad, cantidad2)
+def agregar_insumo(nombre, inventario, unidad, cantidad):
+    add_insumo(nombre, inventario, unidad, cantidad)
 
 @eel.expose
-def actualizar_insumo(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2):
-    update_insumo(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2)
+def actualizar_insumo(id_insumo, nombre, inventario, unidad, cantidad):
+    update_insumo(id_insumo, nombre, inventario, unidad,cantidad)
 
 @eel.expose
 def eliminar_insumo(id_insumo):
@@ -112,8 +112,8 @@ def obtener_historico_insumo():
     return get_historico_insumos()
 
 @eel.expose
-def recuperar_insumo_exposed(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2):
-    recuperar_insumo(id_insumo, nombre, inventario, unidad, fecha, cantidad, cantidad2)
+def recuperar_insumo_exposed(id_insumo, nombre, inventario, unidad, cantidad):
+    recuperar_insumo(id_insumo, nombre, inventario, unidad, cantidad)
 
 # Funciones para clientes
 @eel.expose

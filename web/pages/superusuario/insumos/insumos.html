@@ -50,9 +50,8 @@
                                         <th>Nombre</th>
                                         <th>Inventario</th>
                                         <th>Unidad</th>
-                                        <th>Fecha de suministro</th>
                                         <th>Cantidad minima</th>
-                                        <th>Cantidad de descuento</th>
+                                        <th>Fecha de suministro</th>
                                         <th style="text-align: center;">Acciones</th>
                                     </tr>
                                 </thead>
@@ -72,12 +71,11 @@
                     <input type="number" id="edit_inventario" class="styled-input" placeholder="">
                     <h6>Unidad:</h6>
                     <input type="text" id="edit_unidad" class="styled-input" placeholder="">
-                    <h6>Fecha de suministro:</h6>
-                    <input type="datetime-local" id="edit_fecha" class="styled-input" placeholder="">
                     <h6>Cantidad minima:</h6>
                     <input type="number" id="edit_cantidad" class="styled-input" placeholder="">
-                    <h6>Cantidad a descontar:</h6>
-                    <input type="number" id="edit_cantidad2" class="styled-input" placeholder="">
+                    <!--<h6>Fecha de suministro:</h6>
+                    <input type="datetime-local" id="edit_fecha" class="styled-input" placeholder="">-->
+                    
 
                     <div class="button-container">
                         <button onclick="actualizarInsumo()" class="icon-button add-button">
@@ -98,12 +96,10 @@
                     <input type="number" id="inventario" class="styled-input" placeholder="" required>
                     <h6>Unidad:</h6>
                     <input type="text" id="unidad" class="styled-input" placeholder="" required>
-                    <h6>Fecha de suministro:</h6>
-                    <input type="datetime-local" id="fecha" class="styled-input" placeholder="">
                     <h6>Cantidad minima:</h6>
                     <input type="number" id="cantidad" class="styled-input" placeholder="" required>
-                    <h6>Cantidad a descontar:</h6>
-                    <input type="number" id="cantidad2" class="styled-input" placeholder="" required>
+                    <!--<h6>Fecha de suministro:</h6>
+                    <input type="datetime-local" id="fecha" class="styled-input" placeholder="">-->
 
                     <div class="button-container">
                         <button onclick="agregarInsumo()" class="icon-button add-button">
