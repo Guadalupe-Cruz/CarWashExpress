@@ -1,4 +1,8 @@
 import eel
+from backend.database import get_db_connection  # Importa la función de conexión
+from backend.crud_insumos import descontar_insumo as descontar_insumo_backend
+
+
 from backend.crud_sucursal import (
     get_sucursales, add_sucursal, update_sucursal,
     delete_sucursal, get_historico_sucursales, recuperar_sucursal
@@ -38,7 +42,39 @@ from backend.crud_roles import (
     delete_rol, get_historico_roles, recuperar_rol
 )
 
+from backend.crud_detalle_insumo import (
+    get_detalles
+)
+
 eel.init("web")
+
+# ==================== LOGIN ====================
+
+@eel.expose
+def login_usuario(correo, contrasena):
+    conn = get_db_connection()
+    if not conn:
+        return {'success': False, 'message': 'Error de conexión a la base de datos'}
+    
+    try:
+        cursor = conn.cursor(dictionary=True)
+        query = """
+        SELECT id_usuario, nombre_usuario
+        FROM usuarios
+        WHERE correo = %s AND contrasena = %s
+        """
+        cursor.execute(query, (correo, contrasena))
+        user = cursor.fetchone()
+        
+        if user:
+            return {'success': True, 'user': user}
+        else:
+            return {'success': False, 'message': 'Correo o contraseña incorrectos'}
+    except Exception as e:
+        return {'success': False, 'message': str(e)}
+    finally:
+        cursor.close()
+        conn.close()
 
 # Funciones para sucursales
 @eel.expose
@@ -114,6 +150,16 @@ def obtener_historico_insumo():
 @eel.expose
 def recuperar_insumo_exposed(id_insumo, nombre, inventario, unidad, cantidad):
     recuperar_insumo(id_insumo, nombre, inventario, unidad, cantidad)
+
+#Funciones paa detalle
+@eel.expose
+def obtener_detalles():
+    return get_detalles()
+
+@eel.expose
+def descontar_insumo(id_insumo, cantidad_descontar, id_usuario):
+    return descontar_insumo_backend(id_insumo, cantidad_descontar, id_usuario)
+
 
 # Funciones para clientes
 @eel.expose
@@ -233,5 +279,4 @@ def recuperar_rol_exposed(id_rol, nombre):
     recuperar_rol(id_rol, nombre)
 
 
-
-eel.start("pages/superusuario/sucursal/sucursal.html", size=(1024, 768))
+eel.start("login.html", size=(1024, 768))

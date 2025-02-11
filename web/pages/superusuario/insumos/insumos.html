@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="/eel.js"></script>
     <script src="insumos.js"></script>
     <link rel="stylesheet" href="../../superusuario/css/styles.css">
@@ -110,6 +111,21 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Formulario de Descuento -->
+                <div id="discountFormContainer" class="form-container" style="display: none;">
+                    <h4 class="form-title">Descontar en el Inventario:</h4><br><br>
+                    <h6>Cantidad a descontar:</h6>
+                    <input type="number" id="cantidadDescontar" min="1" class="styled-input" required>
+                    <div class="button-container">
+                        <button onclick="confirmarDescuento()" class="icon-button add-button">
+                            <i class="fi fi-rr-check"></i>
+                        </button>
+                        <button type="button" id="cancelDiscountButton" class="icon-button trash-button">
+                            <i class="fi fi-rr-cross"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -146,6 +162,11 @@
         // Ocultar el formulario de edición al cancelar
         document.getElementById('cancelEditButton').addEventListener('click', function () {
             document.getElementById('editFormContainer').style.display = 'none';
+        });
+
+        // Ocultar el formulario de edición al cancelar
+        document.getElementById('cancelDiscountButton').addEventListener('click', function () {
+            document.getElementById('discountFormContainer').style.display = 'none';
         });
     </script>
 
