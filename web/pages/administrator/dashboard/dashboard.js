@@ -47,9 +47,9 @@ function updateSalesCards(data) {
     document.getElementById("valor2").textContent = data.cliente_general;        // Clientes generales
     document.getElementById("ingresos_hoy").textContent = `$${data.total_pagado.toLocaleString()}`; // Ingresos del día
     document.getElementById("ventas_hoy").textContent = `Cantidad: ${data.total_pagos}`;           // Ventas del día
-    document.getElementById("lavado_bajo").textContent = `Hoy: ${data.lavado_bajo}`;              // Lavados bajos del día
-    document.getElementById("lavado_moderado").textContent = `Hoy: ${data.lavado_moderado}`;      // Lavados moderados del día
-    document.getElementById("lavado_profundo").textContent = `Hoy: ${data.lavado_profundo}`;      // Lavados profundos del día
+    document.getElementById("lavado_bajo").textContent = `Hoy: ${data.lavado_basico}`;              // Lavados bajos del día
+    document.getElementById("lavado_moderado").textContent = `Hoy: ${data.lavado_premium}`;      // Lavados moderados del día
+    document.getElementById("lavado_profundo").textContent = `Hoy: ${data.lavado_completo}`;      // Lavados profundos del día
 }
 
 // Función para actualizar o crear el gráfico de dona
