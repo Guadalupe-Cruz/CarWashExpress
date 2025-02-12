@@ -43,9 +43,9 @@ function loadClients(page = 1) {
                 <td>${descuento.id_descuento}</td>
                 <td>${descuento.cantidad_descontada}</td>
                 <td>${descuento.unidades}</td>
-                <td>${descuento.fecha_hora_descuento}</td>
-                <td><span class="status shipped">${descuento.nombre_usuario}</span></td>
                 <td><span class="status delivered">${descuento.nombre_insumo}</span></td>
+                <td><span class="status shipped">${descuento.nombre_usuario}</span></td>
+                <td>${descuento.fecha_hora_descuento}</td>
             </tr>`;
             tbody.innerHTML += row;  // Agregar la fila generada a la tabla
         });
