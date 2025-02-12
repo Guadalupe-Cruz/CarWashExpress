@@ -33,8 +33,8 @@ from backend.crud_usuarios import (
     delete_usuario, get_historico_usuarios, recuperar_usuario
 )
 
-from backend.crud_pagos import (
-    get_pagos, delete_pago, get_historico_pagos, recuperar_pago
+from backend.crud_historial_ventas import (
+    get_ventas
 )
 
 from backend.crud_roles import (
@@ -236,22 +236,11 @@ def obtener_historico_usuario():
 def recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal):
     recuperar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)
 
-# Funciones para pagos
+# Funciones para ventas
 @eel.expose
-def obtener_pagos():
-    return get_pagos()
+def obtener_ventas():
+    return get_ventas()
 
-@eel.expose
-def eliminar_pago(id_pago):
-    delete_pago(id_pago)
-
-@eel.expose
-def obtener_historico_pago():
-    return get_historico_pagos()
-
-@eel.expose
-def recuperar_pago_exposed(id, monto, metodo, fecha, id_cliente, id_lavado):
-    recuperar_pago(id, monto, metodo, fecha, id_cliente, id_lavado)
 
 # Funciones para roles
 @eel.expose

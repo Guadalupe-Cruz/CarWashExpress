@@ -1097,3 +1097,10 @@ br {
     padding: 5px 10px;
   }
   
+.nombre-insumo-text {
+    font-weight: bold;
+    font-size: 16px; /* Tamaño de fuente más grande */
+    color: #333; /* Color de texto */
+    font-family: 'Arial', sans-serif; /* Fuente moderna */
+    font-style: italic; /* Cursiva */
+}

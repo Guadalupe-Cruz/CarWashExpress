@@ -1,40 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    background: linear-gradient(135deg, #007bff, #00d4ff);
+    margin: 0;
 }
 
 .login-container {
     background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     text-align: center;
     width: 300px;
+    animation: fadeInUp 0.6s ease-in-out;
+}
+
+h2 {
+    margin-bottom: 25px;
+    color: #333;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.input-container {
+    position: relative;
+    margin-bottom: 20px;
 }
 
 input {
-    display: block;
-    width: 100%;
+    width: 90%;
     padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: 0.3s ease-in-out;
+    background-color: #f9f9f9;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    transform: scale(1.03);
 }
 
 button {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.3s ease-in-out;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #0056b3, #004091);
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

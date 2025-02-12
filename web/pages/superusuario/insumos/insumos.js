@@ -28,7 +28,7 @@ function obtenerInsumos() {
                         <button class="icon-button trash-button" onclick="eliminarInsumo(${insumo.id_insumo})">
                             <i class="fi fi-rr-trash"></i>
                         </button>
-                        <button class="icon-button discount-button" onclick="descontarInsumo(${insumo.id_insumo})">
+                        <button class="icon-button discount-button" onclick="descontarInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo.replace(/'/g, "\\'")}')">
                            <i class="fi fi-rr-minus-circle"></i>
                         </button>
                     </td>
@@ -82,7 +82,9 @@ function eliminarInsumo(id_insumo) {
 
 
 //Descontar
-function descontarInsumo(id_insumo) {
+function descontarInsumo(id_insumo, nombreInsumo) {
+    document.getElementById("nombreInsumoText").textContent = nombreInsumo;
+
     document.getElementById("discountFormContainer").style.display = "block";
     document.getElementById("discountFormContainer").dataset.idInsumo = id_insumo;
 }
