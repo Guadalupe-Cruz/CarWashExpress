@@ -178,6 +178,12 @@ function confirmarDescuento() {
         return;
     }
 
+    // Verificar si la cantidad a descontar es un decimal
+    if (cantidadDescontar % 1 !== 0) {
+        Swal.fire("Error", "No se puede descontar una cantidad decimal, las unidades son piezas.", "error");
+        return;
+    }
+
     eel.descontar_insumo(id_insumo, cantidadDescontar, id_usuario)(function(response) {
         if (response.success) {
             Swal.fire("Éxito", "El descuento se ha realizado correctamente.", "success");
@@ -188,3 +194,4 @@ function confirmarDescuento() {
         document.getElementById("discountFormContainer").style.display = "none";
     });
 }
+

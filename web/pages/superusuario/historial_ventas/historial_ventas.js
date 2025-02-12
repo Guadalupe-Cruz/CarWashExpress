@@ -2,6 +2,18 @@ document.addEventListener("DOMContentLoaded", function () {
     obtenerVentas();
     obtenerClientes();
     obtenerTipos();
+
+    document.getElementById("btnReporteDia").addEventListener("click", function () {
+        obtenerReporte("day");
+    });
+    
+    document.getElementById("btnReporteSemana").addEventListener("click", function () {
+        obtenerReporte("week");
+    });
+    
+    document.getElementById("btnReporteMes").addEventListener("click", function () {
+        obtenerReporte("month");
+    });
 });
 
 function obtenerClientes() {
@@ -28,7 +40,7 @@ function obtenerTipos() {
 
         tipos.forEach(tipo => {
             const option = document.createElement('option');
-            option.value = tipo.id_cliente;
+            option.value = tipo.id_lavado;
             option.textContent = tipo.nombre_lavado;
             select.appendChild(option.cloneNode(true)); // Clonar la opción para el select de edición
             editSelect.appendChild(option);
@@ -55,5 +67,28 @@ function obtenerVentas() {
             `;
             tabla.innerHTML += fila;
         });
+    });
+}
+
+//Reportes
+// Función para descargar reporte por día
+function obtenerReporte(tipo) {
+    let eelFunction = {
+        "day": eel.get_report_day,
+        "week": eel.get_report_week,
+        "month": eel.get_report_month
+    };
+
+    eelFunction[tipo]()(function (filePath) {
+        if (filePath) {
+            let link = document.createElement("a");
+            link.href = filePath;
+            link.download = filePath.split("/").pop(); // Nombre del archivo
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            alert("Error al generar el reporte.");
+        }
     });
 }

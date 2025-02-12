@@ -3,6 +3,7 @@ from backend.database import get_db_connection  # Importa la función de conexi�
 from backend.crud_insumos import descontar_insumo as descontar_insumo_backend
 
 
+
 from backend.crud_sucursal import (
     get_sucursales, add_sucursal, update_sucursal,
     delete_sucursal, get_historico_sucursales, recuperar_sucursal
@@ -34,7 +35,7 @@ from backend.crud_usuarios import (
 )
 
 from backend.crud_historial_ventas import (
-    get_ventas
+    get_ventas, get_report_by_day, get_report_by_week, get_report_by_month, generate_pdf
 )
 
 from backend.crud_roles import (
@@ -266,6 +267,26 @@ def obtener_historico_rol():
 @eel.expose
 def recuperar_rol_exposed(id_rol, nombre):
     recuperar_rol(id_rol, nombre)
+    
+#Funciones para reportes
+@eel.expose
+def get_report_day():
+    report_data = get_report_by_day()
+    file_path = generate_pdf(report_data, "día")
+    return file_path  # Devolvemos la ruta del archivo PDF
+
+@eel.expose
+def get_report_week():
+    report_data = get_report_by_week()
+    file_path = generate_pdf(report_data, "semana")
+    return file_path
+
+@eel.expose
+def get_report_month():
+    report_data = get_report_by_month()
+    file_path = generate_pdf(report_data, "mes")
+    return file_path
+
 
 
 eel.start("login.html", size=(1024, 768))

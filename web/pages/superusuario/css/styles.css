@@ -1104,3 +1104,46 @@ br {
     font-family: 'Arial', sans-serif; /* Fuente moderna */
     font-style: italic; /* Cursiva */
 }
+
+/*Botones de reportes*/
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
+
+.reporte-btn {
+    background: none;
+    color: #333;
+    border: 2px solid #333;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    min-width: 140px;
+    margin: 5px;  /* Reducir el margen para que estén más juntos */
+}
+
+.reporte-btn i {
+    font-size: 14px;
+}
+
+.reporte-btn:hover {
+    background: #333;
+    color: white;
+    transform: scale(1.05);
+}
+
+.reporte-btn:active {
+    transform: scale(1);
+}
+
+/* Contenedor para que los botones estén aún más juntos */
+.reporte-container {
+    display: flex;
+    gap: 5px; /* Espacio mínimo entre botones */
+    justify-content: center;
+    flex-wrap: wrap;
+}
