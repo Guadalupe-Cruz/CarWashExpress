@@ -164,7 +164,7 @@ header h3 {
     max-width: none;
 }
 
-h3 {
+.container h3 {
     margin: 0 0 15px;
     color: var(--second-title-color);
 }
