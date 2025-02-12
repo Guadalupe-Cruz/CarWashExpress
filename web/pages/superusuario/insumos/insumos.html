@@ -71,12 +71,12 @@
                     <h6>Inventario:</h6>
                     <input type="number" id="edit_inventario" class="styled-input" placeholder="">
                     <h6>Unidad:</h6>
-                    <input type="text" id="edit_unidad" class="styled-input" placeholder="">
+                    <select id="edit_unidad" class="styled-input" required>
+                        <option value="piezas">Piezas</option>
+                        <option value="litros">Litros</option>
+                    </select>                    
                     <h6>Cantidad minima:</h6>
                     <input type="number" id="edit_cantidad" class="styled-input" placeholder="">
-                    <!--<h6>Fecha de suministro:</h6>
-                    <input type="datetime-local" id="edit_fecha" class="styled-input" placeholder="">-->
-                    
 
                     <div class="button-container">
                         <button onclick="actualizarInsumo()" class="icon-button add-button">
@@ -94,13 +94,14 @@
                     <h6>Nombre del insumo:</h6>
                     <input type="text" id="nombre" class="styled-input" placeholder="" required>
                     <h6>Inventario:</h6>
-                    <input type="number" id="inventario" class="styled-input" placeholder="" required>
+                    <input type="number" id="inventario" class="styled-input" placeholder="" step="0.01" required>
                     <h6>Unidad:</h6>
-                    <input type="text" id="unidad" class="styled-input" placeholder="" required>
+                    <select id="unidad" class="styled-input" required>
+                        <option value="piezas">Piezas</option>
+                        <option value="litros">Litros</option>
+                    </select>
                     <h6>Cantidad minima:</h6>
                     <input type="number" id="cantidad" class="styled-input" placeholder="" required>
-                    <!--<h6>Fecha de suministro:</h6>
-                    <input type="datetime-local" id="fecha" class="styled-input" placeholder="">-->
 
                     <div class="button-container">
                         <button onclick="agregarInsumo()" class="icon-button add-button">

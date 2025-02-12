@@ -41,9 +41,42 @@ function obtenerInsumos() {
 
 function agregarInsumo() {
     let nombre = document.getElementById("nombre").value;
-    let inventario = parseInt(document.getElementById("inventario").value);
+    let inventario = parseFloat(document.getElementById("inventario").value);
+    let cantidad = parseFloat(document.getElementById("cantidad").value);
     let unidad = document.getElementById("unidad").value;
-    let cantidad = parseInt(document.getElementById("cantidad").value);
+
+    if (isNaN(inventario) || inventario < 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "Por favor, ingresa un número válido para el inventario.",
+            confirmButtonColor: "#ff9800",
+            confirmButtonText: "Aceptar"
+        });
+        return;
+    }
+
+    if (isNaN(cantidad) || cantidad < 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "Por favor, ingresa una cantidad mínima válida.",
+            confirmButtonColor: "#ff9800",
+            confirmButtonText: "Aceptar"
+        });
+        return;
+    }
+
+    if (cantidad > inventario) {
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "La cantidad mínima no debe ser mayor que el inventario.",
+            confirmButtonColor: "#ff9800",
+            confirmButtonText: "Aceptar"
+        });
+        return;
+    }
 
     eel.agregar_insumo(nombre, inventario, unidad, cantidad)(function () {
         obtenerInsumos();
@@ -51,28 +84,69 @@ function agregarInsumo() {
     });
 }
 
+
 function prepararEdicion(id, nombre, inventario, unidad, cantidad) {
     document.getElementById("edit_id").value = id;
     document.getElementById("edit_nombre").value = nombre;
-    document.getElementById("edit_inventario").value = parseInt(inventario);
-    document.getElementById("edit_unidad").value = unidad;
-    document.getElementById("edit_cantidad").value = parseInt(cantidad);
+    document.getElementById("edit_inventario").value = parseFloat(inventario);
+    document.getElementById("edit_cantidad").value = parseFloat(cantidad);
+
+    // Obtener el select y establecer el valor de la unidad
+    let selectUnidad = document.getElementById("edit_unidad");
+    selectUnidad.value = unidad; // Esto debe seleccionar la opción correcta
 
     document.getElementById("editFormContainer").style.display = "block";
 }
 
+
 function actualizarInsumo() {
     let id = document.getElementById("edit_id").value;
     let nombre = document.getElementById("edit_nombre").value;
-    let inventario = parseInt(document.getElementById("edit_inventario").value);
+    let inventario = parseFloat(document.getElementById("edit_inventario").value);
     let unidad = document.getElementById("edit_unidad").value;
-    let cantidad = parseInt(document.getElementById("edit_cantidad").value);
+    let cantidad = parseFloat(document.getElementById("edit_cantidad").value);
 
+    // Validaciones
+    if (isNaN(inventario) || inventario < 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "Por favor, ingresa un número válido para el inventario.",
+            confirmButtonColor: "#ff9800",
+            confirmButtonText: "Aceptar"
+        });
+        return;
+    }
+
+    if (isNaN(cantidad) || cantidad < 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "Por favor, ingresa una cantidad mínima válida.",
+            confirmButtonColor: "#ff9800",
+            confirmButtonText: "Aceptar"
+        });
+        return;
+    }
+
+    if (cantidad > inventario) {
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "La cantidad mínima no debe ser mayor que el inventario.",
+            confirmButtonColor: "#ff9800",
+            confirmButtonText: "Aceptar"
+        });
+        return; // Detiene la ejecución si la validación falla
+    }
+
+    // Si pasa la validación, se llama a la función para actualizar el insumo
     eel.actualizar_insumo(id, nombre, inventario, unidad, cantidad)(function () {
         obtenerInsumos();
         document.getElementById("editFormContainer").style.display = "none";
     });
 }
+
 
 function eliminarInsumo(id_insumo) {
     eel.eliminar_insumo(id_insumo)(function () {
@@ -81,7 +155,7 @@ function eliminarInsumo(id_insumo) {
 }
 
 
-//Descontar
+//Descontar en el inventario
 function descontarInsumo(id_insumo, nombreInsumo) {
     document.getElementById("nombreInsumoText").textContent = nombreInsumo;
 
@@ -91,7 +165,7 @@ function descontarInsumo(id_insumo, nombreInsumo) {
 
 function confirmarDescuento() {
     let id_insumo = document.getElementById("discountFormContainer").dataset.idInsumo;
-    let cantidadDescontar = parseInt(document.getElementById("cantidadDescontar").value);
+    let cantidadDescontar = parseFloat(document.getElementById("cantidadDescontar").value);
     let id_usuario = sessionStorage.getItem("id_usuario");
 
     if (!id_usuario) {
