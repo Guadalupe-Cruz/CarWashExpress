@@ -170,9 +170,91 @@ header h3 {
     max-width: none;
 }
 
+/* Asegúrate de importar la tipografía desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+
 .container h3 {
-    margin: 0 0 15px;
-    color: var(--second-title-color);
+    margin: 0 0 20px;
+    font-size: 1.5 rem;
+    /* Tamaño de letra moderado */
+    font-weight: 700;
+    font-family: 'Lora', serif;
+    /* Tipografía elegante y única */
+    text-transform: uppercase;
+    text-align: center;
+    color: #7296A4;
+    /* Color solicitado */
+    position: relative;
+    letter-spacing: 3px;
+    animation: fadeIn 1s ease-in-out, slideUp 1s ease-out;
+}
+
+/* Animación de aparición suave */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animación de deslizamiento hacia arriba */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Efecto de subrayado animado */
+.container h3::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: #7296A4;
+    margin: 10px auto 0;
+    border-radius: 1px;
+    animation: expandLine 0.6s ease-in-out forwards;
+}
+
+/* Animación de expansión de la línea debajo del .container h3 */
+@keyframes expandLine {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 70px;
+    }
+}
+
+/* Efecto de sombra suave al pasar el mouse */
+.container h3:hover {
+    color: #5c7f8b;
+    /* Tono más oscuro en hover */
+    text-shadow: 0 0 10px rgba(114, 150, 164, 0.4);
+    animation: none;
+}
+
+/* Animación de brillo sutil en hover */
+@keyframes pulseGlow {
+    0% {
+        text-shadow: 0 0 8px rgba(114, 150, 164, 0.3);
+    }
+
+    50% {
+        text-shadow: 0 0 18px rgba(114, 150, 164, 0.5);
+    }
+
+    100% {
+        text-shadow: 0 0 8px rgba(114, 150, 164, 0.3);
+    }
 }
 
 .top-bar {
@@ -185,20 +267,51 @@ header h3 {
 .search-box {
     display: flex;
     align-items: center;
-    background: #f1f1f1;
-    padding: 8px 12px;
-    border-radius: 20px;
+    background: #e6e6e6;
+    padding: 10px 15px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #e6e6e6;
+    padding: 10px 15px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.search-box:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .search-box input {
     border: none;
     background: none;
     outline: none;
-    padding: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    width: 100%;
+    color: #333;
+    border-radius: 20px;
+}
+
+.search-box input::placeholder {
+    color: #bbb;
 }
 
 .search-box i {
     color: #888;
+    margin-right: 10px;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.search-box:hover i {
+    color: #333;
 }
 
 .container_button {
@@ -209,24 +322,37 @@ header h3 {
 
 /* -------------------------------------------- Table -------------------------------------------- */
 
+/* Tabla */
 table {
     width: 100%;
     border-collapse: collapse;
     background: white;
     border-radius: 10px;
-    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-    padding: 12px;
+    padding: 10px 14px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
-    color: var(--second-title-color);
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: #444;
 }
 
 th {
-    background: #f8f8f8;
-    font-weight: bold;
+    background: #7296A4;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.3s ease;
 }
 
 .status {
