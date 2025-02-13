@@ -3,8 +3,6 @@ from datetime import datetime
 from backend.database import get_db_connection  # Importa la función de conexión
 from backend.crud_insumos import descontar_insumo as descontar_insumo_backend
 
-
-
 from backend.crud_sucursal import (
     get_sucursales, add_sucursal, update_sucursal,
     delete_sucursal, get_historico_sucursales, recuperar_sucursal
@@ -162,19 +160,18 @@ def obtener_detalles():
 def descontar_insumo(id_insumo, cantidad_descontar, id_usuario):
     return descontar_insumo_backend(id_insumo, cantidad_descontar, id_usuario)
 
-
 # Funciones para clientes
 @eel.expose
 def obtener_clientes():
     return get_clientes()
 
 @eel.expose
-def agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal):
-    add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)
+def agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
+    add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
 
 @eel.expose
-def actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal):
-    update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)
+def actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
+    update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
 
 @eel.expose
 def eliminar_cliente(id_cliente):
@@ -185,8 +182,8 @@ def obtener_historico_cliente():
     return get_historico_clientes()
 
 @eel.expose
-def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal):
-    recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)
+def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
+    recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
 
 # Funciones para promociones
 @eel.expose
@@ -243,7 +240,6 @@ def recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, 
 def obtener_ventas():
     return get_ventas()
 
-
 # Funciones para roles
 @eel.expose
 def obtener_roles():
@@ -274,30 +270,26 @@ def recuperar_rol_exposed(id_rol, nombre):
 def get_report_day():
     report_data = get_report_by_day()
     file_path = get_report_by_day()
-    return file_path # Devolvemos la ruta del archivo PDF
+    return file_path 
 
 @eel.expose
 def get_report_week():
     data = get_report_by_week()
-    reporte_tipo = "semana"  # Cambiar para coincidir con los valores de generate_pdf
+    reporte_tipo = "semana" 
     ventas = data["ventas"]
-    fecha_reporte = data["semana"]  # Para incluir la semana en el PDF
+    fecha_reporte = data["semana"]
 
     file_path = generate_pdf(reporte_tipo, ventas, fecha_reporte)
     return file_path
-
 
 @eel.expose
 def get_report_month():
     data = get_report_by_month()
-    reporte_tipo = "mes"  # Cambiar para coincidir con los valores de generate_pdf
+    reporte_tipo = "mes"  
     ventas = data["ventas"]
-    fecha_reporte = data["mes"]  # Para incluir el nombre del mes en el PDF
+    fecha_reporte = data["mes"] 
 
     file_path = generate_pdf(reporte_tipo, ventas, fecha_reporte)
     return file_path
-
-
-
 
 eel.start("login.html", size=(1024, 768))

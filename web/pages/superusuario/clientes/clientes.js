@@ -41,7 +41,7 @@ function obtenerClientes() {
                     <td>${cliente.fecha_expiracion_membresia}</td>
                     <td>${cliente.nombre_sucursal}</td>
                     <td class="table-buttons">
-                        <button class="icon-button edit-button" onclick="prepararEdicion(${cliente.id_cliente}, '${cliente.nombre_cliente}', '${cliente.apellido_pt}', '${cliente.apellido_mt}', '${cliente.correo}', '${cliente.telefono}', '${cliente.fecha_expiracion_membresia}' , ${cliente.id_sucursal})">
+                        <button class="icon-button edit-button" onclick="prepararEdicion(${cliente.id_cliente}, '${cliente.nombre_cliente}', '${cliente.apellido_pt}', '${cliente.apellido_mt}', '${cliente.correo}', '${cliente.telefono}', ${cliente.id_sucursal})">
                             <i class="fi fi-rr-edit"></i>
                         </button>
                         <button class="icon-button trash-button" onclick="eliminarCliente(${cliente.id_cliente})">
@@ -62,35 +62,34 @@ function agregarCliente() {
     let apellido2 = document.getElementById("apellido2").value;
     let correo = document.getElementById("correo").value;
     let telefono = document.getElementById("telefono").value;
-    let membresia = document.getElementById("membresia").value;
     let id_sucursal = document.getElementById("id_sucursal").value;
 
     // Validaciones básicas
-    if (!nombre || !apellido1 || !apellido2 || !correo || !telefono | !membresia || !id_sucursal) {
+    if (!nombre || !apellido1 || !apellido2 || !correo || !telefono || !id_sucursal) {
         showAlert("Por favor, complete todos los campos correctamente.", "info");
         return;
         }
     
-    eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)(function () {
+    eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)(function () {
         obtenerClientes();
         document.getElementById("formContainer").style.display = "none";
     });
 }
 
-function prepararEdicion(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal) {
+function prepararEdicion(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal) {
     document.getElementById("edit_id_cliente").value = id_cliente;
     document.getElementById("edit_nombre").value = nombre;
     document.getElementById("edit_apellido1").value = apellido1;
     document.getElementById("edit_apellido2").value = apellido2;
     document.getElementById("edit_correo").value = correo;
     document.getElementById("edit_telefono").value = telefono;
-    document.getElementById("edit_membresia").value = membresia.replace(" ", "T").slice(0, 16);
 
         // Seleccionar la sucursal correcta en el menú desplegable de edición
-        const editSelect = document.getElementById("edit_id_sucursal");
+        let editSelect = document.getElementById("edit_id_sucursal");
+        editSelect.value = id_sucursal;
 
         // Asegurar que el select tiene opciones antes de asignar el valor
-        setTimeout(() => {
+        /*setTimeout(() => {
             let optionExists = false;
     
             for (let option of editSelect.options) {
@@ -105,7 +104,7 @@ function prepararEdicion(id_cliente, nombre, apellido1, apellido2, correo, telef
             } else {
                 console.warn(`La sucursal con ID ${id_sucursal} no está en la lista de opciones.`);
             }
-        }, 200); // Pequeño retraso para asegurar que las opciones se han cargado
+        }, 200); // Pequeño retraso para asegurar que las opciones se han cargado*/
     
         // Mostrar el formulario de edición
         document.getElementById("editFormContainer").style.display = "block";
@@ -118,10 +117,9 @@ function actualizarCliente() {
     let apellido2 = document.getElementById("edit_apellido2").value;
     let correo = document.getElementById("edit_correo").value;
     let telefono = document.getElementById("edit_telefono").value;
-    let membresia = document.getElementById("edit_membresia").value;
     let id_sucursal = document.getElementById("edit_id_sucursal").value;
 
-    eel.actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, membresia, id_sucursal)(function () {
+    eel.actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)(function () {
         obtenerClientes();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
     });
