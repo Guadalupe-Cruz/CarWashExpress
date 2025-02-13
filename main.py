@@ -272,19 +272,19 @@ def recuperar_rol_exposed(id_rol, nombre):
 @eel.expose
 def get_report_day():
     report_data = get_report_by_day()
-    file_path = generate_pdf(report_data, "día")
+    file_path = generate_pdf("dia")
     return file_path  # Devolvemos la ruta del archivo PDF
 
 @eel.expose
 def get_report_week():
     report_data = get_report_by_week()
-    file_path = generate_pdf(report_data, "semana")
+    file_path = generate_pdf("semana")
     return file_path
 
 @eel.expose
 def get_report_month():
     report_data = get_report_by_month()
-    file_path = generate_pdf(report_data, "mes")
+    file_path = generate_pdf("mes")
     return file_path
 
 
