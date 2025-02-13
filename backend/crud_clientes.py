@@ -2,60 +2,25 @@ from backend.database import get_db_connection
 
 # Función para obtener todos los clientes
 def get_clientes():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    try:
-        cursor.execute("""
-            SELECT c.id_cliente, 
-                   c.nombre_cliente, 
-                   c.apellido_pt, 
-                   c.apellido_mt, 
-                   c.correo, 
-                   c.telefono,
-                   c.fecha_expiracion_membresia,
-                   IFNULL(s.nombre_sucursal, 'Sucursal eliminada') AS nombre_sucursal
-            FROM clientes c
-            LEFT JOIN sucursales s ON c.id_sucursal = s.id_sucursal
-        """)
-        clientes = cursor.fetchall()
-    except Exception as e:
-        print(f"Error al obtener clientes: {e}")
-        clientes = []
-    finally:
-        cursor.close()
-        conn.close()
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM clientes")
+    clientes = cursor.fetchall()
+    connection.close()
     return clientes
 
 
 # Función para agregar un nuevo cliente
-def add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
-    if not all([id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal]):
-        raise ValueError("Todos los campos son obligatorios")
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        # Verificar si el teléfono ya existe
-        cursor.execute("SELECT COUNT(*) FROM clientes WHERE telefono = %s", (telefono,))
-        (existe,) = cursor.fetchone()
-        if existe:
-            raise ValueError("El número de teléfono ya está registrado.")
-
-        cursor.execute("""
-            INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia, id_sucursal)
-            VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s)
-        """, (id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal))
-        conn.commit()
-    except Exception as e:
-        print(f"Error al agregar cliente: {e}")
-        conn.rollback()
-    finally:
-        cursor.close()
-        conn.close()
+def add_cliente(nombre, apellido1, apellido2, correo, telefono):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO clientes (nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia) VALUES (%s, %s, %s, %s, %s, %s, NOW())", (nombre, apellido1, apellido2, correo, telefono))
+    connection.commit()
+    connection.close()
 
 # Función para actualizar un cliente
-def update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
-    if not all([id_cliente, nombre, apellido1, apellido2, telefono, id_sucursal]):
+def update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono):
+    if not all([id_cliente, nombre, apellido1, apellido2, telefono]):
         raise ValueError("Todos los campos son obligatorios.")
 
     conn = get_db_connection()
@@ -63,9 +28,9 @@ def update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, i
     try:
         cursor.execute("""
             UPDATE clientes 
-            SET nombre_cliente = %s, apellido_pt = %s, apellido_mt = %s, correo = %s, telefono = %s, id_sucursal = %s
+            SET nombre_cliente = %s, apellido_pt = %s, apellido_mt = %s, correo = %s, telefono = %s
             WHERE id_cliente = %s
-        """, (nombre, apellido1, apellido2, correo, telefono, id_sucursal, id_cliente))
+        """, (nombre, apellido1, apellido2, correo, telefono, id_cliente))
         conn.commit()
     except Exception as e:
         print(f"Error al actualizar cliente: {e}")
@@ -79,13 +44,13 @@ def delete_cliente(id_cliente):
     cursor = connection.cursor()
     
     # Recuperamos el cliente antes de moverlo al histórico
-    cursor.execute('SELECT id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia, id_sucursal FROM clientes WHERE id_cliente = %s', (id_cliente,))
+    cursor.execute('SELECT id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia FROM clientes WHERE id_cliente = %s', (id_cliente,))
     cliente = cursor.fetchone()
 
     if cliente:
         # Insertamos el cliente en el histórico
-        cursor.execute('INSERT INTO clientes_historicos (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia, id_sucursal, fecha_borrado) VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s, NOW())', 
-                       (cliente[0], cliente[1], cliente[2], cliente[3], cliente[4], cliente[5], cliente[6]))
+        cursor.execute('INSERT INTO clientes_historicos (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia, fecha_borrado) VALUES (%s, %s, %s, %s, %s, %s, NOW(), NOW())', 
+                       (cliente[0], cliente[1], cliente[2], cliente[3], cliente[4], cliente[5]))
         
         # Eliminar el cliente de la tabla 'clientes'
         cursor.execute('DELETE FROM clientes WHERE id_cliente = %s', (id_cliente,))
@@ -103,31 +68,17 @@ def get_historico_clientes():
     return historico
 
 # Función para recuperar un cliente del histórico
-def recuperar_cliente(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal):
+def recuperar_cliente(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono):
     connection = get_db_connection()
     cursor = connection.cursor()
     
     # Insertamos el cliente de nuevo en la tabla 'clientes'
-    cursor.execute('INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia, id_sucursal) VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s)', 
-                   (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal))
+    cursor.execute('INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia) VALUES (%s, %s, %s, %s, %s, %s, NOW())', 
+                   (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono))
     
     # Elimina el cliente de la tabla 'clientes_historicos'
     cursor.execute('DELETE FROM clientes_historicos WHERE id_cliente = %s', (id_cliente,))
     
     connection.commit()
     connection.close()
-
-# Función para obtener todas las sucursales
-def get_sucursales():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    try:
-        cursor.execute("SELECT id_sucursal, nombre_sucursal FROM sucursales")
-        sucursales = cursor.fetchall()
-    except Exception as e:
-        print(f"Error al obtener sucursales: {e}")
-        sucursales = []
-    finally:
-        cursor.close()
-        conn.close()
-    return sucursales
+    

@@ -166,12 +166,12 @@ def obtener_clientes():
     return get_clientes()
 
 @eel.expose
-def agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
-    add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+def agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono):
+    add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)
 
 @eel.expose
-def actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
-    update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+def actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono):
+    update_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)
 
 @eel.expose
 def eliminar_cliente(id_cliente):
@@ -182,8 +182,25 @@ def obtener_historico_cliente():
     return get_historico_clientes()
 
 @eel.expose
-def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal):
-    recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono, id_sucursal)
+def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono):
+    recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)
+
+import eel
+
+@eel.expose
+def verificar_telefono(telefono):
+    connection = get_db_connection()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute("SELECT COUNT(*) FROM clientes WHERE telefono = %s", (telefono,))
+            count = cursor.fetchone()[0]
+            return count > 0  # Devuelve True si el teléfono ya existe
+        finally:
+            cursor.close()
+            connection.close()
+    return False  # Si la conexión falla, devuelve False
+
 
 # Funciones para promociones
 @eel.expose
