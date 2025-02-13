@@ -71,7 +71,7 @@ function obtenerVentas() {
 }
 
 //Reportes
-// Función para descargar reporte por día
+// Función para obtener el reporte y actualizar la vista
 function obtenerReporte(tipo) {
     let eelFunction = {
         "day": eel.get_report_day,
@@ -79,14 +79,22 @@ function obtenerReporte(tipo) {
         "month": eel.get_report_month
     };
 
-    eelFunction[tipo]()(function (filePath) {
-        if (filePath) {
+    eelFunction[tipo]()(function (result) {
+        if (result) {
+            const filePath = result[0];  // Ruta del archivo generado
+            const formattedDate = result[1];  // Fecha formateada
+
+            // Crear el enlace de descarga para el archivo
             let link = document.createElement("a");
             link.href = filePath;
             link.download = filePath.split("/").pop(); // Nombre del archivo
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+
+            // Actualizar el título del reporte con la fecha
+            const reportTitle = `Reporte de Ventas - Fecha: ${formattedDate}`;
+            document.getElementById("report-header").textContent = reportTitle;
         } else {
             alert("Error al generar el reporte.");
         }

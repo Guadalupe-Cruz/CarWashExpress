@@ -44,9 +44,10 @@ def get_tipos():
         return []
 
 #Funcion para los reportes
-# Función para obtener las ventas por día
 def get_report_by_day():
     today = datetime.today().date()
+    formatted_today = today.strftime("%d-%m-%Y")  # Formato: día-mes-año
+
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
     cursor.execute("""
@@ -56,7 +57,12 @@ def get_report_by_day():
     ventas = cursor.fetchall()
     cursor.close()
     connection.close()
-    return ventas
+
+    #Llamamos a generate_pdf() con los 3 parámetros correctos
+    pdf_path = generate_pdf("dia", ventas, formatted_today)
+
+    return pdf_path
+
 
 # Función para obtener las ventas por semana
 def get_report_by_week():
@@ -99,11 +105,13 @@ def get_report_by_month():
 
 
 # Función para generar el reporte en PDF
-def generate_pdf(reporte_tipo):
+def generate_pdf(reporte_tipo, ventas, fecha_reporte):
     connection = get_db_connection()
     cursor = connection.cursor()
 
+    # Obtener datos de ventas según el tipo de reporte
     if reporte_tipo == 'dia':
+        fecha_reporte = datetime.today().strftime("%d-%m-%Y")
         query = '''
             SELECT h.fecha_pago, c.nombre_cliente AS cliente, t.nombre_lavado AS tipo_lavado,
                    h.monto_pagado, h.metodo_pago, h.tiempo_inicio, h.tiempo_fin
@@ -113,6 +121,9 @@ def generate_pdf(reporte_tipo):
             WHERE DATE(h.fecha_pago) = CURDATE()
         '''
     elif reporte_tipo == 'semana':
+        start_week = (datetime.today() - timedelta(days=datetime.today().weekday())).strftime("%d-%m-%Y")
+        end_week = (datetime.today() + timedelta(days=6 - datetime.today().weekday())).strftime("%d-%m-%Y")
+        fecha_reporte = f"{start_week} - {end_week}"
         query = '''
             SELECT h.fecha_pago, c.nombre_cliente AS cliente, t.nombre_lavado AS tipo_lavado,
                    h.monto_pagado, h.metodo_pago, h.tiempo_inicio, h.tiempo_fin
@@ -122,6 +133,8 @@ def generate_pdf(reporte_tipo):
             WHERE YEARWEEK(h.fecha_pago, 1) = YEARWEEK(CURDATE(), 1)
         '''
     elif reporte_tipo == 'mes':
+        month_name = datetime.today().strftime("%B %Y")
+        fecha_reporte = month_name
         query = '''
             SELECT h.fecha_pago, c.nombre_cliente AS cliente, t.nombre_lavado AS tipo_lavado,
                    h.monto_pagado, h.metodo_pago, h.tiempo_inicio, h.tiempo_fin
@@ -148,21 +161,12 @@ def generate_pdf(reporte_tipo):
     c.setFont("Helvetica-Bold", 16)
     c.setFillColor(colors.darkblue)
     c.drawString(150, height - 50, "Reporte de Ventas - CARWASHEXPRESS")
+
+    # Agregar la fecha del reporte
     c.setFont("Helvetica", 12)
     c.setFillColor(colors.black)
-    
-    # Título del reporte
-    if reporte_tipo == 'dia':
-        c.drawString(50, height - 80, "Tipo de Reporte: Día Actual")
-    elif reporte_tipo == 'semana':
-        start_week = (datetime.today() - timedelta(days=datetime.today().weekday())).strftime("%d-%m-%Y")
-        end_week = (datetime.today() + timedelta(days=6 - datetime.today().weekday())).strftime("%d-%m-%Y")
-        c.drawString(50, height - 80, f"Tipo de Reporte: Semana ({start_week} - {end_week})")
-    elif reporte_tipo == 'mes':
-        month_name = datetime.today().strftime("%B")
-        year = datetime.today().strftime("%Y")
-        c.drawString(50, height - 80, f"Tipo de Reporte: {month_name} {year}")
-    
+    c.drawString(50, height - 80, f"Fecha del Reporte: {fecha_reporte}")  # Aquí se imprime la fecha
+
     c.drawString(50, height - 100, "---------------------------------------------")
     
     # Detalle de las ventas

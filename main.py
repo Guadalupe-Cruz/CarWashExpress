@@ -1,4 +1,5 @@
 import eel
+from datetime import datetime
 from backend.database import get_db_connection  # Importa la función de conexión
 from backend.crud_insumos import descontar_insumo as descontar_insumo_backend
 
@@ -272,20 +273,30 @@ def recuperar_rol_exposed(id_rol, nombre):
 @eel.expose
 def get_report_day():
     report_data = get_report_by_day()
-    file_path = generate_pdf("dia")
-    return file_path  # Devolvemos la ruta del archivo PDF
+    file_path = get_report_by_day()
+    return file_path # Devolvemos la ruta del archivo PDF
 
 @eel.expose
 def get_report_week():
-    report_data = get_report_by_week()
-    file_path = generate_pdf("semana")
+    data = get_report_by_week()
+    reporte_tipo = "semana"  # Cambiar para coincidir con los valores de generate_pdf
+    ventas = data["ventas"]
+    fecha_reporte = data["semana"]  # Para incluir la semana en el PDF
+
+    file_path = generate_pdf(reporte_tipo, ventas, fecha_reporte)
     return file_path
+
 
 @eel.expose
 def get_report_month():
-    report_data = get_report_by_month()
-    file_path = generate_pdf("mes")
+    data = get_report_by_month()
+    reporte_tipo = "mes"  # Cambiar para coincidir con los valores de generate_pdf
+    ventas = data["ventas"]
+    fecha_reporte = data["mes"]  # Para incluir el nombre del mes en el PDF
+
+    file_path = generate_pdf(reporte_tipo, ventas, fecha_reporte)
     return file_path
+
 
 
 
