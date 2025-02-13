@@ -1,5 +1,5 @@
 from backend.database import get_db_connection
-from backend.sesion import get_session
+from datetime import datetime, timedelta
 
 # ==============================
 # FUNCIONES CRUD PARA CLIENTES
@@ -7,7 +7,7 @@ from backend.sesion import get_session
 
 def get_clients(page=1, limit=6):
     """
-    Obtiene la lista de clientes con paginación, filtrados por id_sucursal.
+    Obtiene la lista de clientes con paginación.
     
     Args:
         page (int): Número de la página actual.
@@ -17,15 +17,12 @@ def get_clients(page=1, limit=6):
         dict: Diccionario con la lista de clientes y el total de páginas.
     """
     
-    session = get_session()  # Obtener los datos de la sesión actual
-    idsucursal = session.get("id_sucursal")
-    
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
     # Cálculo del offset para la paginación
     offset = (page - 1) * limit
-    cursor.execute("SELECT * FROM vw_clientes_admin WHERE id_sucursal = %s LIMIT %s OFFSET %s", (idsucursal, limit, offset))
+    cursor.execute("SELECT * FROM vw_clientes_admin LIMIT %s OFFSET %s", (limit, offset))
     clientes = cursor.fetchall()
 
     # Formatear la fecha de expiración de la membresía
@@ -33,7 +30,7 @@ def get_clients(page=1, limit=6):
         cliente['fecha_expiracion_membresia'] = format_date(cliente['fecha_expiracion_membresia'])
 
     # Obtener el número total de clientes
-    cursor.execute("SELECT COUNT(*) AS total FROM vw_clientes_admin WHERE id_sucursal = %s", (idsucursal,))
+    cursor.execute("SELECT COUNT(*) AS total FROM vw_clientes_admin")
     total_clients = cursor.fetchone()["total"]
 
     # Cierre de la conexión
@@ -74,7 +71,7 @@ def get_client_by_id(client_id):
 
 # =======================================================================================================================
 
-def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal, fecha_expiracion_membresia):
+def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono):
     """
     Agrega un nuevo cliente si no existe previamente un registro con el mismo correo, ID o teléfono.
 
@@ -85,7 +82,6 @@ def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, tel
         apellido_mt (str): Segundo apellido.
         correo (str): Correo electrónico.
         telefono (str): Teléfono de contacto.
-        id_sucursal (int): ID de la sucursal.
         fecha_expiracion_membresia (datetime): Fecha en que expira la membresia.
 
     Returns:
@@ -108,15 +104,19 @@ def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, tel
             connection.close()
             return {"status": "error", "message": error_message}
 
+    # Calcular la fecha de expiración (1 año desde hoy)
+    fecha_expiracion_membresia = (datetime.now() + timedelta(days=365)).strftime('%Y-%m-%d')
+
     # Inserción del nuevo cliente
     cursor.execute(
         """
-        INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal, fecha_expiracion_membresia)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
         """,
-        (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal, fecha_expiracion_membresia)
+        (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia)
     )
     connection.commit()
+
 
     cursor.close()
     connection.close()
@@ -125,7 +125,7 @@ def add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, tel
 
 # =======================================================================================================================
 
-def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, id_sucursal, fecha_expiracion_membresia):
+def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, fecha_expiracion_membresia):
     """
     Actualiza la información de un cliente existente.
 
@@ -139,7 +139,6 @@ def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, ape
         nuevo_correo (str): Nuevo correo (opcional).
         telefono (str): Teléfono actual.
         nuevo_telefono (str): Nuevo teléfono (opcional).
-        id_sucursal (int): ID de la sucursal.
         fecha_expiracion_membresia (datetime): Fecha en que expira la membresia.
 
     Returns:
@@ -161,10 +160,10 @@ def update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, ape
 
             # Actualización de datos
             query = """
-                UPDATE clientes SET nombre_cliente = %s, apellido_pt = %s, apellido_mt = %s, correo = %s, telefono = %s, id_sucursal = %s, fecha_expiracion_membresia = %s
+                UPDATE clientes SET nombre_cliente = %s, apellido_pt = %s, apellido_mt = %s, correo = %s, telefono = %s, fecha_expiracion_membresia = %s
             """
 
-            params = [nombre_cliente, apellido_pt, apellido_mt, nuevo_correo or correo, nuevo_telefono or telefono, id_sucursal, fecha_expiracion_membresia]
+            params = [nombre_cliente, apellido_pt, apellido_mt, nuevo_correo or correo, nuevo_telefono or telefono, fecha_expiracion_membresia]
 
             if nuevo_id_cliente:
                 query += ", id_cliente = %s"
@@ -268,6 +267,7 @@ def get_client_hts(page=1, limit=6):
 
     for cliente in clientes_eliminados:
         cliente['fecha_borrado'] = format_datetime(cliente['fecha_borrado'])
+        cliente['fecha_expiracion_membresia'] = format_date(cliente['fecha_expiracion_membresia'])
 
     cursor.execute("SELECT COUNT(*) AS total FROM vw_clientes_historicos_admin")
     total_clients = cursor.fetchone()["total"]

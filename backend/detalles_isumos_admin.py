@@ -28,8 +28,8 @@ def get_descuentos_insumos(page=1, limit=6):
 
     # Consulta para obtener los descuentos de insumos de la sucursal actual
     cursor.execute(
-        "SELECT * FROM vw_descuentos_insumos_admin WHERE id_sucursal = %s LIMIT %s OFFSET %s",
-        (idsucursal, limit, offset)
+        "SELECT * FROM vw_descuentos_insumos_admin LIMIT %s OFFSET %s",
+        (limit, offset)
     )
     descuentos_insumos = cursor.fetchall()
 
@@ -39,8 +39,7 @@ def get_descuentos_insumos(page=1, limit=6):
 
     # Obtener el número total de descuentos de insumos para la sucursal actual
     cursor.execute(
-        "SELECT COUNT(*) AS total FROM vw_descuentos_insumos_admin WHERE id_sucursal = %s",
-        (idsucursal,)
+        "SELECT COUNT(*) AS total FROM vw_descuentos_insumos_admin"
     )
     total_clients = cursor.fetchone()["total"]
 

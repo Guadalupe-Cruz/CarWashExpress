@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${cliente.nombre_completo}</td>
                     <td>${cliente.correo}</td>
                     <td>${cliente.telefono}</td>
-                    <td><span class="status delivered">${cliente.nombre_sucursal}</span></td>
+                    <td><span class="status delivered">${cliente.fecha_expiracion_membresia}</span></td>
                     <td>${cliente.fecha_borrado}</td>
                     <td class="actions">
                         <button class="restore-btn" data-id="${cliente.id_cliente}">

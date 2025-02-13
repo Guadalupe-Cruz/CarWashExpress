@@ -31,8 +31,8 @@ function loadClients(page = 1) {
             let row = `<tr>
                 <td>${cliente.id_cliente}</td>
                 <td>${cliente.nombre_cliente}</td>
-                <td><span class="status delivered">${cliente.nombre_sucursal}</span></td>
                 <td><span class="status delivered">${cliente.fecha_expiracion_membresia}</span></td>
+                <td><span class="status delivered">${cliente.dias_restantes_membresia} dias</span></td>
                 <td class="actions">
                     <button class="edit-btn" data-id="${cliente.id_cliente}">
                         <img src="../../../image/pencil.png" alt="Editar">
@@ -165,18 +165,6 @@ function loadForm(form, clientId = null) {
             });
 
             if (form.includes('newClient.html')) {
-                // Llamar a eel para obtener las sucursales
-                eel.get_branches()(function (sucursales) {
-                    let selectSucursal = document.getElementById('id_sucursal');
-                    selectSucursal.innerHTML = ''; 
-                    sucursales.forEach(sucursal => {
-                        let option = document.createElement('option');
-                        option.value = sucursal.id_sucursal;
-                        option.textContent = sucursal.nombre_sucursal;
-                        selectSucursal.appendChild(option);
-                    });
-                });
-
                 // Agregar evento al botón "Registrar"
                 document.getElementById('registrar').addEventListener('click', function (e) {
                     e.preventDefault();
@@ -188,8 +176,6 @@ function loadForm(form, clientId = null) {
                     let apellido_mt = document.getElementById('apellido_mt').value.trim();
                     let correo = document.getElementById('correo').value.trim();
                     let telefono = document.getElementById('telefono').value.trim();
-                    let id_sucursal = document.getElementById('id_sucursal').value;
-                    let fecha_expiracion_membresia = document.getElementById('fecha_expiracion_membresia').value.trim();
                 
                     // Validaciones
                     let idRegex = /^[0-9]+$/; // Solo números
@@ -228,7 +214,7 @@ function loadForm(form, clientId = null) {
                     }
                 
                     // Llamar a eel para agregar un nuevo cliente si pasa todas las validaciones
-                    eel.add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, id_sucursal, fecha_expiracion_membresia)(function (response) {
+                    eel.add_client(id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono)(function (response) {
                         if (response.status === "error") {
                             showAlert(response.message); // Mostrar alerta si el correo ya está registrado
                             return;
@@ -285,7 +271,6 @@ function loadForm(form, clientId = null) {
                             document.getElementById('correo').value = client.correo || '';
                             document.getElementById('correo').disabled = form.includes('viewClient.html') || form.includes('updateClient.html'); // Deshabilitar si es solo ver
                             document.getElementById('telefono').value = client.telefono || '';
-                            document.getElementById('id_sucursal').value = client.id_sucursal || '';
                             document.getElementById('fecha_expiracion_membresia').value = client.fecha_expiracion_membresia || '';
                         } else {
                             console.error('Cliente no encontrado en la base de datos.');
@@ -309,7 +294,6 @@ function loadForm(form, clientId = null) {
                     let nuevo_correo = document.getElementById('nuevo_correo').value;
                     let telefono = document.getElementById('telefono').value;
                     let nuevo_telefono = document.getElementById('nuevo_telefono').value;
-                    let id_sucursal = document.getElementById('id_sucursal').value;
                     let fecha_expiracion_membresia = document.getElementById('fecha_expiracion_membresia').value;
 
                     // Validaciones
@@ -346,11 +330,6 @@ function loadForm(form, clientId = null) {
                             return;
                         }
                     }
-                
-                    if (!phoneRegex.test(telefono)) {
-                        showAlert("El teléfono debe contener exactamente 10 dígitos numéricos.");
-                        return;
-                    }
 
                     if (nuevo_telefono) {
                         if (!phoneRegex.test(nuevo_telefono)) {
@@ -360,7 +339,7 @@ function loadForm(form, clientId = null) {
                     }
 
                     // Llamar a eel para actualizar el cliente
-                    eel.update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, id_sucursal, fecha_expiracion_membresia)(function (response) {
+                    eel.update_client(id_cliente, nuevo_id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, nuevo_correo, telefono, nuevo_telefono, fecha_expiracion_membresia)(function (response) {
 
                         if (response.status === "error") {
                             showAlert(response.message); // Mostrar alerta si el correo ya está registrado
