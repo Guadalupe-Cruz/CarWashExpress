@@ -28,6 +28,9 @@ function obtenerClientes() {
                         <button class="icon-button trash-button" onclick="eliminarCliente(${cliente.id_cliente})">
                             <i class="fi fi-rr-trash"></i>
                         </button>
+                        <button class="icon-button see-button" onclick="datosCliente(${cliente.id_cliente})">
+                           <i class="fi fi-rs-eye"></i>
+                        </button>
                     </td>
                 </tr>
             `;
@@ -145,31 +148,12 @@ function actualizarCliente() {
         return;
     }
 
-    // Verificar si el teléfono ya existe antes de actualizar (manejo asíncrono)
-    eel.verificar_telefono(telefono)().then(existe => {
-        if (existe) {
-            Swal.fire({
-                icon: 'info',
-                title: 'Información',
-                text: 'Este número de teléfono ya está registrado.'
-            });
-        } else {
-            // Si el teléfono no existe, proceder con la actualización
-            eel.actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)(function () {
-                obtenerClientes();
-                document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
-            });
-        }
-    }).catch(error => {
-        console.error("Error al verificar el teléfono:", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un problema al verificar el número de teléfono.'
-        });
+    // Proceder con la actualización sin validar teléfono duplicado
+    eel.actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)(function () {
+        obtenerClientes();
+        document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
     });
 }
-
 
 function eliminarCliente(id_cliente) {
     if (confirm("¿Estás seguro de que deseas eliminar este cliente?")) {

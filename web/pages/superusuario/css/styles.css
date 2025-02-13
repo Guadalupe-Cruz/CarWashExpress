@@ -902,6 +902,23 @@ td {
     background: linear-gradient(145deg, rgba(33, 125, 187, 0.3), rgba(52, 152, 219, 0.4));
 }
 
+/* Botón ver */
+.see-button {  
+    color: #bdc3c7; /* Gris claro */  
+    background: linear-gradient(145deg, rgba(189, 195, 199, 0.2), rgba(149, 165, 166, 0.3));  
+} 
+
+.see-button i {  
+    color: #7f8c8d; /* Gris más oscuro para el icono */  
+}
+
+.see-button:hover {  
+    color: #7f8c8d; /* Gris más oscuro */  
+    background: linear-gradient(145deg, rgba(149, 165, 166, 0.3), rgba(189, 195, 199, 0.4));  
+    animation: rotateButton 0.6s ease-in-out;  
+}  
+
+
 /* Botón descontar */  
 .discount-button {  
     color: #f1c40f; /* Amarillo */  
