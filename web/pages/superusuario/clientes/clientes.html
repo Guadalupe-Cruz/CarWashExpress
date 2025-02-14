@@ -53,7 +53,7 @@
                                         <th>Apellido Materno</th>
                                         <th>Correo</th>
                                         <th>Teléfono</th>
-                                        <th>Expiración de membresia</th>
+                                        <th>Inicio de membresia</th>
                                         <th style="text-align: center;">Acciones</th>
                                     </tr>
                                 </thead>
@@ -121,10 +121,10 @@
                     <h4 class="form-title">Datos importantes:</h4><br><br>
                     <h6>Cliente:</h6><br>
                     <h5>🔹<span id="nombreClienteText" class="nombre-unidad-text"></span> 🔹</h5><br>
-                    
-                    <h6>Membresia:</h6>
-                    <!--Aqui ira el campo para mostrar los dias restantes-->
-                    <h5>Barra de progreso</h5>
+                    <h6>Membresia:</h6><br>
+                    <h5 id="textoDiasRestantes">365 días restantes</h5><br> <!-- Muestra los días restantes -->
+                    <progress id="barraProgreso" value="365" max="365" class="barra-progreso"></progress> <!-- Barra de progreso -->
+
                     <div class="button-container">
                         <button type="button" id="cancelSeeButton" class="icon-button trash-button">
                             <i class="fi fi-rr-cross"></i>

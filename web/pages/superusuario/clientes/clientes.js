@@ -161,11 +161,79 @@ function eliminarCliente(id_cliente) {
     }
 }
 
-/*Membresia*/
-// Membresia
+/*Membresia
 function datosCliente(id_cliente, nombreCliente) {
     document.getElementById("nombreClienteText").textContent = nombreCliente;
 
     document.getElementById("seeFormContainer").style.display = "block";
     document.getElementById("seeFormContainer").dataset.idCliente = id_cliente;
+}*/
+// Membresia
+
+function actualizarMembresia(id_cliente) {
+    eel.obtener_fecha_membresia(id_cliente)(function(fecha_inicio) {
+        if (!fecha_inicio) {
+            console.error("Error: No se pudo obtener la fecha de inicio de la membresía.");
+            return;
+        }
+
+        const fechaInicio = new Date(fecha_inicio);
+        const fechaExpiracion = new Date(fechaInicio);
+        fechaExpiracion.setFullYear(fechaExpiracion.getFullYear() + 1);
+
+        const fechaActual = new Date();
+        const diferenciaTiempo = fechaExpiracion - fechaActual;
+        let diasRestantes = Math.ceil(diferenciaTiempo / (1000 * 60 * 60 * 24));
+
+        if (diasRestantes < 0) diasRestantes = 0;
+
+        console.log(`Días restantes: ${diasRestantes}`);
+
+        const textoDiasRestantes = document.getElementById("textoDiasRestantes");
+        const barraProgreso = document.getElementById("barraProgreso");
+
+        if (!textoDiasRestantes || !barraProgreso) {
+            console.error("No se encontraron los elementos.");
+            return;
+        }
+
+        textoDiasRestantes.textContent = `${diasRestantes} días restantes`;
+        barraProgreso.value = diasRestantes;
+
+        // **Eliminar clases previas**
+        barraProgreso.classList.remove("barra-verde", "barra-amarilla", "barra-naranja", "barra-roja");
+
+        // **Aplicar nueva clase según los días restantes**
+        if (diasRestantes > 180) {
+            barraProgreso.classList.add("barra-verde");
+            textoDiasRestantes.style.color = "green";
+        } else if (diasRestantes > 90) {
+            barraProgreso.classList.add("barra-amarilla");
+            textoDiasRestantes.style.color = "orange";
+        } else if (diasRestantes > 30) {
+            barraProgreso.classList.add("barra-naranja");
+            textoDiasRestantes.style.color = "orange";
+        } else {
+            barraProgreso.classList.add("barra-roja");
+            textoDiasRestantes.style.color = "red";
+            textoDiasRestantes.innerHTML = `<b style="color:red;">${diasRestantes} días restantes - ¡Renueva pronto!</b>`;
+        }
+    });
 }
+
+
+// 🚀 Actualización automática cada 24 horas
+setInterval(() => {
+    const id_cliente = obtenerIdCliente(); // Debes implementar esta función según tu sistema
+    if (id_cliente) {
+        actualizarMembresia(id_cliente);
+    }
+}, 24 * 60 * 60 * 1000); // Cada 24 horas
+
+// También actualizamos cuando el usuario abre la información
+function datosCliente(id_cliente, nombreCliente) {
+    document.getElementById("nombreClienteText").textContent = nombreCliente;
+    document.getElementById("seeFormContainer").style.display = "block";
+    actualizarMembresia(id_cliente);
+}
+

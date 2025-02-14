@@ -1,5 +1,6 @@
 import eel
 from datetime import datetime
+import mysql.connector
 from backend.database import get_db_connection  # Importa la función de conexión
 from backend.crud_insumos import descontar_insumo as descontar_insumo_backend
 
@@ -306,5 +307,23 @@ def get_report_month():
 
     file_path = generate_pdf(reporte_tipo, ventas, fecha_reporte)
     return file_path
+
+@eel.expose
+def obtener_fecha_membresia(id_cliente):
+    conexion = get_db_connection()
+    if not conexion:
+        return None
+
+    try:
+        cursor = conexion.cursor()
+        cursor.execute("SELECT fecha_expiracion_membresia FROM clientes WHERE id_cliente = %s", (id_cliente,))
+        resultado = cursor.fetchone()
+        return resultado[0] if resultado else None
+    except mysql.connector.Error as err:
+        print(f"Error en la base de datos: {err}")
+        return None
+    finally:
+        cursor.close()
+        conexion.close()
 
 eel.start("login.html", size=(1024, 768))
