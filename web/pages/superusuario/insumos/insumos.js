@@ -28,7 +28,7 @@ function obtenerInsumos() {
                         <button class="icon-button trash-button" onclick="eliminarInsumo(${insumo.id_insumo})">
                             <i class="fi fi-rr-trash"></i>
                         </button>
-                        <button class="icon-button discount-button" onclick="descontarInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo.replace(/'/g, "\\'")}')">
+                        <button class="icon-button discount-button" onclick="descontarInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo.replace(/'/g, "\\'")}', '${insumo.unidades.replace(/'/g, "\\'")}')">
                            <i class="fi fi-rr-minus-circle"></i>
                         </button>
                     </td>
@@ -156,17 +156,20 @@ function eliminarInsumo(id_insumo) {
 
 
 //Descontar en el inventario
-function descontarInsumo(id_insumo, nombreInsumo) {
+function descontarInsumo(id_insumo, nombreInsumo, unidadText) {
     document.getElementById("nombreInsumoText").textContent = nombreInsumo;
+    document.getElementById("nombreUnidadText").textContent = unidadText;
 
     document.getElementById("discountFormContainer").style.display = "block";
     document.getElementById("discountFormContainer").dataset.idInsumo = id_insumo;
+    document.getElementById("discountFormContainer").dataset.unidadInsumo = unidadText;
 }
 
 function confirmarDescuento() {
     let id_insumo = document.getElementById("discountFormContainer").dataset.idInsumo;
     let cantidadDescontar = parseFloat(document.getElementById("cantidadDescontar").value);
     let id_usuario = sessionStorage.getItem("id_usuario");
+    let unidadInsumo = document.getElementById("discountFormContainer").dataset.unidadInsumo; // Se obtiene la unidad del insumo
 
     if (!id_usuario) {
         Swal.fire("Error", "Usuario no identificado. Inicie sesión nuevamente.", "error");
@@ -178,9 +181,9 @@ function confirmarDescuento() {
         return;
     }
 
-    // Verificar si la cantidad a descontar es un decimal
-    if (cantidadDescontar % 1 !== 0) {
-        Swal.fire("Error", "No se puede descontar una cantidad decimal, las unidades son piezas.", "error");
+    // Validación de decimales según la unidad
+    if (unidadInsumo.toLowerCase() === "piezas" && cantidadDescontar % 1 !== 0) {
+        Swal.fire("Error", "No se puede descontar una cantidad decimal cuando la unidad es piezas.", "error");
         return;
     }
 
@@ -191,7 +194,7 @@ function confirmarDescuento() {
         } else {
             Swal.fire("Error", response.message, "error");
         }
+        document.getElementById("cantidadDescontar").value = "";
         document.getElementById("discountFormContainer").style.display = "none";
     });
 }
-

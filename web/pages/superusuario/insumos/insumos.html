@@ -117,8 +117,9 @@
                 <div id="discountFormContainer" class="form-container" style="display: none;">
                     <h4 class="form-title">Descontar en el Inventario:</h4><br><br>
                     <h6>Descuento en:</h6><br>
-                    <h5>🔹<span id="nombreInsumoText" class="nombre-insumo-text"></span> 🔹</h5><br>
-                    
+                    <h5>🔹 <span id="nombreInsumoText" class="nombre-insumo-text"></span> 🔹</h5><br>
+                    <h6>Unidad del insumo:</h6><br>
+                    <h5>🔹 <span id="nombreUnidadText" class="nombre-unidad-text"></span> 🔹</h5><br>
                     <h6>Cantidad a descontar:</h6>
                     <input type="number" id="cantidadDescontar" min="1" class="styled-input" required>
                     <div class="button-container">
@@ -168,10 +169,11 @@
             document.getElementById('editFormContainer').style.display = 'none';
         });
 
-        // Ocultar el formulario de edición al cancelar
-        document.getElementById('cancelDiscountButton').addEventListener('click', function () {
-            document.getElementById('discountFormContainer').style.display = 'none';
-        });
+        // Ocultar el formulario descontar al cancelar
+        document.getElementById('cancelDiscountButton').addEventListener('click', function () { 
+        document.getElementById('cantidadDescontar').value = ""; // Limpiar el campo
+        document.getElementById('discountFormContainer').style.display = 'none'; // Ocultar el formulario
+    });
     </script>
 
 </body>

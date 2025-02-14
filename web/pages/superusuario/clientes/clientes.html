@@ -115,6 +115,22 @@
                         </button>
                     </div>
                 </div>
+
+                <!--Formulario datos-->
+                <div id="seeFormContainer" class="form-container" style="display: none;">
+                    <h4 class="form-title">Datos importantes:</h4><br><br>
+                    <h6>Cliente:</h6><br>
+                    <h5>🔹<span id="nombreClienteText" class="nombre-unidad-text"></span> 🔹</h5><br>
+                    
+                    <h6>Membresia:</h6>
+                    <!--Aqui ira el campo para mostrar los dias restantes-->
+                    <h5>Barra de progreso</h5>
+                    <div class="button-container">
+                        <button type="button" id="cancelSeeButton" class="icon-button trash-button">
+                            <i class="fi fi-rr-cross"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -151,6 +167,11 @@
         // Ocultar el formulario de edición al cancelar
         document.getElementById('cancelEditButton').addEventListener('click', function () {
             document.getElementById('editFormContainer').style.display = 'none';
+        });
+
+        //Ocultar el formulario de datos
+        document.getElementById('cancelSeeButton').addEventListener('click', function () {
+            document.getElementById('seeFormContainer').style.display = 'none';
         });
     </script>
 </body>

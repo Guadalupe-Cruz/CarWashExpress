@@ -1122,6 +1122,14 @@ br {
     font-style: italic; /* Cursiva */
 }
 
+.nombre-unidad-text {
+    font-weight: bold;
+    font-size: 16px; /* Tamaño de fuente más grande */
+    color: #333; /* Color de texto */
+    font-family: 'Arial', sans-serif; /* Fuente moderna */
+    font-style: italic; /* Cursiva */
+}
+
 /*Botones de reportes*/
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
 

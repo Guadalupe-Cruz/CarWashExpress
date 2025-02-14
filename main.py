@@ -185,8 +185,6 @@ def obtener_historico_cliente():
 def recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono):
     recuperar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)
 
-import eel
-
 @eel.expose
 def verificar_telefono(telefono):
     connection = get_db_connection()

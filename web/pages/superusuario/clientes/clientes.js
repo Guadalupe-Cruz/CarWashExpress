@@ -28,7 +28,7 @@ function obtenerClientes() {
                         <button class="icon-button trash-button" onclick="eliminarCliente(${cliente.id_cliente})">
                             <i class="fi fi-rr-trash"></i>
                         </button>
-                        <button class="icon-button see-button" onclick="datosCliente(${cliente.id_cliente})">
+                        <button class="icon-button see-button" onclick="datosCliente(${cliente.id_cliente}, '${cliente.nombre_cliente.replace(/'/g, "\\'")}')">
                            <i class="fi fi-rs-eye"></i>
                         </button>
                     </td>
@@ -95,8 +95,6 @@ function agregarCliente() {
     document.getElementById("formContainer").style.display = "none";
 }
 
-
-
 function prepararEdicion(id_cliente, nombre, apellido1, apellido2, correo, telefono) {
     document.getElementById("edit_id_cliente").value = id_cliente;
     document.getElementById("edit_nombre").value = nombre;
@@ -161,4 +159,13 @@ function eliminarCliente(id_cliente) {
             obtenerClientes();
         });
     }
+}
+
+/*Membresia*/
+// Membresia
+function datosCliente(id_cliente, nombreCliente) {
+    document.getElementById("nombreClienteText").textContent = nombreCliente;
+
+    document.getElementById("seeFormContainer").style.display = "block";
+    document.getElementById("seeFormContainer").dataset.idCliente = id_cliente;
 }
