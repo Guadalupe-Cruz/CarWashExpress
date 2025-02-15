@@ -1226,3 +1226,37 @@ br {
     display: block;
     margin-top: 2px; /* Ajusta la distancia entre el texto y la barra */
 }
+
+/* Contenedor de lavados */
+.barra-progreso-lavado {
+    height: 15px;
+    border-radius: 8px;
+    background-color: #ccc; /* Fondo por defecto */
+    transition: width 0.5s ease-in-out;
+}
+
+.lavado-0 .barra-progreso-lavado {
+    background-color: #512e5f !important; /* Lavado tipo 1 */
+}
+
+.lavado-1 .barra-progreso-lavado {
+    background-color: #154360 !important; /* Lavado tipo 2 */
+}
+
+.lavado-2 .barra-progreso-lavado {
+    background-color: #641e16 !important; /* Lavado tipo 3 */
+}
+
+.mensaje-lavado {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-size: 0.7rem; /* Fuente más pequeña */
+    color: #333;
+    padding: 5px 10px; /* Ajuste del padding para más espacio */
+    border-radius: 5px;
+    background-color: #f0f0f0; /* Fondo suave para hacer que el mensaje resalte */
+    margin-top: 5px;
+    margin-bottom: 10px;
+    line-height: 1.5; /* Aumento del line-height para mayor separación entre las líneas */
+}
+

@@ -235,5 +235,40 @@ function datosCliente(id_cliente, nombreCliente) {
     document.getElementById("nombreClienteText").textContent = nombreCliente;
     document.getElementById("seeFormContainer").style.display = "block";
     actualizarMembresia(id_cliente);
+    actualizarProgresoLavados(id_cliente); // Llamamos la función de progreso de lavados
 }
+
+// Conteo de lavado
+function actualizarProgresoLavados(idCliente) {
+    eel.obtenerLavadosCliente(idCliente)(function(lavados) {
+        const contenedor = document.getElementById("contenedorLavados");
+        contenedor.innerHTML = ""; // Limpiar contenido previo
+
+        // Definir colores para cada tipo de lavado
+        const colores = ["#512e5f", "#154360", "#641e16"];
+
+        lavados.forEach((lavado, index) => {
+            let progreso = lavado.cantidad; // Cantidad de lavados realizados
+            let maxLavados = 10;
+            let restante = maxLavados - progreso;
+            let colorBarra = colores[index % 3]; // Alternar colores
+
+            let mensaje = restante > 0 
+                ? `<strong class="mensaje-lavado" style="color:${colorBarra}">Te faltan ${restante} lavados para tu lavado gratis.</strong>`
+                : `<strong class="mensaje-lavado" style="color:${colorBarra}">¡Tienes un lavado gratis! 🎁</strong>`;
+
+                let barraHTML = `
+                <div class="lavado-item lavado-${index % 3}">
+                    <h5><strong>🧼 ${lavado.nombre_lavado}</strong></h5>
+                    <div class="progress-container">
+                        <div class="barra-progreso-lavado lavado-${index % 3}" style="width:${(progreso / 10) * 100}%"></div>
+                    </div>
+                    <p class="mensaje-lavado">${mensaje}</p>
+                </div>
+            `;            
+            contenedor.innerHTML += barraHTML;
+        });
+    });
+}
+
 

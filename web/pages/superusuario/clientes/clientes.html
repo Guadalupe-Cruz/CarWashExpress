@@ -119,12 +119,13 @@
                 <!--Formulario datos-->
                 <div id="seeFormContainer" class="form-container" style="display: none;">
                     <h4 class="form-title">Datos importantes:</h4><br><br>
-                    <h6>Cliente:</h6><br>
-                    <h5>🔹<span id="nombreClienteText" class="nombre-unidad-text"></span> 🔹</h5><br>
+                    <h6 style="text-align: center;">Cliente:</h6><br>
+                    <h5 style="text-align: center;">🔹<span id="nombreClienteText" class="nombre-unidad-text"></span> 🔹</h5><br>
                     <h6>Membresia:</h6><br>
                     <h5 id="textoDiasRestantes">365 días restantes</h5><br> <!-- Muestra los días restantes -->
-                    <progress id="barraProgreso" value="365" max="365" class="barra-progreso"></progress> <!-- Barra de progreso -->
-
+                    <progress id="barraProgreso" value="365" max="365" class="barra-progreso"></progress> <br><!-- Barra de progreso -->
+                    <h6>Historial de Lavados:</h6>
+                    <div id="contenedorLavados" class="historial_lavados">
                     <div class="button-container">
                         <button type="button" id="cancelSeeButton" class="icon-button trash-button">
                             <i class="fi fi-rr-cross"></i>

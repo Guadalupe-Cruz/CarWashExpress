@@ -325,5 +325,24 @@ def obtener_fecha_membresia(id_cliente):
     finally:
         cursor.close()
         conexion.close()
+        
+#Conteo de lavados
+@eel.expose
+def obtenerLavadosCliente(id_cliente):
+    connection = get_db_connection()
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        query = """
+            SELECT tl.nombre_lavado, COUNT(hv.id_historial) as cantidad
+            FROM historial_ventas hv
+            INNER JOIN tipos_lavado tl ON hv.id_lavado = tl.id_lavado
+            WHERE hv.id_cliente = %s
+            GROUP BY tl.nombre_lavado
+        """
+        cursor.execute(query, (id_cliente,))
+        lavados = cursor.fetchall()
+        connection.close()
+        return lavados
+    return []
 
 eel.start("login.html", size=(1024, 768))
