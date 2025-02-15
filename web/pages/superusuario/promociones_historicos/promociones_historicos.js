@@ -15,7 +15,6 @@ function obtenerHistorico() {
                     <td>${promocion.descuento}</td>
                     <td>${promocion.fecha_inicio}</td>
                     <td>${promocion.fecha_fin}</td>
-                    <td>${promocion.id_sucursal}</td>
                     <td>${promocion.fecha_borrado}</td>
                     <td class="table-buttons">
                         <button class="icon-button recover-button" onclick="recuperarPromocion(${promocion.id_promocion}, '${promocion.nombre_promociones}', '${promocion.descripcion}', '${promocion.descuento}',  '${promocion.fecha_inicio}', '${promocion.fecha_fin}', '${promocion.id_sucursal}')">
@@ -29,8 +28,8 @@ function obtenerHistorico() {
     });
 }
 
-function recuperarPromocion(id, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal) {
-    eel.recuperar_promocion_exposed(id, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)(function () {
+function recuperarPromocion(id, nombre, descripcion, descuento, fecha1, fecha2) {
+    eel.recuperar_promocion_exposed(id, nombre, descripcion, descuento, fecha1, fecha2)(function () {
         obtenerHistorico();
     });
 }

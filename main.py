@@ -207,12 +207,12 @@ def obtener_promociones():
     return get_promociones()
 
 @eel.expose
-def agregar_promocion(nombre, descripcion, descuento, fecha1, fecha2, id_sucursal):
-    add_promocion(nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)
+def agregar_promocion(nombre, descripcion, descuento, fecha1, fecha2):
+    add_promocion(nombre, descripcion, descuento, fecha1, fecha2)
 
 @eel.expose
-def actualizar_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal):
-    update_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)
+def actualizar_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2):
+    update_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2)
 
 @eel.expose
 def eliminar_promocion(id_promocion):
@@ -223,8 +223,8 @@ def obtener_historico_promocion():
     return get_historico_promociones()
 
 @eel.expose
-def recuperar_promocion_exposed(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal):
-    recuperar_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2, id_sucursal)
+def recuperar_promocion_exposed(id_promocion, nombre, descripcion, descuento, fecha1, fecha2):
+    recuperar_promocion(id_promocion, nombre, descripcion, descuento, fecha1, fecha2)
 
 # Funciones para usuarios
 @eel.expose
