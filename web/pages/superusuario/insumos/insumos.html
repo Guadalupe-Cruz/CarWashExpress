@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-solid/css/uicons-regular-solid.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!--Icono de busqueda-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="/eel.js"></script>
     <script src="insumos.js"></script>
@@ -131,6 +132,24 @@
                         </button>
                     </div>
                 </div>
+
+                <!--Formulario datos-->
+                <div id="seeFormContainer" class="form-container" style="display: none;">
+                    <h4 class="form-title">Status del insumo:</h4><br><br>
+                    <h6 style="text-align: center;">Insumo:</h6><br>
+                    <h5 style="text-align: center;">🔹<span id="nombreInsumo" class="nombre-insumo-text"></span> 🔹</h5><br>
+                    <h6>Status:</h6><br>
+                    <div class="status-container">
+                        <div id="statusBar" class="status-bar"></div>
+                    </div>
+                    <p id="estadoInsumo"></p>
+                    
+                    <div class="button-container">
+                        <button type="button" id="cancelSeeButton" class="icon-button trash-button">
+                            <i class="fi fi-rr-cross"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -173,7 +192,12 @@
         document.getElementById('cancelDiscountButton').addEventListener('click', function () { 
         document.getElementById('cantidadDescontar').value = ""; // Limpiar el campo
         document.getElementById('discountFormContainer').style.display = 'none'; // Ocultar el formulario
-    });
+        });
+
+         //Ocultar el formulario de datos
+         document.getElementById('cancelSeeButton').addEventListener('click', function () {
+            document.getElementById('seeFormContainer').style.display = 'none';
+        });
     </script>
 
 </body>

@@ -1260,3 +1260,28 @@ br {
     line-height: 1.5; /* Aumento del line-height para mayor separación entre las líneas */
 }
 
+/*Status del insumo*/
+.status-container {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 10px; /* Agrega espacio entre la barra y el texto */
+}
+
+.status-bar {
+    height: 25px;
+    width: 0%;
+    text-align: center;
+    line-height: 25px;
+    color: white;
+    transition: width 0.5s;
+}
+
+#estadoInsumo {
+    font-weight: bold;
+    text-align: center;
+}
+
+
+

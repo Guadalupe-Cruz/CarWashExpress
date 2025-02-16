@@ -197,7 +197,7 @@ function actualizarMembresia(id_cliente) {
             return;
         }
 
-        textoDiasRestantes.textContent = `${diasRestantes} días restantes`;
+        textoDiasRestantes.textContent = `🗓️ ${diasRestantes} días restantes`;
         barraProgreso.value = diasRestantes;
 
         // **Eliminar clases previas**

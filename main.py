@@ -152,6 +152,18 @@ def obtener_historico_insumo():
 def recuperar_insumo_exposed(id_insumo, nombre, inventario, unidad, cantidad):
     recuperar_insumo(id_insumo, nombre, inventario, unidad, cantidad)
 
+@eel.expose
+def obtener_insumo(id_insumo):
+    connection = get_db_connection()
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT inventario, cantidad_minima FROM insumos WHERE id_insumo = %s", (id_insumo,))
+        insumo = cursor.fetchone()
+        cursor.close()
+        connection.close()
+        return insumo
+    return None
+
 #Funciones paa detalle
 @eel.expose
 def obtener_detalles():

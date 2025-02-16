@@ -28,6 +28,9 @@ function obtenerInsumos() {
                         <button class="icon-button trash-button" onclick="eliminarInsumo(${insumo.id_insumo})">
                             <i class="fi fi-rr-trash"></i>
                         </button>
+                        <button class="icon-button see-button" onclick="statusInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo.replace(/'/g, "\\'")}')">
+                           <i class="fi fi-rs-eye"></i>
+                        </button>
                         <button class="icon-button discount-button" onclick="descontarInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo.replace(/'/g, "\\'")}', '${insumo.unidades.replace(/'/g, "\\'")}')">
                            <i class="fi fi-rr-minus-circle"></i>
                         </button>
@@ -198,3 +201,39 @@ function confirmarDescuento() {
         document.getElementById("discountFormContainer").style.display = "none";
     });
 }
+
+/* Status Inventario*/
+function statusInsumo(id_insumo, nombre_insumo) { 
+    document.getElementById("nombreInsumo").textContent = nombre_insumo;
+    document.getElementById("seeFormContainer").style.display = "block";
+    document.getElementById("seeFormContainer").dataset.idInsumo = id_insumo;
+
+    eel.obtener_insumo(id_insumo)(function (datos) {
+        if (datos) {
+            let inventario = datos.inventario;
+            let cantidadMinima = datos.cantidad_minima;
+            let barra = document.getElementById("statusBar");
+            let estado = document.getElementById("estadoInsumo");
+
+            if (inventario === 0) {
+                barra.style.width = "5%";
+                barra.style.backgroundColor = "#8B0000"; // Rojo intenso
+                estado.textContent = "🚫 Agotado";
+            } else if (inventario > cantidadMinima + 5) {
+                barra.style.width = "100%";
+                barra.style.backgroundColor = "green";
+                estado.textContent = "✅ Suficiente";
+            } else if (inventario > cantidadMinima && inventario <= cantidadMinima + 5) {
+                barra.style.width = "50%";
+                barra.style.backgroundColor = "orange";
+                estado.textContent = "⚠️ Por agotarse, reabastecer pronto.";
+            } else {
+                barra.style.width = "20%";
+                barra.style.backgroundColor = "red";
+                estado.textContent = "⛔ Urgente reabastecimiento.";
+            }
+        }
+    });
+}
+
+
