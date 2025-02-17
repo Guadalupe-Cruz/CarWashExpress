@@ -18,11 +18,11 @@ function obtenerHistorico() {
                     <td>${usuario.telefono}</td>
                     <td>${usuario.direccion}</td>
                     <td>${usuario.puesto}</td>
-                    <td>${usuario.tipo_usuario}</td>
+                    <td>${usuario.id_rol}</td>
                     <td>${usuario.id_sucursal}</td>
                     <td>${usuario.fecha_borrado}</td>
                     <td class="table-buttons">
-                        <button class="icon-button recover-button" onclick="recuperarUsuario(${usuario.id_usuario}, '${usuario.nombre_usuario}', '${usuario.apellido_pt}', '${usuario.apellido_mt}', '${usuario.correo}', '${usuario.contrasena}', '${usuario.telefono}', '${usuario.direccion}', '${usuario.puesto}', '${usuario.tipo_usuario}', ${usuario.id_sucursal})">
+                        <button class="icon-button recover-button" onclick="recuperarUsuario(${usuario.id_usuario}, '${usuario.nombre_usuario}', '${usuario.apellido_pt}', '${usuario.apellido_mt}', '${usuario.correo}', '${usuario.contrasena}', '${usuario.telefono}', '${usuario.direccion}', '${usuario.puesto}', '${usuario.id_rol}', ${usuario.id_sucursal})">
                             <i class="fi fi-rr-trash-restore-alt"></i>
                         </button>
                     </td>

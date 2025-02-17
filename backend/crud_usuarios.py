@@ -22,26 +22,13 @@ def get_usuarios():
         conn.close()
     return usuarios
 
-
 # Función para agregar un nuevo usuario
 def add_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal):
-    if not all([id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal]):
-        raise ValueError("Todos los campos son obligatorios")
-
     conn = get_db_connection()
     cursor = conn.cursor()
-    try:
-        cursor.execute("""
-            INSERT INTO usuarios (id_usuario, nombre_usuario, apellido_pt, apellido_mt, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal))
-        conn.commit()
-    except Exception as e:
-        print(f"Error al agregar usuario: {e}")
-        conn.rollback()
-    finally:
-        cursor.close()
-        conn.close()
+    cursor.execute(" INSERT INTO usuarios (id_usuario, nombre_usuario, apellido_pt, apellido_mt, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal))
+    conn.commit()
+    conn.close()
 
 # Función para actualizar un usuario
 def update_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal):

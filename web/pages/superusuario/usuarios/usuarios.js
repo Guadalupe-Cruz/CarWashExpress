@@ -90,12 +90,59 @@ function agregarUsuario() {
     let puesto = document.getElementById("puesto").value;
     let id_rol = document.getElementById("id_rol").value;
     let id_sucursal = document.getElementById("id_sucursal").value;
+
+    // Validaciones básicas
+    if (!id_usuario || !nombre || !apellido1 || !apellido2 || !correo || !contrasena || !telefono || !direccion || !puesto || !id_rol || !id_sucursal) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
+
+    // Validar que el teléfono tenga 10 dígitos numéricos
+    if (telefono.length !== 10 || isNaN(telefono)) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'El número de teléfono debe tener exactamente 10 dígitos numéricos.'
+        });
+        return;
+    }
+
+    // Validar que el correo tenga una estructura válida
+    let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(correo)) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, ingrese un correo con una estructura válida (ejemplo: usuario@dominio.com).'
+        });
+        return;
+    }
+
+    // Verificar si el teléfono ya existe antes de agregar (sin promesas)
+    eel.verificar_celular(telefono)(function(existe) {
+        console.log("Resultado de verificar_telefono:", existe); // Depuración en consola
     
-    eel.agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)(function () {
-        obtenerUsuarios();
-        document.getElementById("formContainer").style.display = "none"; // Ocultar el formulario después de agregar
-    });
+    if (existe) {
+        Swal.fire({
+            icon: "warning",
+            title: "Teléfono en uso",
+            text: "El número ingresado ya está registrado.",
+            confirmButtonText: "Entendido"
+        });
+    } else {
+        // Llamar a la función para agregar el usuario si el teléfono no está en uso
+        eel.agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)(function() {
+            obtenerUsuarios();
+            document.getElementById("formContainer").style.display = "none"; // Ocultar el formulario después de agregar
+        });
+    }
+});
 }
+
 
 function prepararEdicion(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal) {
     document.getElementById("edit_id_usuario").value = id_usuario;

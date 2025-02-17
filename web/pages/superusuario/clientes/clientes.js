@@ -79,20 +79,24 @@ function agregarCliente() {
     }
 
     // Verificar si el teléfono ya existe antes de agregar (sin promesas)
-    let existe = eel.verificar_telefono(telefono)(); 
+eel.verificar_telefono(telefono)(function(existe) {
+    console.log("Resultado de verificar_telefono:", existe); // Depuración en consola
+    
     if (existe) {
         Swal.fire({
-            icon: 'info',
-            title: 'Información',
-            text: 'Este número de teléfono ya está registrado.'
+            icon: "warning",
+            title: "Teléfono en uso",
+            text: "El número ingresado ya está registrado.",
+            confirmButtonText: "Entendido"
         });
-        return;
+    } else {
+        // Si el teléfono no está en uso, agregar el cliente
+        eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)(function() {
+            obtenerClientes();
+            document.getElementById("formContainer").style.display = "none"; // Ocultar el formulario después de agregar
+        });
     }
-
-    // Si todo es válido, agregar el cliente
-    eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)();
-    obtenerClientes();
-    document.getElementById("formContainer").style.display = "none";
+});
 }
 
 function prepararEdicion(id_cliente, nombre, apellido1, apellido2, correo, telefono) {
@@ -154,12 +158,27 @@ function actualizarCliente() {
 }
 
 function eliminarCliente(id_cliente) {
-    if (confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
-        eel.eliminar_cliente(id_cliente)(function () {
-            obtenerClientes();
-        });
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "No podrás revertir esto",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eel.eliminar_cliente(id_cliente)(function () {
+                obtenerClientes();
+            });
+            Swal.fire(
+                'Eliminado!',
+                'El cliente ha sido eliminado.',
+                'success'
+            );
+        }
+    });
 }
+
 
 /*Membresia
 function datosCliente(id_cliente, nombreCliente) {

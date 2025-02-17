@@ -1,4 +1,5 @@
 import eel
+import re
 from datetime import datetime
 import mysql.connector
 from backend.database import get_db_connection  # Importa la función de conexión
@@ -204,14 +205,22 @@ def verificar_telefono(telefono):
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("SELECT COUNT(*) FROM clientes WHERE telefono = %s", (telefono,))
-            count = cursor.fetchone()[0]
-            return count > 0  # Devuelve True si el teléfono ya existe
+
+            # Normalizar el teléfono eliminando espacios y guiones
+            telefono = re.sub(r"[\s-]", "", telefono)
+
+            # Ejecutar la consulta
+            query = "SELECT telefono FROM clientes WHERE REPLACE(telefono, ' ', '') = %s"
+            cursor.execute(query, (telefono,))
+            resultados = cursor.fetchall()
+
+            # Verificar si existe el teléfono
+            return bool(resultados)  # Devuelve True si el teléfono ya existe, False si no
+
         finally:
             cursor.close()
             connection.close()
-    return False  # Si la conexión falla, devuelve False
-
+    return False
 
 # Funciones para promociones
 @eel.expose
@@ -262,6 +271,29 @@ def obtener_historico_usuario():
 @eel.expose
 def recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal):
     recuperar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)
+
+@eel.expose
+def verificar_celular(telefono):
+    connection = get_db_connection()
+    if connection:
+        try:
+            cursor = connection.cursor()
+
+            # Normalizar el teléfono eliminando espacios y guiones
+            telefono = re.sub(r"[\s-]", "", telefono)
+
+            # Ejecutar la consulta
+            query = "SELECT telefono FROM usuarios WHERE REPLACE(telefono, ' ', '') = %s"
+            cursor.execute(query, (telefono,))
+            resultados = cursor.fetchall()
+
+            # Verificar si existe el teléfono
+            return bool(resultados)  # Devuelve True si el teléfono ya existe, False si no
+
+        finally:
+            cursor.close()
+            connection.close()
+    return False
 
 # Funciones para ventas
 @eel.expose

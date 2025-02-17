@@ -11,10 +11,10 @@ def get_clientes():
 
 
 # Función para agregar un nuevo cliente
-def add_cliente(nombre, apellido1, apellido2, correo, telefono):
+def add_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono):
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO clientes (nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia) VALUES (%s, %s, %s, %s, %s, %s, NOW())", (nombre, apellido1, apellido2, correo, telefono))
+    cursor.execute("INSERT INTO clientes (id_cliente, nombre_cliente, apellido_pt, apellido_mt, correo, telefono, fecha_expiracion_membresia) VALUES (%s, %s, %s, %s, %s, %s, NOW())", (id_cliente, nombre, apellido1, apellido2, correo, telefono))
     connection.commit()
     connection.close()
 
