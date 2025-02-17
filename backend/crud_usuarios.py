@@ -7,12 +7,14 @@ def get_usuarios():
     try:
         cursor.execute("""
             SELECT u.id_usuario, u.nombre_usuario, u.apellido_pt, u.apellido_mt, u.correo, u.contrasena, u.telefono, u.direccion, u.puesto, 
-                IFNULL(r.nombre_rol, 'Rol eliminado') AS nombre_rol,
-                IFNULL(s.nombre_sucursal, 'Sucursal eliminada') AS nombre_sucursal
+            IFNULL(u.id_rol, 0) AS id_rol,  -- Valor predeterminado para id_rol si es null
+            IFNULL(u.id_sucursal, 0) AS id_sucursal,  -- Valor predeterminado para id_sucursal si es null
+            IFNULL(r.nombre_rol, 'Rol eliminado') AS nombre_rol,
+            IFNULL(s.nombre_sucursal, 'Sucursal eliminada') AS nombre_sucursal
             FROM usuarios u
             LEFT JOIN roles r ON u.id_rol = r.id_rol
             LEFT JOIN sucursales s ON u.id_sucursal = s.id_sucursal
-        """)
+            """)
         usuarios = cursor.fetchall()
     except Exception as e:
         print(f"Error al obtener usuarios: {e}")

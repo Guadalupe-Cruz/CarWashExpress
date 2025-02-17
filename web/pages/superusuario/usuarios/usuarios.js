@@ -64,7 +64,7 @@ function obtenerUsuarios() {
                     <td>${usuario.nombre_rol}</td>
                     <td>${usuario.nombre_sucursal}</td>
                     <td class="table-buttons">
-                        <button class="icon-button edit-button" onclick="prepararEdicion(${usuario.id_usuario}, '${usuario.nombre_usuario}', '${usuario.apellido_pt}', '${usuario.apellido_mt}', '${usuario.correo}', '${usuario.contrasena}', '${usuario.telefono}', '${usuario.direccion}', '${usuario.puesto}', '${usuario.id_rol}', ${usuario.id_sucursal})">
+                        <button class="icon-button edit-button" onclick="prepararEdicion(${usuario.id_usuario},'${usuario.nombre_usuario}','${usuario.apellido_pt}','${usuario.apellido_mt}','${usuario.correo}','${usuario.contrasena}','${usuario.telefono}','${usuario.direccion}','${usuario.puesto}',${usuario.id_rol || 'null'},${usuario.id_sucursal || 'null'})">
                             <i class="fi fi-rr-edit"></i>
                         </button>
                         <button class="icon-button trash-button" onclick="eliminarUsuario(${usuario.id_usuario})">
@@ -101,6 +101,16 @@ function agregarUsuario() {
         return;
     }
 
+    // Validar que la contraseña tenga mínimo 8 caracteres
+    if (contrasena.length < 8) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Contraseña inválida',
+            text: 'La contraseña debe tener al menos 8 caracteres.'
+        });
+        return;
+    }
+
     // Validar que el teléfono tenga 10 dígitos numéricos
     if (telefono.length !== 10 || isNaN(telefono)) {
         Swal.fire({
@@ -126,25 +136,25 @@ function agregarUsuario() {
     eel.verificar_celular(telefono)(function(existe) {
         console.log("Resultado de verificar_telefono:", existe); // Depuración en consola
     
-    if (existe) {
-        Swal.fire({
-            icon: "warning",
-            title: "Teléfono en uso",
-            text: "El número ingresado ya está registrado.",
-            confirmButtonText: "Entendido"
-        });
-    } else {
-        // Llamar a la función para agregar el usuario si el teléfono no está en uso
-        eel.agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)(function() {
-            obtenerUsuarios();
-            document.getElementById("formContainer").style.display = "none"; // Ocultar el formulario después de agregar
-        });
-    }
-});
+        if (existe) {
+            Swal.fire({
+                icon: "warning",
+                title: "Teléfono en uso",
+                text: "El número ingresado ya está registrado.",
+                confirmButtonText: "Entendido"
+            });
+        } else {
+            // Llamar a la función para agregar el usuario si el teléfono no está en uso
+            eel.agregar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)(function() {
+                obtenerUsuarios();
+                document.getElementById("formContainer").style.display = "none"; // Ocultar el formulario después de agregar
+            });
+        }
+    });
 }
 
-
 function prepararEdicion(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal) {
+    // Asignar valores a los campos de texto
     document.getElementById("edit_id_usuario").value = id_usuario;
     document.getElementById("edit_nombre").value = nombre;
     document.getElementById("edit_apellido1").value = apellido1;
@@ -155,52 +165,45 @@ function prepararEdicion(id_usuario, nombre, apellido1, apellido2, correo, contr
     document.getElementById("edit_direccion").value = direccion;
     document.getElementById("edit_puesto").value = puesto;
 
-    // Seleccionar el rol correcta en el menú desplegable de edición
-    const editSelect2 = document.getElementById("edit_id_rol");
+    // Seleccionar los elementos de los selects
+    const editSelectRol = document.getElementById("edit_id_rol");
+    const editSelectSucursal = document.getElementById("edit_id_sucursal");
 
-    // Asegurar que el select tiene opciones antes de asignar el valor
+    // Asignar valores a los selects después de verificar que existen opciones
     setTimeout(() => {
-        let optionExists = false;
-
-        for (let option of editSelect2.options) {
-            if (option.value == id_rol) {
-                optionExists = true;
-                break;
-            }
+        if (editSelectRol && id_rol) {
+            asignarValorSelect(editSelectRol, id_rol, "Rol");
         }
 
-        if (optionExists) {
-            editSelect.value = id_rol;
-        } else {
-            console.warn(`El rol con ID ${id_rol} no está en la lista de opciones.`);
+        if (editSelectSucursal && id_sucursal) {
+            asignarValorSelect(editSelectSucursal, id_sucursal, "Sucursal");
         }
-    }, 200); // Pequeño retraso para asegurar que las opciones se han cargado
-
-    // Seleccionar la sucursal correcta en el menú desplegable de edición
-    const editSelect = document.getElementById("edit_id_sucursal");
-
-    // Asegurar que el select tiene opciones antes de asignar el valor
-    setTimeout(() => {
-        let optionExists = false;
-
-        for (let option of editSelect.options) {
-            if (option.value == id_sucursal) {
-                optionExists = true;
-                break;
-            }
-        }
-
-        if (optionExists) {
-            editSelect.value = id_sucursal;
-        } else {
-            console.warn(`La sucursal con ID ${id_sucursal} no está en la lista de opciones.`);
-        }
-    }, 200); // Pequeño retraso para asegurar que las opciones se han cargado
+    }, 200);
 
     // Mostrar el formulario de edición
     document.getElementById("editFormContainer").style.display = "block";
 }
 
+// Función para asignar un valor al select y verificar que existan opciones
+function asignarValorSelect(selectElement, valor, tipo) {
+    if (!selectElement) return;
+
+    let optionExists = false;
+
+    for (let option of selectElement.options) {
+        if (option.value == valor) {
+            optionExists = true;
+            break;
+        }
+    }
+
+    if (optionExists) {
+        selectElement.value = valor;
+    } else {
+        // Si no se encuentra el valor, mostramos un mensaje de advertencia
+        console.warn(`⚠️ No se encontró el valor ${valor} en ${tipo}`);
+    }
+}
 
 function actualizarUsuario() {
     let id_usuario = document.getElementById("edit_id_usuario").value;
@@ -215,6 +218,47 @@ function actualizarUsuario() {
     let id_rol = document.getElementById("edit_id_rol").value;
     let id_sucursal = document.getElementById("edit_id_sucursal").value;
 
+    // Validaciones básicas
+    if (!id_usuario || !nombre || !apellido1 || !apellido2 || !correo || !contrasena || !telefono || !direccion || !puesto || !id_rol || !id_sucursal) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
+
+    // Validar que la contraseña tenga mínimo 8 caracteres
+    if (contrasena.length < 8) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Contraseña inválida',
+            text: 'La contraseña debe tener al menos 8 caracteres.'
+        });
+        return;
+    }
+
+    // Validar que el teléfono tenga 10 dígitos numéricos
+    if (telefono.length !== 10 || isNaN(telefono)) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'El número de teléfono debe tener exactamente 10 dígitos numéricos.'
+        });
+        return;
+    }
+
+    // Validar que el correo tenga una estructura válida
+    let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(correo)) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, ingrese un correo con una estructura válida (ejemplo: usuario@dominio.com).'
+        });
+        return;
+    }
+
     eel.actualizar_usuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, id_rol, id_sucursal)(function () {
         obtenerUsuarios();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
@@ -222,7 +266,23 @@ function actualizarUsuario() {
 }
 
 function eliminarUsuario(id_usuario) {
-    eel.eliminar_usuario(id_usuario)(function () {
-        obtenerUsuarios();
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "No podrás revertir esto",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eel.eliminar_usuario(id_usuario)(function () {
+                obtenerUsuarios();
+            });
+            Swal.fire(
+                'Eliminado!',
+                'El usuario ha sido eliminado.',
+                'success'
+            );
+        }
     });
 }
