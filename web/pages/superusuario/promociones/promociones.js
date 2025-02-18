@@ -24,7 +24,7 @@ function obtenerPromociones() {
                         <button class="icon-button edit-button" onclick="prepararEdicion(${promocion.id_promocion}, '${promocion.nombre_promociones}', '${promocion.descripcion}', '${promocion.descuento}', '${promocion.fecha_inicio}', '${promocion.fecha_fin}')">
                             <i class="fi fi-rr-edit"></i>
                         </button>
-                        <button class="icon-button trash-button" onclick="eliminarPromocion(${promocion.id_promocion})">
+                        <button class="icon-button trash-button" onclick="eliminarPromocion(${promocion.id_promocion}, '${promocion.nombre_promociones}')">
                             <i class="fi fi-rr-trash"></i>
                         </button>
                     </td>
@@ -42,18 +42,43 @@ function agregarPromocion() {
     let fecha1 = document.getElementById("fecha1").value;
     let fecha2 = document.getElementById("fecha2").value;
 
-    // Validaciones básicas
-    if (!nombre || !descripcion || isNaN(descuento) || descuento <= 0 || !fecha1 || !fecha2) {
-    showAlert("Por favor, complete todos los campos correctamente.", "info");
-    return;
+    // Convertir el descuento a número
+    descuento = parseFloat(descuento);
+
+    // Validaciones generales
+    if (!nombre || !descripcion || !descuento || !fecha1 || !fecha2) {
+        Swal.fire({
+            icon: "info",
+            title: "Datos incompletos",
+            text: "Por favor, complete todos los campos correctamente.",
+        });
+        return;
     }
 
-    
+    // Validación del descuento
+    if (isNaN(descuento) || descuento <= 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Descuento inválido",
+            text: "Por favor, ingrese una cantidad válida para el descuento (mayor que 0).",
+        });
+        return;
+    }
+
+    // Llamar a la función de backend con eel
     eel.agregar_promocion(nombre, descripcion, descuento, fecha1, fecha2)(function () {
         obtenerPromociones();
         document.getElementById("formContainer").style.display = "none";
+
+        // Mostrar confirmación de éxito
+        Swal.fire({
+            icon: "success",
+            title: "Promoción agregada",
+            text: "La promoción se ha registrado exitosamente.",
+        });
     });
 }
+
 
 function prepararEdicion(id, nombre, descripcion, descuento, fecha1, fecha2) {
     document.getElementById("edit_id").value = id;
@@ -75,32 +100,61 @@ function actualizarPromocion() {
     let fecha1 = document.getElementById("edit_fecha1").value;
     let fecha2 = document.getElementById("edit_fecha2").value;
 
+    // Convertir el descuento a número
+    descuento = parseFloat(descuento);
+
+    // Validaciones generales
+    if (!nombre || !descripcion || !descuento || !fecha1 || !fecha2) {
+        Swal.fire({
+            icon: "info",
+            title: "Datos incompletos",
+            text: "Por favor, complete todos los campos correctamente.",
+        });
+        return;
+    }
+
+    // Validación del descuento
+    if (isNaN(descuento) || descuento <= 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Descuento inválido",
+            text: "Por favor, ingrese una cantidad válida para el descuento (mayor que 0).",
+        });
+        return;
+    }
+
+    // Llamada para actualizar la promoción
     eel.actualizar_promocion(id, nombre, descripcion, descuento, fecha1, fecha2)(function () {
         obtenerPromociones();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
+
+        // Alerta de éxito al actualizar la promoción
+        Swal.fire({
+            icon: "success",
+            title: "Promoción actualizada",
+            text: "La promoción se ha actualizado exitosamente.",
+        });
     });
 }
 
-function eliminarPromocion(id_promocion) {
-    eel.eliminar_promocion(id_promocion)(function () {
-        obtenerPromociones();
+function eliminarPromocion(id_promocion, nombre_promociones) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: `Estás a punto de eliminar la promoción: ${nombre_promociones}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eel.eliminar_promocion(id_promocion)(function () {
+                obtenerPromociones();
+            });
+            Swal.fire(
+                'Eliminado!',
+                `La promoción ${nombre_promociones} ha sido eliminada.`,
+                'success'
+            );
+        }
     });
-}
-
-function showAlert(message, type = "info", duration = 3000) {
-    const alertContainer = document.getElementById("alert-container");
-
-    // Crear la alerta
-    const alertDiv = document.createElement("div");
-    alertDiv.classList.add("alert", type); // Agrega la clase .alert y el tipo (info, success, error, etc.)
-    alertDiv.textContent = message;
-
-    // Agregar la alerta al contenedor
-    alertContainer.appendChild(alertDiv);
-
-    // Ocultar la alerta después de un tiempo
-    setTimeout(() => {
-        alertDiv.classList.add("hidden");
-        setTimeout(() => alertDiv.remove(), 500); // Elimina el elemento del DOM después de la animación
-    }, duration);
 }

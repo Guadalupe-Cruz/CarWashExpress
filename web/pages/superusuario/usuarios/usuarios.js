@@ -67,7 +67,7 @@ function obtenerUsuarios() {
                         <button class="icon-button edit-button" onclick="prepararEdicion(${usuario.id_usuario},'${usuario.nombre_usuario}','${usuario.apellido_pt}','${usuario.apellido_mt}','${usuario.correo}','${usuario.contrasena}','${usuario.telefono}','${usuario.direccion}','${usuario.puesto}',${usuario.id_rol || 'null'},${usuario.id_sucursal || 'null'})">
                             <i class="fi fi-rr-edit"></i>
                         </button>
-                        <button class="icon-button trash-button" onclick="eliminarUsuario(${usuario.id_usuario})">
+                        <button class="icon-button trash-button" onclick="eliminarUsuario(${usuario.id_usuario}, '${usuario.nombre_usuario}','${usuario.apellido_pt}','${usuario.apellido_mt}')">
                             <i class="fi fi-rr-trash"></i>
                         </button>
                     </td>
@@ -265,10 +265,10 @@ function actualizarUsuario() {
     });
 }
 
-function eliminarUsuario(id_usuario) {
+function eliminarUsuario(id_usuario, nombre_usuario, apellido_pt, apellido_mt) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "No podrás revertir esto",
+        text: `Estás a punto de eliminar al usuario: ${nombre_usuario} ${apellido_pt} ${apellido_mt}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sí, eliminarlo',
@@ -280,7 +280,7 @@ function eliminarUsuario(id_usuario) {
             });
             Swal.fire(
                 'Eliminado!',
-                'El usuario ha sido eliminado.',
+                `El usuario ha ${nombre_usuario} ${apellido_pt} ${apellido_mt} sido eliminado.`,
                 'success'
             );
         }

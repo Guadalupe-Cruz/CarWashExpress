@@ -22,7 +22,7 @@ function obtenerTipos() {
                         <button class="icon-button edit-button" onclick="prepararEdicion(${tipo.id_lavado}, '${tipo.nombre_lavado}', '${tipo.duracion_minutos}', '${tipo.costos_pesos}')">
                             <i class="fi fi-rr-edit"></i>
                         </button>
-                        <button class="icon-button trash-button" onclick="eliminarTipo(${tipo.id_lavado})">
+                        <button class="icon-button trash-button" onclick="eliminarTipo(${tipo.id_lavado}, '${tipo.nombre_lavado}')">
                             <i class="fi fi-rr-trash"></i>
                         </button>
                     </td>
@@ -35,14 +35,53 @@ function obtenerTipos() {
 
 function agregarTipo() {
     let nombre = document.getElementById("nombre").value;
-    let duracion = document.getElementById("duracion").value;
-    let costo = document.getElementById("costo").value;
-    
+    let duracion = parseFloat(document.getElementById("duracion").value);
+    let costo = parseFloat(document.getElementById("costo").value);
+
+    // Validaciones básicas
+    if (!nombre || !duracion || !costo) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
+
+    // Validación para la duracion
+    if (isNaN(duracion) || duracion <= 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Duración inválida',
+            text: 'La duración debe ser una cantidad válida mayor a cero.'
+        });
+        return;
+    }
+
+    // Validación para el costo
+    if (isNaN(costo) || costo <= 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Costo inválido',
+            text: 'El costo debe ser una cantidad válida mayor a cero.'
+        });
+        return;
+    }
+
+    // Si las validaciones son correctas, agregar el tipo
     eel.agregar_tipo(nombre, duracion, costo)(function () {
         obtenerTipos();
         document.getElementById("formContainer").style.display = "none";
+
+        // Alerta de éxito al agregar el tipo
+        Swal.fire({
+            icon: 'success',
+            title: 'Tipo de lavado agregado',
+            text: 'El tipo de lavado se ha agregado exitosamente.'
+        });
     });
 }
+
 
 function prepararEdicion(id, nombre, duracion, costo) {
     document.getElementById("edit_id").value = id;
@@ -60,14 +99,67 @@ function actualizarTipo() {
     let duracion = document.getElementById("edit_duracion").value;
     let costo = document.getElementById("edit_costo").value;
 
+    // Validaciones básicas
+    if (!nombre || !duracion || !costo) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
+
+    // Validación para la duracion
+    if (isNaN(duracion) || duracion <= 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Duración inválida',
+            text: 'La duración debe ser una cantidad válida mayor a cero.'
+        });
+        return;
+    }
+
+    // Validación para el costo
+    if (isNaN(costo) || costo <= 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Costo inválido',
+            text: 'El costo debe ser una cantidad válida mayor a cero.'
+        });
+        return;
+    }
+
     eel.actualizar_tipo(id, nombre, duracion, costo)(function () {
         obtenerTipos();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
+
+        // Alerta de éxito después de la actualización
+        Swal.fire({
+            icon: 'success',
+            title: 'Actualización exitosa',
+            text: 'El tipo de lavado se ha actualizado correctamente.'
+        });
     });
 }
 
-function eliminarTipo(id_lavado) {
-    eel.eliminar_tipo(id_lavado)(function () {
-        obtenerTipos();
+function eliminarTipo(id_lavado, nombre_lavado) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: `Estás a punto de eliminar el tipo de lavado: ${nombre_lavado}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eel.eliminar_tipo(id_lavado)(function () {
+                obtenerTipos();
+            });
+            Swal.fire(
+                'Eliminado!',
+                `El tipo de lavado ${nombre_lavado} ha sido eliminado.`,
+                'success'
+            );
+        }
     });
 }

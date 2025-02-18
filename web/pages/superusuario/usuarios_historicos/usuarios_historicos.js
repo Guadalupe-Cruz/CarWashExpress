@@ -34,7 +34,26 @@ function obtenerHistorico() {
 }
 
 function recuperarUsuario(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal) {
-    eel.recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)(function () {
-        obtenerHistorico();
+    Swal.fire({
+        icon: 'question',
+        title: '¿Deseas recuperar este usuario?',
+        text: `Estás a punto de recuperar al usuario: ${nombre} ${apellido1} ${apellido2}.`,
+        showCancelButton: true,
+        confirmButtonText: 'Sí, recuperar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma la acción, se ejecuta la función de recuperación
+            eel.recuperar_usuario_exposed(id_usuario, nombre, apellido1, apellido2, correo, contrasena, telefono, direccion, puesto, tipo, id_sucursal)(function () {
+                obtenerHistorico();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Usuario recuperado',
+                    text: 'El usuario ha sido recuperado exitosamente.'
+                });
+            });
+        }
     });
 }

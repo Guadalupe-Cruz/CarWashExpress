@@ -21,7 +21,7 @@ function obtenerSucursales() {
                         <button class="icon-button edit-button" onclick="prepararEdicion(${sucursal.id_sucursal}, '${sucursal.nombre_sucursal}', '${sucursal.direccion}')">
                             <i class="fi fi-rr-edit"></i>
                         </button>
-                        <button class="icon-button trash-button" onclick="eliminarSucursal(${sucursal.id_sucursal})">
+                        <button class="icon-button trash-button" onclick="eliminarSucursal(${sucursal.id_sucursal}, '${sucursal.nombre_sucursal}', '${sucursal.direccion}')">
                             <i class="fi fi-rr-trash"></i>
                         </button>
                     </td>
@@ -35,10 +35,27 @@ function obtenerSucursales() {
 function agregarSucursal() {
     let nombre = document.getElementById("nombre").value;
     let direccion = document.getElementById("direccion").value;
+
+    // Validaciones básicas
+    if (!nombre || !direccion) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
     
     eel.agregar_sucursal(nombre, direccion)(function () {
         obtenerSucursales();
         document.getElementById("formContainer").style.display = "none";
+
+        // Alerta de éxito después de agregar la sucursal
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucursal agregada exitosamente',
+            text: 'La sucursal se ha agregado correctamente.'
+        });
     });
 }
 
@@ -56,14 +73,47 @@ function actualizarSucursal() {
     let nombre = document.getElementById("edit_nombre").value;
     let direccion = document.getElementById("edit_direccion").value;
 
+    // Validaciones básicas
+    if (!nombre || !direccion) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
+    
     eel.actualizar_sucursal(id, nombre, direccion)(function () {
         obtenerSucursales();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
+
+        // Alerta de éxito después de actualizar la sucursal
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucursal actualizada exitosamente',
+            text: 'La sucursal se ha actualizado correctamente.'
+        });
     });
 }
 
-function eliminarSucursal(id_sucursal) {
-    eel.eliminar_sucursal(id_sucursal)(function () {
-        obtenerSucursales();
+function eliminarSucursal(id_sucursal, nombre_sucursal, direccion) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: `Estás a punto de eliminar la sucursal: ${nombre_sucursal} ubicada en ${direccion}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eel.eliminar_sucursal(id_sucursal)(function () {
+                obtenerSucursales();
+            });
+            Swal.fire(
+                'Eliminado!',
+                `La sucursal: ${nombre_sucursal} ubicada en ${direccion} ha sido eliminada`,
+                'success'
+            );
+        }
     });
 }

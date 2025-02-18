@@ -30,7 +30,26 @@ function obtenerHistorico() {
 }
 
 function recuperarCliente(id_cliente, nombre, apellido1, apellido2, correo, telefono) {
-    eel.recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono)(function () {
-        obtenerHistorico();
+    Swal.fire({
+        icon: 'question',
+        title: '¿Deseas recuperar este cliente?',
+        text: `Estás a punto de recuperar al cliente ${nombre} ${apellido1} ${apellido2}.`,
+        showCancelButton: true,
+        confirmButtonText: 'Sí, recuperar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma la acción, se ejecuta la función de recuperación
+            eel.recuperar_cliente_exposed(id_cliente, nombre, apellido1, apellido2, correo, telefono)(function () {
+                obtenerHistorico();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cliente recuperado',
+                    text: 'El cliente ha sido recuperado exitosamente.'
+                });
+            });
+        }
     });
 }

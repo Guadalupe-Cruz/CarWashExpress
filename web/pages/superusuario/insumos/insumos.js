@@ -25,7 +25,7 @@ function obtenerInsumos() {
                         <button class="icon-button edit-button" onclick="prepararEdicion(${insumo.id_insumo}, '${insumo.nombre_insumo}', ${insumo.inventario}, '${insumo.unidades}', ${insumo.cantidad_minima})">
                             <i class="fi fi-rr-edit"></i>
                         </button>
-                        <button class="icon-button trash-button" onclick="eliminarInsumo(${insumo.id_insumo})">
+                        <button class="icon-button trash-button" onclick="eliminarInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo}')">
                             <i class="fi fi-rr-trash"></i>
                         </button>
                         <button class="icon-button see-button" onclick="statusInsumo(${insumo.id_insumo}, '${insumo.nombre_insumo.replace(/'/g, "\\'")}')">
@@ -47,6 +47,16 @@ function agregarInsumo() {
     let inventario = parseFloat(document.getElementById("inventario").value);
     let cantidad = parseFloat(document.getElementById("cantidad").value);
     let unidad = document.getElementById("unidad").value;
+
+    // Validaciones básicas
+    if (!nombre || !inventario || !cantidad || !unidad) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
 
     if (isNaN(inventario) || inventario < 0) {
         Swal.fire({
@@ -84,6 +94,13 @@ function agregarInsumo() {
     eel.agregar_insumo(nombre, inventario, unidad, cantidad)(function () {
         obtenerInsumos();
         document.getElementById("formContainer").style.display = "none";
+
+        // Alerta de éxito al agregar el insumo
+        Swal.fire({
+            icon: "success",
+            title: "Insumo agregado",
+            text: "El insumo se ha agregado exitosamente.",
+        });
     });
 }
 
@@ -108,6 +125,16 @@ function actualizarInsumo() {
     let inventario = parseFloat(document.getElementById("edit_inventario").value);
     let unidad = document.getElementById("edit_unidad").value;
     let cantidad = parseFloat(document.getElementById("edit_cantidad").value);
+
+    // Validaciones básicas
+    if (!nombre || !inventario || !cantidad || !unidad) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
 
     // Validaciones
     if (isNaN(inventario) || inventario < 0) {
@@ -147,13 +174,35 @@ function actualizarInsumo() {
     eel.actualizar_insumo(id, nombre, inventario, unidad, cantidad)(function () {
         obtenerInsumos();
         document.getElementById("editFormContainer").style.display = "none";
+
+        // Alerta de éxito al actualizar el insumo
+        Swal.fire({
+            icon: "success",
+            title: "Insumo actualizado",
+            text: "El insumo se ha actualizado exitosamente.",
+        });
     });
 }
 
-
-function eliminarInsumo(id_insumo) {
-    eel.eliminar_insumo(id_insumo)(function () {
-        obtenerInsumos();
+function eliminarInsumo(id_insumo, nombre_insumo) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: `Estás a punto de eliminar el insumo: ${nombre_insumo}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eel.eliminar_insumo(id_insumo)(function () {
+                obtenerInsumos();
+            });
+            Swal.fire(
+                'Eliminado!',
+                `El insumo ${nombre_insumo} ha sido eliminado.`,
+                'success'
+            );
+        }
     });
 }
 
@@ -235,5 +284,3 @@ function statusInsumo(id_insumo, nombre_insumo) {
         }
     });
 }
-
-

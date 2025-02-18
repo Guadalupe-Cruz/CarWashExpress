@@ -27,7 +27,26 @@ function obtenerHistorico() {
 }
 
 function recuperarTipo(id, nombre, duracion, costo) {
-    eel.recuperar_tipo_exposed(id, nombre, duracion, costo)(function () {
-        obtenerHistorico();
+    Swal.fire({
+        icon: 'question',
+        title: '¿Deseas recuperar este tipo de lavado',
+        text: `Estás a punto de recuperar el tipo de lavado: ${nombre}, con duración de ${duracion} minutos y costo de ${costo} pesos.`,
+        showCancelButton: true,
+        confirmButtonText: 'Sí, recuperar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma la acción, se ejecuta la función de recuperación
+            eel.recuperar_tipo_exposed(id, nombre, duracion, costo)(function () {
+                obtenerHistorico();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Tipo recuperado',
+                    text: 'El tipo de lavado ha sido recuperado exitosamente.'
+                });
+            });
+        }
     });
 }

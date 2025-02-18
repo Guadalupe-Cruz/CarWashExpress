@@ -26,7 +26,26 @@ function obtenerHistorico() {
 }
 
 function recuperarSucursal(id, nombre, direccion) {
-    eel.recuperar_sucursal_exposed(id, nombre, direccion)(function () {
-        obtenerHistorico();
+    Swal.fire({
+        icon: 'question',
+        title: '¿Deseas recuperar esta sucursal?',
+        text: `Estás a punto de recuperar la sucursal ${nombre}, ubicada en ${direccion}.`,
+        showCancelButton: true,
+        confirmButtonText: 'Sí, recuperar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma la acción, se ejecuta la función de recuperación
+            eel.recuperar_sucursal_exposed(id, nombre, direccion)(function () {
+                obtenerHistorico();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucursal recuperada',
+                    text: 'La sucursal ha sido recuperada exitosamente.'
+                });
+            });
+        }
     });
 }

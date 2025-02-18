@@ -25,7 +25,7 @@ function obtenerClientes() {
                         <button class="icon-button edit-button" onclick="prepararEdicion(${cliente.id_cliente}, '${cliente.nombre_cliente}', '${cliente.apellido_pt}', '${cliente.apellido_mt}', '${cliente.correo}', '${cliente.telefono}')">
                             <i class="fi fi-rr-edit"></i>
                         </button>
-                        <button class="icon-button trash-button" onclick="eliminarCliente(${cliente.id_cliente})">
+                        <button class="icon-button trash-button" onclick="eliminarCliente(${cliente.id_cliente}, '${cliente.nombre_cliente}', '${cliente.apellido_pt}', '${cliente.apellido_mt}')">
                             <i class="fi fi-rr-trash"></i>
                         </button>
                         <button class="icon-button see-button" onclick="datosCliente(${cliente.id_cliente}, '${cliente.nombre_cliente.replace(/'/g, "\\'")}')">
@@ -79,24 +79,31 @@ function agregarCliente() {
     }
 
     // Verificar si el teléfono ya existe antes de agregar (sin promesas)
-eel.verificar_telefono(telefono)(function(existe) {
-    console.log("Resultado de verificar_telefono:", existe); // Depuración en consola
-    
-    if (existe) {
-        Swal.fire({
-            icon: "warning",
-            title: "Teléfono en uso",
-            text: "El número ingresado ya está registrado.",
-            confirmButtonText: "Entendido"
-        });
-    } else {
-        // Si el teléfono no está en uso, agregar el cliente
-        eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)(function() {
-            obtenerClientes();
-            document.getElementById("formContainer").style.display = "none"; // Ocultar el formulario después de agregar
-        });
-    }
-});
+    eel.verificar_telefono(telefono)(function(existe) {
+        console.log("Resultado de verificar_telefono:", existe); // Depuración en consola
+
+        if (existe) {
+            Swal.fire({
+                icon: "warning",
+                title: "Teléfono en uso",
+                text: "El número ingresado ya está registrado.",
+                confirmButtonText: "Entendido"
+            });
+        } else {
+            // Si el teléfono no está en uso, agregar el cliente
+            eel.agregar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)(function() {
+                obtenerClientes();
+                document.getElementById("formContainer").style.display = "none"; // Ocultar el formulario después de agregar
+
+                // Alerta de éxito
+                Swal.fire({
+                    icon: "success",
+                    title: "Cliente agregado",
+                    text: "El cliente se ha agregado exitosamente.",
+                });
+            });
+        }
+    });
 }
 
 function prepararEdicion(id_cliente, nombre, apellido1, apellido2, correo, telefono) {
@@ -154,13 +161,21 @@ function actualizarCliente() {
     eel.actualizar_cliente(id_cliente, nombre, apellido1, apellido2, correo, telefono)(function () {
         obtenerClientes();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
+
+        // Alerta de éxito de actualización
+        Swal.fire({
+            icon: "success",
+            title: "Cliente actualizado",
+            text: "El cliente ha sido actualizado exitosamente.",
+        });
     });
 }
 
-function eliminarCliente(id_cliente) {
+
+function eliminarCliente(id_cliente, nombre_cliente, apellido_pt, apellido_mt) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "No podrás revertir esto",
+        text: `Estás a punto de eliminar al cliente: ${nombre_cliente} ${apellido_pt} ${apellido_mt}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sí, eliminarlo',
@@ -172,7 +187,7 @@ function eliminarCliente(id_cliente) {
             });
             Swal.fire(
                 'Eliminado!',
-                'El cliente ha sido eliminado.',
+                `El cliente ha ${nombre_cliente} ${apellido_pt} ${apellido_mt} sido eliminado.`,
                 'success'
             );
         }

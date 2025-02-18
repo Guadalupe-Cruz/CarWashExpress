@@ -20,7 +20,7 @@ function obtenerRoles() {
                         <button class="icon-button edit-button" onclick="prepararEdicion('${rol.id_rol}', '${rol.nombre_rol}')">
                             <i class="fi fi-rr-edit"></i>
                         </button>
-                        <button class="icon-button trash-button" onclick="eliminarRol(${rol.id_rol})">
+                        <button class="icon-button trash-button" onclick="eliminarRol(${rol.id_rol}, '${rol.nombre_rol}')">
                             <i class="fi fi-rr-trash"></i>
                         </button>
                     </td>
@@ -33,12 +33,30 @@ function obtenerRoles() {
 
 function agregarRol() {
     let nombre = document.getElementById("nombre").value;
+
+    // Validaciones básicas
+    if (!nombre) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
     
     eel.agregar_rol(nombre)(function () {
         obtenerRoles();
         document.getElementById("formContainer").style.display = "none";
+
+        // Alerta de éxito después de agregar el rol
+        Swal.fire({
+            icon: 'success',
+            title: 'Rol agregado exitosamente',
+            text: 'El rol se ha agregado correctamente.'
+        });
     });
 }
+
 
 function prepararEdicion(id, nombre) {
     document.getElementById("edit_id").value = id;
@@ -52,14 +70,47 @@ function actualizarRol() {
     let id = document.getElementById("edit_id").value;
     let nombre = document.getElementById("edit_nombre").value;
 
+    // Validaciones básicas
+    if (!nombre) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: 'Por favor, complete todos los campos correctamente.'
+        });
+        return;
+    }
+
     eel.actualizar_rol(id, nombre)(function () {
         obtenerRoles();
         document.getElementById("editFormContainer").style.display = "none"; // Ocultar el formulario después de actualizar
+
+        // Alerta de éxito después de actualizar el rol
+        Swal.fire({
+            icon: 'success',
+            title: 'Rol actualizado exitosamente',
+            text: 'El rol se ha actualizado correctamente.'
+        });
     });
 }
 
-function eliminarRol(id_rol) {
-    eel.eliminar_rol(id_rol)(function () {
-        obtenerRoles();
+function eliminarRol(id_rol, nombre_rol) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: `Estás a punto de eliminar el rol: ${nombre_rol}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eel.eliminar_rol(id_rol)(function () {
+                obtenerRoles();
+            });
+            Swal.fire(
+                'Eliminado!',
+                `El rol ${nombre_rol} ha sido eliminado.`,
+                'success'
+            );
+        }
     });
 }

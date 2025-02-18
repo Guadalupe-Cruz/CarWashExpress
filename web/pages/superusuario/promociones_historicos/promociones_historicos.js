@@ -29,7 +29,26 @@ function obtenerHistorico() {
 }
 
 function recuperarPromocion(id, nombre, descripcion, descuento, fecha1, fecha2) {
-    eel.recuperar_promocion_exposed(id, nombre, descripcion, descuento, fecha1, fecha2)(function () {
-        obtenerHistorico();
+    Swal.fire({
+        icon: 'question',
+        title: '¿Deseas recuperar esta promoción?',
+        text: `Estás a punto de recuperar la promoción: ${nombre} con un descuento de ${descuento}% entre las fechas ${fecha1} y ${fecha2}.`,
+        showCancelButton: true,
+        confirmButtonText: 'Sí, recuperar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma la acción, se ejecuta la función de recuperación
+            eel.recuperar_promocion_exposed(id, nombre, descripcion, descuento, fecha1, fecha2)(function () {
+                obtenerHistorico();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Promoción recuperada',
+                    text: 'La promoción ha sido recuperada exitosamente.'
+                });
+            });
+        }
     });
 }

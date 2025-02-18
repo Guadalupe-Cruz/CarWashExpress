@@ -29,7 +29,26 @@ function obtenerHistorico() {
 }
 
 function recuperarInsumo(id, nombre, inventario, unidad, cantidad) {
-    eel.recuperar_insumo_exposed(id, nombre, inventario, unidad, cantidad)(function () {
-        obtenerHistorico();
+    Swal.fire({
+        icon: 'question',
+        title: '¿Deseas recuperar este insumo?',
+        text: `Estás a punto de recuperar el insumo: ${nombre}, con inventario de ${inventario} y unidad: ${unidad}.`,
+        showCancelButton: true,
+        confirmButtonText: 'Sí, recuperar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma la acción, se ejecuta la función de recuperación
+            eel.recuperar_insumo_exposed(id, nombre, inventario, unidad, cantidad)(function () {
+                obtenerHistorico();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Insumo recuperado',
+                    text: 'El insumo ha sido recuperado exitosamente.'
+                });
+            });
+        }
     });
 }
