@@ -79,7 +79,7 @@ def recuperar_rol(id_rol, nombre_rol):
     
     try:
         # Insertamos el rol de nuevo en la tabla 'roles'
-        cursor.execute('INSERT INTO rol (id_rol, nombre_rol) VALUES (%s, %s)', 
+        cursor.execute('INSERT INTO roles (id_rol, nombre_rol) VALUES (%s, %s)', 
                        (id_rol, nombre_rol))
         
         # Recuperamos los usuarios asociados al rol desde el histórico

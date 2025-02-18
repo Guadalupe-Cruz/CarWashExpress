@@ -53,31 +53,27 @@ eel.init("web")
 # ==================== LOGIN ====================
 
 @eel.expose
-def login_usuario(correo, contrasena):
+def verificar_credenciales(correo, contrasena):
     conn = get_db_connection()
-    if not conn:
-        return {'success': False, 'message': 'Error de conexión a la base de datos'}
+    cursor = conn.cursor(dictionary=True)
     
-    try:
-        cursor = conn.cursor(dictionary=True)
-        query = """
-        SELECT id_usuario, nombre_usuario
-        FROM usuarios
-        WHERE correo = %s AND contrasena = %s
-        """
-        cursor.execute(query, (correo, contrasena))
-        user = cursor.fetchone()
-        
-        if user:
-            return {'success': True, 'user': user}
-        else:
-            return {'success': False, 'message': 'Correo o contraseña incorrectos'}
-    except Exception as e:
-        return {'success': False, 'message': str(e)}
-    finally:
-        cursor.close()
-        conn.close()
+    # Obtener el id_rol desde la tabla usuarios
+    cursor.execute("""
+        SELECT u.id_rol, r.nombre_rol 
+        FROM usuarios u
+        JOIN roles r ON u.id_rol = r.id_rol
+        WHERE u.correo = %s AND u.contrasena = %s
+    """, (correo, contrasena))
+    
+    usuario = cursor.fetchone()
+    
+    conn.close()
 
+    if usuario:
+        return {"success": True, "rol": usuario["nombre_rol"]}
+    else:
+        return {"success": False}
+    
 # Funciones para sucursales
 @eel.expose
 def obtener_sucursales():

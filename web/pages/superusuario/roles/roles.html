@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="/eel.js"></script>
     <script src="roles.js"></script>
+    <script src="../../../permisos.js"></script>
     <link rel="stylesheet" href="../../superusuario/css/styles.css">
 </head>
 
@@ -35,7 +36,7 @@
                             <input type="text" id="searchInput" placeholder="Buscar rol...">
                             <i class="fas fa-search"></i>
                         </div>
-                        <button class="icon-button add-button button-large" id="showFormButton">
+                        <button class="icon-button add-button button-large super-only" id="showFormButton">
                             <i class="fi fi-rr-add"></i>
                         </button>
                     </div>
@@ -49,7 +50,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th style="text-align: center;">Acciones</th>
+                                        <th style="text-align: center;" class="super-only">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tablaRoles"></tbody>
