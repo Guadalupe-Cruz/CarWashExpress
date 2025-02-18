@@ -1,4 +1,3 @@
-// web/login.js
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
@@ -12,9 +11,22 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         // Guardar el nombre del rol en sessionStorage en minúsculas
         sessionStorage.setItem("rol", respuesta.rol.toLowerCase());
 
-        // Redirigir a la página principal según el rol
-        window.location.href = "pages/superusuario/clientes/clientes.html"; // Página de inicio
+        // Mostrar alerta indicando el rol con Swal.fire
+        Swal.fire({
+            title: "Inicio de sesión exitoso",
+            text: `Has iniciado sesión como ${respuesta.rol}`,
+            icon: "success",
+            confirmButtonText: "Aceptar"
+        }).then(() => {
+            // Redirigir a la página principal según el rol
+            window.location.href = "pages/superusuario/clientes/clientes.html";
+        });
     } else {
-        alert("Credenciales incorrectas");
+        Swal.fire({
+            title: "Error",
+            text: "Credenciales incorrectas",
+            icon: "error",
+            confirmButtonText: "Intentar de nuevo"
+        });
     }
 });

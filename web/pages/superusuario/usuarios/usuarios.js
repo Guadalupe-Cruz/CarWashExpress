@@ -2,12 +2,33 @@ document.addEventListener("DOMContentLoaded", function () {
     obtenerUsuarios();
     obtenerSucursales();
     obtenerRoles();
+    
+    // Verificar el rol y ocultar botones si no es superusuario
+    verificarPermisos();
 
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {
         document.getElementById("editFormContainer").style.display = "none";
     });
 });
+
+// Función para verificar permisos (rol del usuario)
+function verificarPermisos() {
+    let rol = sessionStorage.getItem("rol"); // Obtener rol desde sessionStorage
+    console.log("Rol almacenado en sessionStorage:", rol);
+
+    // Verificar si el rol es 'superusuario'
+    if (rol !== "superusuario") {
+        console.log("Administrador detectado, ocultando botones de superusuario.");
+        // Si no es superusuario, ocultar las celdas que contienen los botones con la clase 'super-only'
+        let filasSuperOnly = document.querySelectorAll(".super-only");
+        console.log("Filas con clase 'super-only':", filasSuperOnly);
+
+        filasSuperOnly.forEach(fila => {
+            fila.style.display = "none"; // Ocultar la celda completa que contiene los botones
+        });
+    }
+}
 
 //Obtener sucursales
 function obtenerSucursales() {
@@ -63,7 +84,7 @@ function obtenerUsuarios() {
                     <td>${usuario.puesto}</td>
                     <td>${usuario.nombre_rol}</td>
                     <td>${usuario.nombre_sucursal}</td>
-                    <td class="table-buttons">
+                    <td class="table-buttons super-only">
                         <button class="icon-button edit-button" onclick="prepararEdicion(${usuario.id_usuario},'${usuario.nombre_usuario}','${usuario.apellido_pt}','${usuario.apellido_mt}','${usuario.correo}','${usuario.contrasena}','${usuario.telefono}','${usuario.direccion}','${usuario.puesto}',${usuario.id_rol || 'null'},${usuario.id_sucursal || 'null'})">
                             <i class="fi fi-rr-edit"></i>
                         </button>
@@ -75,6 +96,8 @@ function obtenerUsuarios() {
             `;
             tabla.innerHTML += fila;
         });
+        // Después de llenar la tabla, verificar los permisos
+        verificarPermisos();
     });
 }
 

@@ -1,11 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
     obtenerPromociones();
+    
+    // Verificar el rol y ocultar botones si no es superusuario
+    verificarPermisos();
 
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {
         document.getElementById("editFormContainer").style.display = "none";
     });
 });
+
+// Función para verificar permisos (rol del usuario)
+function verificarPermisos() {
+    let rol = sessionStorage.getItem("rol"); // Obtener rol desde sessionStorage
+    console.log("Rol almacenado en sessionStorage:", rol);
+
+    // Verificar si el rol es 'superusuario'
+    if (rol !== "superusuario") {
+        console.log("Administrador detectado, ocultando botones de superusuario.");
+        // Si no es superusuario, ocultar las celdas que contienen los botones con la clase 'super-only'
+        let filasSuperOnly = document.querySelectorAll(".super-only");
+        console.log("Filas con clase 'super-only':", filasSuperOnly);
+
+        filasSuperOnly.forEach(fila => {
+            fila.style.display = "none"; // Ocultar la celda completa que contiene los botones
+        });
+    }
+}
 
 function obtenerPromociones() {
     eel.obtener_promociones()(function (promociones) {
@@ -20,7 +41,7 @@ function obtenerPromociones() {
                     <td>${promocion.descuento}</td>
                     <td>${promocion.fecha_inicio}</td>
                     <td>${promocion.fecha_fin}</td>
-                    <td class="table-buttons">
+                    <td class="table-buttons super-only">
                         <button class="icon-button edit-button" onclick="prepararEdicion(${promocion.id_promocion}, '${promocion.nombre_promociones}', '${promocion.descripcion}', '${promocion.descuento}', '${promocion.fecha_inicio}', '${promocion.fecha_fin}')">
                             <i class="fi fi-rr-edit"></i>
                         </button>
@@ -32,6 +53,8 @@ function obtenerPromociones() {
             `;
             tabla.innerHTML += fila;
         });
+        // Después de llenar la tabla, verificar los permisos
+        verificarPermisos();
     });
 }
 

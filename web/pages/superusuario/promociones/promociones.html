@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="/eel.js"></script>
     <script src="promociones.js"></script>
+    <script src="../../../permisos.js"></script>
     <link rel="stylesheet" href="../../superusuario/css/styles.css">
 </head>
 <body>
@@ -33,7 +34,7 @@
                             <input type="text" id="searchInput" placeholder="Buscar Promociones...">
                             <i class="fas fa-search"></i>
                         </div>
-                        <button class="icon-button add-button button-large" id="showFormButton">
+                        <button class="icon-button add-button button-large super-only" id="showFormButton">
                             <i class="fi fi-rr-add"></i>
                         </button>
                     </div>
@@ -51,7 +52,7 @@
                                         <th>Descuento %</th>
                                         <th>Fecha de inicio</th>
                                         <th>Fecha de finalización</th>
-                                        <th style="text-align: center;">Acciones</th>
+                                        <th style="text-align: center;" class="super-only">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tablaPromociones"></tbody>

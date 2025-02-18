@@ -1,6 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
     obtenerHistorico();
+    
+    // Verificar el rol y ocultar botones si no es superusuario
+    verificarPermisos();
+
+    // Agregar evento al botón de cancelar en el formulario de edición
+    document.getElementById("cancelEditButton").addEventListener("click", function () {
+        document.getElementById("editFormContainer").style.display = "none";
+    });
 });
+
+// Función para verificar permisos (rol del usuario)
+function verificarPermisos() {
+    let rol = sessionStorage.getItem("rol"); // Obtener rol desde sessionStorage
+    console.log("Rol almacenado en sessionStorage:", rol);
+
+    // Verificar si el rol es 'superusuario'
+    if (rol !== "superusuario") {
+        console.log("Administrador detectado, ocultando botones de superusuario.");
+        // Si no es superusuario, ocultar las celdas que contienen los botones con la clase 'super-only'
+        let filasSuperOnly = document.querySelectorAll(".super-only");
+        console.log("Filas con clase 'super-only':", filasSuperOnly);
+
+        filasSuperOnly.forEach(fila => {
+            fila.style.display = "none"; // Ocultar la celda completa que contiene los botones
+        });
+    }
+}
 
 function obtenerHistorico() {
     eel.obtener_historico_promocion()(function (historico) {
@@ -16,8 +42,8 @@ function obtenerHistorico() {
                     <td>${promocion.fecha_inicio}</td>
                     <td>${promocion.fecha_fin}</td>
                     <td>${promocion.fecha_borrado}</td>
-                    <td class="table-buttons">
-                        <button class="icon-button recover-button" onclick="recuperarPromocion(${promocion.id_promocion}, '${promocion.nombre_promociones}', '${promocion.descripcion}', '${promocion.descuento}',  '${promocion.fecha_inicio}', '${promocion.fecha_fin}', '${promocion.id_sucursal}')">
+                    <td class="table-buttons super-only">
+                        <button class="icon-button recover-button super-only" onclick="recuperarPromocion(${promocion.id_promocion}, '${promocion.nombre_promociones}', '${promocion.descripcion}', '${promocion.descuento}',  '${promocion.fecha_inicio}', '${promocion.fecha_fin}', '${promocion.id_sucursal}')">
                             <i class="fi fi-rr-trash-restore-alt"></i>
                         </button>
                     </td>
@@ -25,6 +51,8 @@ function obtenerHistorico() {
             `;
             tabla.innerHTML += fila;
         });
+        // Después de llenar la tabla, verificar los permisos
+        verificarPermisos();
     });
 }
 
