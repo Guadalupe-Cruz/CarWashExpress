@@ -1,6 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
     obtenerClientes();
 
+    let nombreUsuario = sessionStorage.getItem("nombre_usuario") || "Usuario";
+    let apellidoPt = sessionStorage.getItem("apellido_pt") || "";
+    let apellidoMt = sessionStorage.getItem("apellido_mt") || "";
+    let rolUsuario = sessionStorage.getItem("rol") || "Desconocido";
+
+    document.getElementById("user-name-role").innerText = `${nombreUsuario} ${apellidoPt} ${apellidoMt} - ${rolUsuario}`;
+
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {
         document.getElementById("editFormContainer").style.display = "none";

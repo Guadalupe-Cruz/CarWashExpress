@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="/eel.js"></script>
     <script src="clientes.js"></script>
+    <script src="../../../permisos.js"></script>
     <link rel="stylesheet" href="../../superusuario/css/styles.css">
 </head>
 <body>
@@ -23,7 +24,7 @@
             <h3>Gestión de Clientes</h3>
             <div class="user-info">
                 <div class="user-avatar"></div>
-                <span>Clientes</span>
+                <span id="user-name-role">Cargando...</span>
             </div>
         </header>
 
@@ -138,7 +139,7 @@
 
     <script>
         // Cargar el sidebar
-        fetch('../sidebar/sidebar.html')
+        fetch('/pages/superusuario/sidebar/sidebar.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('sidebar').innerHTML = data;

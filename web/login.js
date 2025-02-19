@@ -1,32 +1,36 @@
-document.getElementById("loginForm").addEventListener("submit", async function(event) {
+document.getElementById("loginForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
     let correo = document.getElementById("correo").value;
     let contrasena = document.getElementById("contrasena").value;
 
-    // Llamada al backend para verificar las credenciales
     let respuesta = await eel.verificar_credenciales(correo, contrasena)();
 
     if (respuesta.success) {
-        // Guardar el nombre del rol en sessionStorage en minúsculas
         sessionStorage.setItem("rol", respuesta.rol.toLowerCase());
+        sessionStorage.setItem("nombre_usuario", respuesta.nombre_usuario);
+        sessionStorage.setItem("apellido_pt", respuesta.apellido_pt);
+        sessionStorage.setItem("apellido_mt", respuesta.apellido_mt);
+        sessionStorage.setItem("id_usuario", respuesta.id_usuario); // Asegúrate de almacenar el id_usuario
 
-        // Mostrar alerta indicando el rol con Swal.fire
         Swal.fire({
-            title: "Inicio de sesión exitoso",
-            text: `Has iniciado sesión como ${respuesta.rol}`,
             icon: "success",
-            confirmButtonText: "Aceptar"
+            title: `Bienvenido, ${respuesta.nombre_usuario}!`,
+            text: `Has iniciado sesión como ${respuesta.rol}`,
+            showConfirmButton: true, // Agrega un botón de "Aceptar"
+            confirmButtonText: "Aceptar" // Personaliza el texto del botón
         }).then(() => {
-            // Redirigir a la página principal según el rol
-            window.location.href = "pages/superusuario/clientes/clientes.html";
+            // Redirige después de que el usuario presione "Aceptar"
+            //window.location.href = "pages/superusuario/clientes/clientes.html";
+            window.location.href = "/pages/superusuario/clientes/clientes.html";
         });
+
     } else {
         Swal.fire({
-            title: "Error",
-            text: "Credenciales incorrectas",
             icon: "error",
-            confirmButtonText: "Intentar de nuevo"
+            title: "Credenciales incorrectas",
+            text: "Verifica tu correo y contraseña",
+            confirmButtonText: "Aceptar"
         });
     }
 });

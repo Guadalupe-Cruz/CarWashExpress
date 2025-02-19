@@ -1,6 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
     obtenerRoles();
-    
+
+    let nombreUsuario = sessionStorage.getItem("nombre_usuario") || "Usuario";
+    let apellidoPt = sessionStorage.getItem("apellido_pt") || "";
+    let apellidoMt = sessionStorage.getItem("apellido_mt") || "";
+    let rolUsuario = sessionStorage.getItem("rol") || "Desconocido";
+
+    document.getElementById("user-name-role").innerText = `${nombreUsuario} ${apellidoPt} ${apellidoMt} - ${rolUsuario}`;
+
     // Verificar el rol y ocultar botones si no es superusuario
     verificarPermisos();
 

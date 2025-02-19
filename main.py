@@ -57,9 +57,9 @@ def verificar_credenciales(correo, contrasena):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     
-    # Obtener el id_rol desde la tabla usuarios
+    # Obtener los datos del usuario junto con su rol y su id_usuario
     cursor.execute("""
-        SELECT u.id_rol, r.nombre_rol 
+        SELECT u.id_usuario, u.nombre_usuario, u.apellido_pt, u.apellido_mt, r.nombre_rol 
         FROM usuarios u
         JOIN roles r ON u.id_rol = r.id_rol
         WHERE u.correo = %s AND u.contrasena = %s
@@ -70,9 +70,18 @@ def verificar_credenciales(correo, contrasena):
     conn.close()
 
     if usuario:
-        return {"success": True, "rol": usuario["nombre_rol"]}
+        return {
+            "success": True,
+            "id_usuario": usuario["id_usuario"],  # Asegúrate de devolver el id_usuario
+            "nombre_usuario": usuario["nombre_usuario"],
+            "apellido_pt": usuario["apellido_pt"],
+            "apellido_mt": usuario["apellido_mt"],
+            "rol": usuario["nombre_rol"]
+        }
     else:
         return {"success": False}
+
+
     
 # Funciones para sucursales
 @eel.expose
@@ -385,4 +394,4 @@ def obtenerLavadosCliente(id_cliente):
         return lavados
     return []
 
-eel.start("login.html", size=(1024, 768))
+eel.start("login.html", size=(1024, 768), port=8080)

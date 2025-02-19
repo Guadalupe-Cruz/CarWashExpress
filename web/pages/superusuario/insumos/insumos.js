@@ -218,9 +218,11 @@ function descontarInsumo(id_insumo, nombreInsumo, unidadText) {
 }
 
 function confirmarDescuento() {
+    
     let id_insumo = document.getElementById("discountFormContainer").dataset.idInsumo;
     let cantidadDescontar = parseFloat(document.getElementById("cantidadDescontar").value);
     let id_usuario = sessionStorage.getItem("id_usuario");
+    console.log("id_usuario recuperado:", id_usuario);  // Aquí se debe ejecutar
     let unidadInsumo = document.getElementById("discountFormContainer").dataset.unidadInsumo; // Se obtiene la unidad del insumo
 
     if (!id_usuario) {
