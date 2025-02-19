@@ -1,3 +1,6 @@
+from fpdf import FPDF
+from datetime import datetime, timedelta
+import eel
 from backend.database import get_db_connection
 
 # Función para obtener todos los clientes
@@ -81,4 +84,95 @@ def recuperar_cliente(id_cliente, nombre_cliente, apellido_pt, apellido_mt, corr
     
     connection.commit()
     connection.close()
+
+# reporte
+# Obtener correos de clientes con membresía próxima a expirar
+def obtener_correos_membresias_proximas():
+    conexion = get_db_connection()
+    cursor = conexion.cursor()
+
+    fecha_hoy = datetime.today().date()
+    fecha_limite = fecha_hoy + timedelta(days=30)
+
+    query = """
+    SELECT correo, fecha_expiracion_membresia FROM clientes
+    WHERE fecha_expiracion_membresia IS NOT NULL
+    """
     
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+    
+    cursor.close()
+    conexion.close()
+
+    correos_filtrados = []
+    
+    for correo, fecha_expiracion_membresia in resultados:
+        if fecha_expiracion_membresia:
+            fecha_inicio = datetime.strptime(str(fecha_expiracion_membresia).split()[0], "%Y-%m-%d").date()
+            fecha_expiracion = fecha_inicio.replace(year=fecha_inicio.year + 1)  # Sumar 1 año
+
+            if fecha_hoy <= fecha_expiracion <= fecha_limite:
+                correos_filtrados.append(correo)
+
+    if not correos_filtrados:
+        print(f"No hay clientes con membresía próxima a expirar entre {fecha_hoy} y {fecha_limite}.")
+    else:
+        print(f"Correos obtenidos: {correos_filtrados}")  # Para depurar
+
+    return correos_filtrados
+
+# Exponer la función a JavaScript con Eel
+class PDF(FPDF):
+    def header(self):
+        """Encabezado con fondo en color #7296A4, solo cubriendo el ancho del título."""
+        self.set_fill_color(114, 150, 164)  # Color #7296A4 en RGB
+        self.set_text_color(255, 255, 255)  # Texto blanco
+        self.set_font("Arial", "B", 16)
+
+        # Centrado en el título, pero solo con un fondo que cubra el texto
+        title = "Reporte de Membresías Próximas a Vencer"
+        title_width = self.get_string_width(title) + 6
+        self.rect((210 - title_width) / 2, 10, title_width, 15, style='F')
+
+        self.cell(0, 15, title, ln=True, align="C")
+        self.ln(5)
+
+    def footer(self):
+        """Pie de página con número de página y fecha de generación."""
+        self.set_y(-15)
+        self.set_font("Arial", "I", 10)
+        self.set_text_color(100)
+        self.cell(0, 10, f"Página {self.page_no()} | Generado el {datetime.today().strftime('%Y-%m-%d')}", align="C")
+
+@eel.expose
+def generar_reporte_pdf():
+    correos = obtener_correos_membresias_proximas()
+
+    if not correos:
+        return None  # No genera PDF si no hay datos
+
+    pdf = PDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+
+    # Información del reporte
+    pdf.set_font("Arial", "B", 12)
+    pdf.set_text_color(0, 0, 0)
+    pdf.cell(200, 10, f"Fecha de Generación: {datetime.today().strftime('%Y-%m-%d')}", ln=True, align="C")
+    pdf.ln(10)
+
+    # Tabla de correos
+    pdf.set_font("Arial", "B", 12)
+    pdf.set_fill_color(230, 230, 230)  # Gris claro
+    pdf.cell(190, 10, "Correos Electrónicos", border=1, ln=True, align="C", fill=True)
+
+    pdf.set_font("Arial", "", 12)
+    for correo in correos:
+        pdf.cell(190, 10, correo, border=1, ln=True, align="C")
+
+    archivo_pdf = "web/reporte_correos.pdf"
+    pdf.output(archivo_pdf)
+
+    print(f"Reporte generado correctamente: {archivo_pdf}")
+    return archivo_pdf

@@ -8,6 +8,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("user-name-role").innerText = `${nombreUsuario} ${apellidoPt} ${apellidoMt} - ${rolUsuario}`;
 
+    document.getElementById("btnReporte").addEventListener("click", function () {
+        eel.generar_reporte_pdf()(function (archivo) {
+            if (archivo) {
+                let link = document.createElement("a");
+                link.href = archivo;
+                link.download = "reporte_correos.pdf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    });
+    
+
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {
         document.getElementById("editFormContainer").style.display = "none";
@@ -312,4 +326,14 @@ function actualizarProgresoLavados(idCliente) {
     });
 }
 
-
+//Reportes
+function generarReporte() {
+    eel.generar_reporte_pdf()(function (archivo) {
+        if (archivo) {
+            alert("¡Reporte generado correctamente!");
+            window.open(archivo);  // Abre el PDF en el navegador
+        } else {
+            alert("Hubo un error al generar el reporte.");
+        }
+    });
+}
