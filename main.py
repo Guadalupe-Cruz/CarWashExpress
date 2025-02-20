@@ -394,4 +394,5 @@ def obtenerLavadosCliente(id_cliente):
         return lavados
     return []
 
+
 eel.start("login.html", size=(1024, 768), port=8080)

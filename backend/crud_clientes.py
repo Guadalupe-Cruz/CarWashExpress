@@ -1,6 +1,8 @@
 from fpdf import FPDF
 from datetime import datetime, timedelta
 import eel
+import os
+from datetime import datetime
 from backend.database import get_db_connection
 
 # Función para obtener todos los clientes
@@ -145,6 +147,7 @@ class PDF(FPDF):
         self.set_text_color(100)
         self.cell(0, 10, f"Página {self.page_no()} | Generado el {datetime.today().strftime('%Y-%m-%d')}", align="C")
 
+# Generar el reporte 
 @eel.expose
 def generar_reporte_pdf():
     correos = obtener_correos_membresias_proximas()
@@ -159,7 +162,9 @@ def generar_reporte_pdf():
     # Información del reporte
     pdf.set_font("Arial", "B", 12)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(200, 10, f"Fecha de Generación: {datetime.today().strftime('%Y-%m-%d')}", ln=True, align="C")
+    fecha_hoy = datetime.today().strftime('%Y-%m-%d')
+
+    pdf.cell(200, 10, f"Fecha de Generación: {fecha_hoy}", ln=True, align="C")
     pdf.ln(10)
 
     # Tabla de correos
@@ -171,8 +176,13 @@ def generar_reporte_pdf():
     for correo in correos:
         pdf.cell(190, 10, correo, border=1, ln=True, align="C")
 
-    archivo_pdf = "web/reporte_correos.pdf"
+    # Guardar en Descargas con la fecha actual
+    ruta_descargas = os.path.join(os.path.expanduser("~"), "Downloads")
+    archivo_pdf = os.path.join(ruta_descargas, f"{fecha_hoy}_reporte_correos.pdf")
     pdf.output(archivo_pdf)
+
+    # Abrir la carpeta Descargas automáticamente
+    os.startfile(ruta_descargas)  
 
     print(f"Reporte generado correctamente: {archivo_pdf}")
     return archivo_pdf

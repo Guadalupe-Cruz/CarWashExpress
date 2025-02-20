@@ -11,15 +11,45 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("btnReporte").addEventListener("click", function () {
         eel.generar_reporte_pdf()(function (archivo) {
             if (archivo) {
+                console.log("📂 Reporte generado en:", archivo);
+    
+                // Crear enlace para descargar el archivo
                 let link = document.createElement("a");
                 link.href = archivo;
                 link.download = "reporte_correos.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+    
+                // Mostrar alerta después de descargar el archivo
+                setTimeout(function () {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Reporte generado',
+                        text: `El reporte se ha guardado correctamente en Descargas.`,
+                        confirmButtonText: 'Aceptar'
+                    });
+                }, 500); // Pequeña pausa para asegurar que el archivo se haya descargado
+    
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sin datos',
+                    text: 'No se generó el reporte porque no hay correos disponibles.',
+                    confirmButtonText: 'Aceptar'
+                });
             }
+        }).catch(error => {
+            console.error("❌ Error al generar el reporte:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al generar el reporte.',
+                confirmButtonText: 'Aceptar'
+            });
         });
     });
+    
     
 
     // Agregar evento al botón de cancelar en el formulario de edición
@@ -328,12 +358,42 @@ function actualizarProgresoLavados(idCliente) {
 
 //Reportes
 function generarReporte() {
-    eel.generar_reporte_pdf()(function (archivo) {
-        if (archivo) {
-            alert("¡Reporte generado correctamente!");
-            window.open(archivo);  // Abre el PDF en el navegador
+    console.log("✅ Llamando a generar_reporte_pdf()...");
+
+    eel.generar_reporte_pdf()(function(ruta) {
+        console.log("📂 Ruta del PDF recibida:", ruta);
+
+        if (ruta) {
+            console.log("👨‍💻 Mostrando alerta...");
+
+            // Mostramos la alerta en un segundo (para asegurarnos que no haya interferencia)
+            setTimeout(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Reporte generado',
+                    text: `El reporte se ha guardado en: ${ruta}`,
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    console.log("✅ Alerta mostrada, intentando abrir archivo...");
+                    window.open(ruta, '_blank');
+                });
+            }, 1000); // 1 segundo de espera
+
         } else {
-            alert("Hubo un error al generar el reporte.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Sin datos',
+                text: 'No se generó el reporte porque no hay correos disponibles.',
+                confirmButtonText: 'Aceptar'
+            });
         }
+    }).catch(error => {
+        console.error("❌ Error al generar el reporte:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al generar el reporte.',
+            confirmButtonText: 'Aceptar'
+        });
     });
 }
