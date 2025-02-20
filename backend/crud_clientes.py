@@ -163,7 +163,7 @@ def generar_reporte_pdf():
     pdf.set_font("Arial", "B", 12)
     pdf.set_text_color(0, 0, 0)
     fecha_hoy = datetime.today().strftime('%Y-%m-%d')
-
+ 
     pdf.cell(200, 10, f"Fecha de Generación: {fecha_hoy}", ln=True, align="C")
     pdf.ln(10)
 

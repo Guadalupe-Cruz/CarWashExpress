@@ -48,9 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmButtonText: 'Aceptar'
             });
         });
-    });
-    
-    
+    });    
 
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {
