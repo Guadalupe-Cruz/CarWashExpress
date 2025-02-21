@@ -48,7 +48,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmButtonText: 'Aceptar'
             });
         });
-    });    
+    }); 
+    
+    document.getElementById("btnReporte2").addEventListener("click", async function () {
+        try {
+            let response = await eel.obtener_correos()();  // Llamamos a la función expuesta
+    
+            if (response.length === 0) {
+                alert("No hay clientes con membresía próxima a expirar.");
+                return;
+            }
+    
+            let destinatarios = response.join(",");
+            let asunto = encodeURIComponent("Notificación de membresía próxima a vencer");
+            let mensaje = encodeURIComponent(
+                "Estimado cliente,\n\nLe recordamos que su membresía está próxima a vencer. " +
+                "Si desea renovarla, por favor comuníquese con nosotros.\n\nAtentamente,\nCARWASHEXPRESS"
+            );
+    
+            window.location.href = `mailto:${destinatarios}?subject=${asunto}&body=${mensaje}`;
+    
+        } catch (error) {
+            console.error("Error al obtener los correos:", error);
+        }
+    });
+        
 
     // Agregar evento al botón de cancelar en el formulario de edición
     document.getElementById("cancelEditButton").addEventListener("click", function () {

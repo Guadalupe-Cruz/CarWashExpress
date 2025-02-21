@@ -22,7 +22,7 @@ from backend.crud_insumos import (
 
 from backend.crud_clientes import (
     get_clientes, add_cliente, update_cliente,
-    delete_cliente, get_historico_clientes, recuperar_cliente
+    delete_cliente, get_historico_clientes, recuperar_cliente, obtener_correos_membresias_proximas
 )
 
 from backend.crud_promociones import (
@@ -225,7 +225,11 @@ def verificar_telefono(telefono):
         finally:
             cursor.close()
             connection.close()
-    return False
+    return 
+
+@eel.expose
+def obtener_correos():
+    return obtener_correos_membresias_proximas()
 
 # Funciones para promociones
 @eel.expose
